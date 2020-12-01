@@ -1,0 +1,66 @@
+body {
+	color: brown;
+	background-image: url("../img/1.jpg");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+
+}
+
+#dd {
+	p {
+		color: saddlebrown;
+		font-size: 30px;
+		font-weight: 600;
+		font-family: "微軟正黑體";
+	}
+}
+
+li {
+	list-style: none;
+
+}
+
+h1 {
+	font-size: 50px;
+	color: #fff;
+}
+
+
+#read {
+
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	margin-top: 50px;
+	padding: 50px;
+
+	table {
+		width: 100%;
+		font-size: 2rem;
+	}
+
+	tr {
+		color: #fff;
+
+	}
+
+	h1 {
+		padding-bottom: 100px;
+	}
+}
+
+
+
+
+//動畫
+
+.fade-enter-active,
+.fafe.leave.active {
+
+	transition: ease 1s;
+}
+
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}

@@ -2,12 +2,13 @@
   <div id="login">
     <div v-for="item in child_dist" :key="item.id" id="city_button">
       <router-link
-        :to="{ path: item.city + '/' + item.dist }"
+        :to="{ path: 'weather/' + item.eng }"
         class="btn btn-primary"
       >
-        {{ item.dist }}
+        {{ item.chs }}
       </router-link>
     </div>
+
     <table class="table">
       <thead>
         <tr>
@@ -51,19 +52,18 @@ export default {
   },
 
   mounted() {
-    const route_dist = this.$route.params.dist;
-    const route_city = this.$route.params.city;
+    const citys_name = require("../json/citys_name.json");
+    console.log();
 
     this.axios
-      .get("http://127.0.0.1:5000/city/" + route_city)
+      .get("http://127.0.0.1:5000/city/" + "taiwan")
       .then((response) => {
         this.info = response["data"];
         this.child_dist = Object.keys(groupByKey(this.info, "cityname"));
-
         this.child_dist.forEach((e, i) => {
-          this.child_dist[i] = { city: route_city, dist: e };
+          this.child_dist[i] = { chs: e, eng: citys_name[e] };
         });
-        console.log("第一筆" + this.info[0].cityname);
+
         console.log(this.child_dist);
       });
   },

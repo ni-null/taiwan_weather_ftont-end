@@ -1,3 +1,6 @@
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
 body {
 	color: brown;
 	background-image: url("../img/1.jpg");
@@ -65,7 +68,7 @@ h1 {
 //動畫
 
 .fade-enter-active,
-.fafe.leave.active {
+.fade.leave.active {
 
 	transition: ease 1s;
 }

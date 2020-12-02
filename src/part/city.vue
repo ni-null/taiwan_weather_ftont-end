@@ -22,7 +22,7 @@
       <tbody v-for="item in info" :key="item.id">
         <tr>
           <th>{{ item.cityname }}</th>
-          <th>{{ item.time }}</th>
+          <th>{{ item.time_1 + item.time_2 }}</th>
           <th>{{ item.WeatherDescription }}</th>
           <th>{{ item.temp }}</th>
           <th>{{ item.rain }}</th>
@@ -40,32 +40,22 @@ export default {
       child_dist: null,
     };
   },
-
-  methods: {
-    add() {
-      this.list.push({
-        id: Date.now(),
-        name: this.name,
-      });
-    },
-  },
+  inject: ["api_url"],
 
   mounted() {
     const route_dist = this.$route.params.dist;
     const route_city = this.$route.params.city;
 
-    this.axios
-      .get("http://127.0.0.1:5000/city/" + route_city)
-      .then((response) => {
-        this.info = response["data"];
-        this.child_dist = Object.keys(groupByKey(this.info, "cityname"));
+    this.axios.get(this.api_url + "/city/" + route_city).then((response) => {
+      this.info = response["data"];
+      this.child_dist = Object.keys(groupByKey(this.info, "cityname"));
 
-        this.child_dist.forEach((e, i) => {
-          this.child_dist[i] = { city: route_city, dist: e };
-        });
-        console.log("第一筆" + this.info[0].cityname);
-        console.log(this.child_dist);
+      this.child_dist.forEach((e, i) => {
+        this.child_dist[i] = { city: route_city, dist: e };
       });
+      console.log("第一筆" + this.info[0].cityname);
+      console.log(this.child_dist);
+    });
   },
 };
 

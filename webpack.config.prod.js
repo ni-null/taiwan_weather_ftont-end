@@ -4,21 +4,41 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 module.exports = {
 	entry: "./src/main.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "./bulind.js",
+		filename: "assets/js/bulind.js",
 	},
 	module: {
 		rules: [{
 				test: /\.css$/i,
-				use: ["style-loader", "css-loader"],
+				use: [{
+					loader: MiniCssExtractPlugin.loader,
+					options: {
+						publicPath: '../',
+					}
+				}, 'css-loader', "css-loader"],
 			},
 
 			{
 				test: /\.s[ac]ss$/i,
-				use: ["style-loader", "css-loader", "sass-loader"],
+				use: [{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							publicPath: '../',
+						}
+					},
+					{
+						loader: 'css-loader'
+					},
+					{
+
+						loader: 'sass-loader'
+					}
+				],
 			},
 
 			{
@@ -28,7 +48,7 @@ module.exports = {
 					options: {
 						limit: 1000, //bytes
 						name: "[hash:7].[ext]",
-						outputPath: "assets",
+						outputPath: "/img",
 					},
 				}, ],
 			},
@@ -50,13 +70,16 @@ module.exports = {
 	},
 
 	plugins: [
-		// 創建實例 (第二步)
+
 		new HtmlWebpackPlugin({
-			// 配置 HTML 模板路徑與生成名稱 (第三步)
+
 			template: "./src/index.html",
 			filename: "index.html",
 		}),
 		new VueLoaderPlugin(),
+		new MiniCssExtractPlugin({
+			filename: 'assets/css/main.css',
+		}),
 	],
 
 	resolve: {

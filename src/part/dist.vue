@@ -14,7 +14,7 @@
       <tbody v-for="item in info" :key="item.id">
         <tr>
           <td>{{ item.cityname }}</td>
-          <td>{{ item.time }}</td>
+          <td>{{ item.time_1 + item.time_2 }}</td>
           <td>{{ item.WeatherDescription }}</td>
           <td>{{ item.temp }}</td>
           <td>{{ item.rain }}</td>
@@ -32,13 +32,12 @@ export default {
       dist_title: "",
     };
   },
-
-  methods: {},
+  inject: ["api_url"],
   mounted() {
     const route_dist = this.$route.params.dist;
     const route_city = this.$route.params.city;
 
-    this.axios.get("http://127.0.0.1:5000/city/" + route_city).then(
+    this.axios.get(this.api_url + "/city/" + route_city).then(
       (response) =>
         (this.info = response["data"].filter(function(item) {
           return item.cityname == route_dist;

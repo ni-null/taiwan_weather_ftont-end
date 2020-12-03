@@ -15,7 +15,7 @@
         <tr>
           <td>{{ item.cityname }}</td>
           <td>{{ item.time_1 + item.time_2 }}</td>
-          <td>{{ item.WeatherDescription }}</td>
+          <td>{{ item.WD }}</td>
           <td>{{ item.temp }}</td>
           <td>{{ item.rain }}</td>
         </tr>

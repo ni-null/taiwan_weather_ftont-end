@@ -2,7 +2,7 @@
   <div>
     <div>
       <b-navbar toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand :to="{ path: '/' }">NavBar</b-navbar-brand>
+        <b-navbar-brand :to="{ path: '/' }">Ninull天氣預報</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

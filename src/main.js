@@ -9,7 +9,6 @@ Vue.use(VueRouter)
 
 
 //page 
-import city_list from "./part/city_list.vue";
 import navbar from "./part/navbar.vue";
 import city from "./part/city.vue";
 import dist from "./part/dist.vue";
@@ -29,10 +28,7 @@ Vue.use(IconsPlugin)
 
 const router = new VueRouter({
 
-	routes: [{
-			path: '/weather/',
-			component: city_list
-		},
+	routes: [
 
 		{
 			path: '/weather/:city/',
@@ -54,12 +50,11 @@ const vm = new Vue({
 	el: "#app",
 	data: {},
 	components: {
-		city_list,
 		navbar
 	},
 	provide: {
-		api_url: 'https://weather-api.ninull.com'
-		//	api_url: 'http://127.0.0.1:5000'
+		//api_url: 'https://weather-api.ninull.com'
+		api_url: 'http://127.0.0.1:5000'
 	},
 	router
 });

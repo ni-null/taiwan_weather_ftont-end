@@ -1,5 +1,6 @@
 import "./js/all";
 import "./css/all.scss";
+import "./js/d3.v4.min"
 import Vue from "vue";
 import VueRouter from 'vue-router'
 import axios from 'axios'
@@ -10,8 +11,10 @@ Vue.use(VueRouter)
 
 //page 
 import navbar from "./part/navbar.vue";
+import taiwan_map from "./part/taiwan_map.vue";
 import city from "./part/city.vue";
 import dist from "./part/dist.vue";
+
 
 
 //css
@@ -29,6 +32,13 @@ Vue.use(IconsPlugin)
 const router = new VueRouter({
 
 	routes: [
+
+
+		{
+			path: '/',
+			component: taiwan_map
+		},
+
 
 		{
 			path: '/weather/:city/',
@@ -53,8 +63,8 @@ const vm = new Vue({
 		navbar
 	},
 	provide: {
-		//api_url: 'https://weather-api.ninull.com'
-		api_url: 'http://127.0.0.1:5000'
+		api_url: 'https://weather-api.ninull.com'
+		//api_url: 'http://127.0.0.1:5000'
 	},
 	router
 });

@@ -6,6 +6,8 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const CompressionPlugin = require("compression-webpack-plugin");
+
 module.exports = {
 	entry: "./src/main.js",
 	output: {
@@ -28,7 +30,7 @@ module.exports = {
 				use: [{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							publicPath: '../',
+							publicPath: './',
 						}
 					},
 					{
@@ -44,11 +46,10 @@ module.exports = {
 			{
 				test: /\.(jpg|png|webp|jpeg|svg)$/i,
 				use: [{
-					loader: "url-loader",
+					loader: "file-loader",
 					options: {
-						limit: 1000, //bytes
-						name: "[hash:7].[ext]",
-						outputPath: "/img",
+						name: 'assets/img/[name].[ext]',
+						publicPath: '../../'
 					},
 				}, ],
 			},
@@ -78,7 +79,15 @@ module.exports = {
 		}),
 		new VueLoaderPlugin(),
 		new MiniCssExtractPlugin({
-			filename: 'assets/css/main.css',
+			filename: './assets/css/main.css',
+		}),
+
+		new CompressionPlugin({
+			filename: "[path][base].gz",
+			algorithm: "gzip",
+			test: /\.js$|\.css$|\.html$/,
+			threshold: 10240,
+			minRatio: 0.8,
 		}),
 	],
 

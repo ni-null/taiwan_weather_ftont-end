@@ -1,15 +1,21 @@
+//css
+import {
+	BootstrapVue,
+	IconsPlugin
+} from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 import "./js/all";
 import "./css/all.scss";
 import "./js/d3.v4.min"
 import Vue from "vue";
+
+//VueRouter
 import VueRouter from 'vue-router'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
 
 
-//page 
+//paer 
 import navbar from "./part/navbar.vue";
 import taiwan_map from "./part/taiwan_map.vue";
 import city from "./part/city.vue";
@@ -17,17 +23,21 @@ import dist from "./part/dist.vue";
 
 
 
-//css
 
+
+//axios
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import {
-	BootstrapVue,
-	IconsPlugin
-} from 'bootstrap-vue'
+	setupCache
+} from 'axios-cache-adapter'
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
-
-
+//設置axios快取時間
+const cache = setupCache({
+	maxAge: 5 * 60 * 1000
+})
+Vue.use(VueAxios, axios)
+Vue.axios.defaults.adapter = cache.adapter
 
 const router = new VueRouter({
 

@@ -15,7 +15,6 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 
-
 module.exports = {
 
 	entry: "./src/main.js",
@@ -24,13 +23,14 @@ module.exports = {
 		filename: "assets/js/bulind.js",
 	},
 	optimization: {
+		usedExports: true,
+		sideEffects: false,
 		minimize: true,
 		minimizer: [
 			new TerserPlugin({
-				parallel: 4 // CPU数量 可输入 false true
+				parallel: true // CPU数量 可输入 false true
 			})
 		],
-
 	},
 	module: {
 		rules: [{
@@ -59,9 +59,22 @@ module.exports = {
 					}
 				],
 			},
-
 			{
-				test: /\.(jpg|png|webp|jpeg|svg)$/i,
+				test: /\.svg/,
+				use: {
+					loader: "svg-url-loader",
+					options: {
+						// make all svg images to work in IE
+
+						esModule: false,
+						encoding: "base64",
+						outputPath: "assets",
+
+					},
+				},
+			},
+			{
+				test: /\.(jpg|png|webp|jpeg)$/i,
 				use: [{
 					loader: 'thread-loader',
 				}, {
@@ -72,6 +85,8 @@ module.exports = {
 					},
 				}, ],
 			},
+
+
 			{
 				test: /\.m?js$/,
 				exclude: /(node_modules|bower_components)/,
@@ -83,8 +98,10 @@ module.exports = {
 					{
 						loader: "babel-loader",
 						options: {
-							presets: ["@babel/preset-env"],
+							presets: ["@babel/preset-env"]
+
 						},
+
 					}
 				]
 			},

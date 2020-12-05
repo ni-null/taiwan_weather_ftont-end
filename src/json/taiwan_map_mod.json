@@ -284,7 +284,9 @@
         "COUNTYNAME": "連江縣",
         "COUNTYENG": "Lienchiang County",
         "auxiliary_storage_labeling_positionx": 120.04752609465031,
-        "auxiliary_storage_labeling_positiony": 26.057174791292876
+        "auxiliary_storage_labeling_positiony": 26.057174791292876,
+        "X": -15,
+        "Y": 20
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -479,7 +481,9 @@
         "COUNTYNAME": "臺東縣",
         "COUNTYENG": "Taitung County",
         "auxiliary_storage_labeling_positionx": 120.97950336718397,
-        "auxiliary_storage_labeling_positiony": 22.907275947219556
+        "auxiliary_storage_labeling_positiony": 22.907275947219556,
+        "X": -17,
+        "Y": -15
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -2203,7 +2207,8 @@
         "COUNTYNAME": "花蓮縣",
         "COUNTYENG": "Hualien County",
         "auxiliary_storage_labeling_positionx": 121.31466836098204,
-        "auxiliary_storage_labeling_positiony": 23.726840659334698
+        "auxiliary_storage_labeling_positiony": 23.726840659334698,
+        "X": -15
       },
       "geometry": {
         "type": "MultiPolygon",

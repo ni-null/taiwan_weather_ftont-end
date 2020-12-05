@@ -14,6 +14,20 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 
+import Dayjs from 'vue-dayjs';
+
+Vue.use(Dayjs, {
+
+	filters: {
+		ago: 'ago',
+	},
+	directives: {
+		countdown: 'countdown',
+	}
+});
+
+
+
 //part
 
 
@@ -67,7 +81,9 @@ const router = new VueRouter({
 
 const vm = new Vue({
 	el: "#app",
-	data: {},
+	data: {
+
+	},
 	components: {
 		navbar
 	},

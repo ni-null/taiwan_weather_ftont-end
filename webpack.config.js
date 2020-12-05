@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 module.exports = {
+	mode: 'development',
 	entry: "./src/main.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
@@ -26,9 +27,9 @@ module.exports = {
 				use: [{
 					loader: "url-loader",
 					options: {
-						limit: 1000, //bytes
 						name: "[hash:7].[ext]",
 						outputPath: "assets",
+						esModule: false
 					},
 				}, ],
 			},

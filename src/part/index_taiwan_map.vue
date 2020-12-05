@@ -179,7 +179,6 @@ svg {
     cursor: pointer;
   }
 }
-
 #main_box {
   position: absolute;
 }

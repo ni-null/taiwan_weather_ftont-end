@@ -55,13 +55,14 @@
 
 
       </div>
-    </div>
 
-    <div id="taiwan_box">
-      <svg viewBox="0 0 600 600">
-        <g class="counties"></g>
-        <path class="county-borders"></path>
-      </svg>
+
+      <div id="taiwan_box">
+        <svg viewBox="0 0 600 600">
+          <g class="counties"></g>
+          <path class="county-borders"></path>
+        </svg>
+      </div>
     </div>
   </div>
   </div>

@@ -46,7 +46,6 @@ export default {
 
     this.axios.get(this.api_url + "/city/taiwan").then((response) => {
       this.info = response["data"].filter((x) => x.cityname_eng === route_city);
-      console.log(this.info + "啊哈");
     });
   },
 };

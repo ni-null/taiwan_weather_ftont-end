@@ -38,8 +38,7 @@ export default {
   },
   mounted() {
     const citys_list = require("../json/citys_list.json");
-    console.log(citys_list);
-    this.nav_list = citys_list;
+    this.nav_list = citys_list[0];
   },
 };
 </script>

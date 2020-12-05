@@ -7,7 +7,6 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 import "./js/all";
 import "./css/all.scss";
-import "./js/d3.v4.min"
 import Vue from "vue";
 
 //VueRouter
@@ -15,14 +14,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 
-//paer 
-import navbar from "./part/navbar.vue";
-import taiwan_map from "./part/taiwan_map.vue";
-import city from "./part/city.vue";
-import dist from "./part/dist.vue";
+//part
 
 
 
+const navbar = () => import( /* webpackChunkName: 'index' */ './part/navbar.vue')
 
 
 //axios
@@ -39,6 +35,8 @@ const cache = setupCache({
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.adapter = cache.adapter
 
+
+
 const router = new VueRouter({
 
 	routes: [
@@ -46,18 +44,19 @@ const router = new VueRouter({
 
 		{
 			path: '/',
-			component: taiwan_map
+			component: () => import( /* webpackChunkName: 'index' */ './part/index_taiwan_map.vue')
 		},
 
 
 		{
 			path: '/weather/:city/',
-			component: city
+			component: () => import( /* webpackChunkName: 'index' */ './part/city.vue')
+
 		},
 
 		{
 			path: '/weather/:city/:dist',
-			component: dist
+			component: () => import( /* webpackChunkName: 'index' */ './part/dist.vue')
 		}
 
 

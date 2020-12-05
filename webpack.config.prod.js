@@ -2,17 +2,35 @@ const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+//vue loader
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
+//css分離
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+//gzip
 const CompressionPlugin = require("compression-webpack-plugin");
 
+//js壓縮 不和 MiniCssExtractPlugin 相容
+const TerserPlugin = require("terser-webpack-plugin");
+
+
+
 module.exports = {
+
 	entry: "./src/main.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "assets/js/bulind.js",
+	},
+	optimization: {
+		minimize: true,
+		minimizer: [
+			new TerserPlugin({
+				parallel: 4 // CPU数量 可输入 false true
+			})
+		],
+
 	},
 	module: {
 		rules: [{
@@ -37,7 +55,6 @@ module.exports = {
 						loader: 'css-loader'
 					},
 					{
-
 						loader: 'sass-loader'
 					}
 				],
@@ -46,6 +63,8 @@ module.exports = {
 			{
 				test: /\.(jpg|png|webp|jpeg|svg)$/i,
 				use: [{
+					loader: 'thread-loader',
+				}, {
 					loader: "file-loader",
 					options: {
 						name: 'assets/img/[name].[ext]',
@@ -56,12 +75,18 @@ module.exports = {
 			{
 				test: /\.m?js$/,
 				exclude: /(node_modules|bower_components)/,
-				use: {
-					loader: "babel-loader",
-					options: {
-						presets: ["@babel/preset-env"],
+				include: path.resolve(__dirname, "src"),
+				use: [{
+						loader: 'thread-loader',
+
 					},
-				},
+					{
+						loader: "babel-loader",
+						options: {
+							presets: ["@babel/preset-env"],
+						},
+					}
+				]
 			},
 			{
 				test: /\.vue$/,
@@ -71,6 +96,7 @@ module.exports = {
 	},
 
 	plugins: [
+
 
 		new HtmlWebpackPlugin({
 

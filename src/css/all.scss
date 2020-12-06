@@ -2,6 +2,14 @@
 @import 'node_modules/bootstrap-vue/src/index.scss';
 
 
+html body #app {
+	height: auto;
+	min-height: 1500px;
+}
+
+
+
+
 svg {
 	margin: 25px;
 
@@ -17,7 +25,7 @@ svg {
 
 
 
-#main_box {
+#app {
 	color: brown;
 	background-image: url("../img/1.jpg");
 	background-repeat: no-repeat;
@@ -60,8 +68,49 @@ h1 {
 }
 
 
+
+
 .half_show {
 	margin: 10px 5px;
+
+	img {
+		width: 100%;
+		max-width: 256px;
+
+
+
+	}
+
+	.WD {
+		font-size: 3rem;
+		padding-bottom: 50px;
+	}
+
+
+	.temp {
+		font-size: 3rem;
+		padding-bottom: 50px;
+		font-weight: bolder;
+	}
+}
+
+
+@media screen and (max-width: 1370px) {
+
+	.half_show {
+
+		.WD {
+
+			font-size: 1.5rem;
+			padding-bottom: 10px;
+		}
+
+		.temp {
+			font-size: 1.5rem;
+			padding-bottom: 10px;
+		}
+	}
+
 }
 
 

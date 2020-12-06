@@ -20,8 +20,15 @@ module.exports = {
 	entry: "./src/main.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "assets/js/bulind.js",
+		filename: "assets/js/bulind.[hash:6].js",
 	},
+
+
+	//關閉警告
+	performance: {
+		hints: false
+	},
+
 	optimization: {
 		usedExports: true,
 		sideEffects: false,
@@ -122,7 +129,7 @@ module.exports = {
 		}),
 		new VueLoaderPlugin(),
 		new MiniCssExtractPlugin({
-			filename: './assets/css/main.css',
+			filename: './assets/css/main.[hash:6].css',
 		}),
 
 		new CompressionPlugin({

@@ -7,14 +7,16 @@
           <div class="now_weather_show "> {{list_now.cityname}}</div>
 
           <b-container class="text-center" id="list_now_container">
-            <div class="now_weather_show "> {{list_now.WD}}</div>
 
             <b-row>
               <b-col class="now_weather_show half_show ">
                 <img :src="require('../img/weather_svg/' + list_now.WD_code + '.svg')" />
+                <div class='WD'> {{list_now.WD}}</div>
               </b-col>
-
-              <b-col class="now_weather_show half_show ">溫度 : {{ list_now.temp }}</b-col>
+              <b-col class="now_weather_show half_show ">
+                <img :src="require('../img/weather_svg/temp_now.svg')" />
+                <div class='temp'> {{list_now.temp}}</div>
+              </b-col>
             </b-row>
           </b-container>
         </div>
@@ -119,9 +121,6 @@
           return "block_" + i.properties["COUNTYCODE"];
         })
         .on("mouseover", (i) => {
-          this.list_now = now_weather(i.properties["COUNTYNAME"]);
-          this.list_full = full_weather(i.properties["COUNTYNAME"]);
-
           d3.selectAll("#block_" + i.properties["COUNTYCODE"]).attr(
             "class",
             "active"
@@ -131,7 +130,9 @@
           d3.select(this).attr("class", "none");
         })
         .on("click", (i) => {
-          router_link(i.properties["COUNTYNAME"]);
+          this.list_now = now_weather(i.properties["COUNTYNAME"]);
+          this.list_full = full_weather(i.properties["COUNTYNAME"]);
+
         });
 
       //標籤
@@ -151,8 +152,6 @@
           return i.properties["COUNTYNAME"];
         })
         .on("mouseover", (i) => {
-          this.list_now = now_weather(i.properties["COUNTYNAME"]);
-          this.list_full = full_weather(i.properties["COUNTYNAME"]);
 
           //  this.temp = ;
           d3.selectAll("#block_" + i.properties["COUNTYCODE"]).attr(
@@ -167,7 +166,9 @@
           );
         })
         .on("click", (i) => {
-          router_link(i.properties["COUNTYNAME"]);
+          this.list_now = now_weather(i.properties["COUNTYNAME"]);
+          this.list_full = full_weather(i.properties["COUNTYNAME"]);
+
         });
 
       //從資料取得選取地區天氣
@@ -289,5 +290,13 @@
     #taiwan_box {
       display: none;
     }
+
+    #info_box {
+      background-image: url('../img/1.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
   }
 </style>

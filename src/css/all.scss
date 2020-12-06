@@ -4,8 +4,10 @@
 
 html body #app {
 	height: auto;
-	min-height: 1500px;
+
 }
+
+
 
 
 
@@ -25,28 +27,15 @@ svg {
 
 
 
-#app {
-	color: brown;
+#main_box {
+
 	background-image: url("../img/1.jpg");
 	background-repeat: no-repeat;
-	background-attachment: fixed;
 	background-size: cover;
 
 }
 
-#dd {
-	p {
-		color: saddlebrown;
-		font-size: 30px;
-		font-weight: 600;
-		font-family: "微軟正黑體";
-	}
-}
 
-li {
-	list-style: none;
-
-}
 
 h1 {
 	font-size: 50px;
@@ -57,6 +46,7 @@ h1 {
 //天氣資訊
 
 .now_weather_show {
+	overflow: hidden;
 	position: relative;
 	color: rgb(255, 255, 255);
 	background: rgba(82, 82, 82, 0.835);
@@ -75,7 +65,7 @@ h1 {
 
 	img {
 		width: 100%;
-		max-width: 256px;
+		max-width: 196px;
 
 
 
@@ -83,19 +73,37 @@ h1 {
 
 	.WD {
 		font-size: 3rem;
-		padding-bottom: 50px;
+		padding-bottom: 20px;
 	}
 
 
 	.temp {
 		font-size: 3rem;
-		padding-bottom: 50px;
+		padding-bottom: 20px;
 		font-weight: bolder;
 	}
 }
 
+.half_show_button {
+	color: #fff;
+	font-size: 2rem;
+	height: 100%;
+	width: 100%;
+	display: block;
+}
+
+
+#mobile {
+	display: none;
+
+}
 
 @media screen and (max-width: 1370px) {
+
+
+	#mobile {
+		display: flex;
+	}
 
 	.half_show {
 
@@ -109,7 +117,11 @@ h1 {
 			font-size: 1.5rem;
 			padding-bottom: 10px;
 		}
+
+
 	}
+
+
 
 }
 

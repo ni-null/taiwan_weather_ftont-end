@@ -14,6 +14,14 @@ const CompressionPlugin = require("compression-webpack-plugin");
 //js壓縮 不和 MiniCssExtractPlugin 相容
 const TerserPlugin = require("terser-webpack-plugin");
 
+//清除建構資料夾
+const {
+	CleanWebpackPlugin
+} = require('clean-webpack-plugin');
+
+
+
+
 
 module.exports = {
 
@@ -87,7 +95,7 @@ module.exports = {
 				}, {
 					loader: "file-loader",
 					options: {
-						name: 'assets/img/[name].[ext]',
+						name: 'assets/img/[name].[hash:4].[ext]',
 						publicPath: '../../'
 					},
 				}, ],
@@ -122,11 +130,22 @@ module.exports = {
 	plugins: [
 
 
+
+		//刪除dist資料夾
+
+		new CleanWebpackPlugin(),
+
+
+
 		new HtmlWebpackPlugin({
 
 			template: "./src/index.html",
 			filename: "index.html",
 		}),
+
+
+
+
 		new VueLoaderPlugin(),
 		new MiniCssExtractPlugin({
 			filename: './assets/css/main.[hash:6].css',

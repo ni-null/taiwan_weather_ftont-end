@@ -27,7 +27,6 @@ Vue.use(Dayjs, {
 });
 
 
-
 //part
 
 
@@ -58,19 +57,19 @@ const router = new VueRouter({
 
 		{
 			path: '/',
-			component: () => import( /* webpackChunkName: 'index' */ './part/index_taiwan_map.vue')
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/index_taiwan_map.vue')
 		},
 
 
 		{
 			path: '/weather/:city/',
-			component: () => import( /* webpackChunkName: 'index' */ './part/city.vue')
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/city.vue')
 
 		},
 
 		{
 			path: '/weather/:city/:dist',
-			component: () => import( /* webpackChunkName: 'index' */ './part/dist.vue')
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/dist.vue')
 		}
 
 

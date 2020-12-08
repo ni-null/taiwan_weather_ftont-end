@@ -31,7 +31,7 @@ Vue.use(Dayjs, {
 
 
 
-const navbar = () => import( /* webpackChunkName: 'index' */ './part/navbar.vue')
+const navbar = () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './part/navbar.vue')
 
 
 //axios
@@ -57,19 +57,19 @@ const router = new VueRouter({
 
 		{
 			path: '/',
-			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/index_taiwan_map.vue')
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/index.vue')
 		},
 
 
 		{
 			path: '/weather/:city/',
-			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/city.vue')
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'city' */ './part/city.vue')
 
 		},
 
 		{
 			path: '/weather/:city/:dist',
-			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'index' */ './part/dist.vue')
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'dist' */ './part/dist.vue')
 		}
 
 

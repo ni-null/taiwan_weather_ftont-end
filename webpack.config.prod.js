@@ -20,6 +20,7 @@ const {
 } = require('clean-webpack-plugin');
 
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 
@@ -28,7 +29,7 @@ module.exports = {
 	entry: "./src/main.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "assets/js/bulind.[hash:6].js",
+		filename: "assets/js/[name]-[hash:6].js",
 	},
 
 
@@ -43,9 +44,43 @@ module.exports = {
 		minimize: true,
 		minimizer: [
 			new TerserPlugin({
+				test: /\.js(\?.*)?$/i,
 				parallel: true // CPU数量 可输入 false true
 			})
 		],
+		runtimeChunk: "single",
+		splitChunks: {
+			chunks: "all",
+			maxInitialRequests: Infinity,
+			minSize: 3000,
+			cacheGroups: {
+				styles: {
+					name: 'styles',
+					test: /\.css$/,
+					chunks: 'all',
+					enforce: true,
+				},
+				comm: {
+					test: /[\\/]node_modules[\\/]/,
+					name: "comm",
+					priority: 1
+				}
+
+				,
+				VUE: {
+					test: /[\\/]node_modules[\\/](axios).*|(vue).*[\\/]/,
+					name: "VUE",
+					priority: 10
+				}
+
+				,
+				d3: {
+					test: /[\\/]node_modules[\\/](d3).*[\\/]/,
+					name: "D3",
+					priority: 10
+				}
+			}
+		}
 	},
 	module: {
 		rules: [{
@@ -130,7 +165,7 @@ module.exports = {
 	plugins: [
 
 
-
+		new BundleAnalyzerPlugin(),
 		//刪除dist資料夾
 
 		new CleanWebpackPlugin(),
@@ -148,7 +183,7 @@ module.exports = {
 
 		new VueLoaderPlugin(),
 		new MiniCssExtractPlugin({
-			filename: './assets/css/main.[hash:6].css',
+			filename: './assets/css/[name].[hash:6].css',
 		}),
 
 		new CompressionPlugin({

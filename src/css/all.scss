@@ -143,6 +143,57 @@ h1 {
 	}
 }
 
+//FLEX
+
+.flex_box1 {
+	display: flex;
+	align-items: stretch;
+
+}
+
+.box_1 {
+	width: auto;
+}
+
+.flex_box1_child {
+	width: 300px;
+	display: flex;
+}
+
+.flex_box_2 {
+	display: flex;
+	text-align: center;
+	flex-wrap: wrap;
+
+}
+
+.flex_item_box_2 {
+	flex: 1;
+	white-space: nowrap;
+	justify-content: center;
+	text-align: center;
+}
+
+
+.flex_box_3 {
+	display: flex;
+	text-align: center;
+}
+
+.flex_item_box_3 {
+
+	text-align: center;
+
+}
+
+.left {}
+
+@media(max-width:560px) {
+	.flex_box_2 {
+		flex-direction: column;
+	}
+
+}
 
 
 //動畫

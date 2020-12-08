@@ -51,9 +51,8 @@ module.exports = {
 	},
 
 	plugins: [
-		// 創建實例 (第二步)
+
 		new HtmlWebpackPlugin({
-			// 配置 HTML 模板路徑與生成名稱 (第三步)
 			template: "./src/index.html",
 			filename: "index.html",
 		}),

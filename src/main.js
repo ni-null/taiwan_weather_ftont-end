@@ -1,30 +1,18 @@
 //css
+import Vue from "vue";
+
 import {
-	BootstrapVue,
-	IconsPlugin
+	BootstrapVue
 } from 'bootstrap-vue'
 Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+
 import "./js/all";
 import "./css/all.scss";
-import Vue from "vue";
 
 //VueRouter
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-
-import Dayjs from 'vue-dayjs';
-
-Vue.use(Dayjs, {
-
-	filters: {
-		ago: 'ago',
-	},
-	directives: {
-		countdown: 'countdown',
-	}
-});
 
 
 //part

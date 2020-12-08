@@ -5,22 +5,26 @@
 
         <div id="title_box" class="now_weather_show">
           <div>
-            <router-link :to="{ path: '/weather/' + list_now.cityname_eng }" class="half_show_button">
-              <b-icon @click="switch_list()" id="left_icon" icon="arrows-move" aria-hidden="true"></b-icon>
+            <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
+              <img id="local_icon" :src="
+                  require('../img/weather_svg/city.svg')
+                " />
             </router-link>
           </div>
 
-          <div>
+          <div id="title_box_title">
             {{ list_now.cityname }}
           </div>
 
-          <div>
-            <b-icon @click="switch_list()" variant="secondary" icon="text-right" aria-hidden="true"></b-icon>
-          </div>
+
+          <img id="pin_icon" @click="switch_list()" :src="
+                  require('../img/weather_svg/pin.svg')
+                " />
+
         </div>
         <!--  手機縣市列表 -->
         <transition name="fade">
-          <div v-if="show_list" class="now_weather_show">
+          <div v-if="show_list" class="location_show">
             <div @click="switch_city_list(index)" v-for="(item, index) in citys_list" :key="item.id">
               <div class="citys_list_title">{{ item.name }}</div>
               <transition name="fade">
@@ -100,7 +104,7 @@
       return {
         taiwan_weatger: null,
         list_now: {
-          WD_code: "02",
+          WD_code: "14",
         },
         list_full: [],
         citys_list: [],
@@ -382,6 +386,34 @@
     border-radius: 10px;
   }
 
+  /* 地區標題區塊 */
+  #title_box {
+    display: flex;
+    justify-content: space-between;
+    text-align: none !important;
+    max-height: 70px;
+  }
+
+
+  #local_icon {
+    background: #ffffff30;
+    padding: 20px 0px;
+    width: 70px;
+    cursor: pointer;
+    height: 100%;
+  }
+
+  #pin_icon {
+    background: #ffffff30;
+    padding: 20px 0px;
+    width: 70px;
+    cursor: pointer;
+  }
+
+  #title_box_title {
+    font-size: 3rem;
+  }
+
   @media screen and (min-width: 1370px) {
     .b-icon.bi {
       display: none;
@@ -396,9 +428,23 @@
       display: block;
     }
 
+
+
   }
 
   @media screen and (max-width: 1370px) {
+
+    /* 地區標題區塊 */
+    #title_box_title {
+      font-size: 2.5rem;
+      padding-top: 5px;
+
+    }
+
+    #pin_icon {}
+
+    #local_icon {}
+
     #left_icon {
       background: #2424248a;
     }
@@ -419,25 +465,9 @@
 
 
 
-    .b-icon.bi {
-      padding: 10px;
-      margin: 0 0px 0px 0px;
-      height: 72px;
-      width: 72px;
-      cursor: pointer;
-      background: #ecb100;
-    }
 
-    #title_box {
-      display: flex;
-      justify-content: space-between;
-      text-align: none !important;
-    }
 
-    .now_weather_show {
-      font-size: 3rem;
-    }
-
+    /*  SVG */
     svg {
       padding: none;
     }

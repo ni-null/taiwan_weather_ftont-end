@@ -67,10 +67,25 @@ module.exports = {
 				}
 
 				,
-				VUE: {
+				vue: {
 					test: /[\\/]node_modules[\\/](axios).*|(vue).*[\\/]/,
-					name: "VUE",
+					name: "vue",
 					priority: 10
+				}
+
+				,
+				bootstarp: {
+					test: /[\\/]node_modules[\\/](bootstrap).*[\\/]/,
+					name: "bootstrap",
+					priority: 20
+				}
+
+
+				,
+				vue_Router: {
+					test: /[\\/]node_modules[\\/](vue-router).*[\\/]/,
+					name: "vue_router",
+					priority: 20
 				}
 
 				,

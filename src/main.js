@@ -9,18 +9,10 @@ Vue.use(BootstrapVue)
 import "./js/all";
 import "./css/all.scss";
 
-//VueRouter
-import VueRouter from 'vue-router'
-Vue.use(VueRouter)
-
 
 
 //part
-
-
-
 const navbar = () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './part/navbar.vue')
-
 
 //axios
 import axios from 'axios'
@@ -35,6 +27,10 @@ const cache = setupCache({
 })
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.adapter = cache.adapter
+
+//VueRouter
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
 
 
 

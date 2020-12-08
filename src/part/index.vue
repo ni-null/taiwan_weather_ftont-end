@@ -2,13 +2,11 @@
   <div>
     <div id="main_box">
       <div id="info_box">
-
         <div id="title_box" class="now_weather_show">
-          <div>
+          <div class="h4">
             <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
-              <img id="local_icon" :src="
-                  require('../img/weather_svg/city.svg')
-                " />
+              <img id="local_icon" :src="require('../img/weather_svg/city.svg')" />
+              <span>鄉鎮天氣</span>
             </router-link>
           </div>
 
@@ -16,11 +14,7 @@
             {{ list_now.cityname }}
           </div>
 
-
-          <img id="pin_icon" @click="switch_list()" :src="
-                  require('../img/weather_svg/pin.svg')
-                " />
-
+          <img id="pin_icon" @click="switch_list()" :src="require('../img/weather_svg/pin.svg')" />
         </div>
         <!--  手機縣市列表 -->
         <transition name="fade">
@@ -55,43 +49,52 @@
             </div>
           </div>
 
-          <div class="other_box ">
-            <div class="flex_box_2" v-for="item in list_full" :key="item.id">
+          <div class="other_box">
+            <div class="other_box_title" v-for="item in list_full" :key="item.id">
+              <p v-if="item.show_day">
+                <span v-if="item.day_1 != null">
+                  {{ item.day_1 }}({{ item.day_2 }})
+                </span>
+                <span v-if="item.day_1 == null">星期{{ item.day_2 }}</span>
 
-              <div class="flex_item_box_2"> {{ item.time_1 + item.time_2 }}</div>
-              <div class="flex_item_box_2">
+                <span> {{ item.time_1 }}</span>
+              </p>
+              <div class="flex_box_2">
+                <div class="flex_box_2_item_1">
+                  {{ item.time_2 }}
+                </div>
 
-                <div class="flex_box_3">
-                  <div class="flex_item_box_3 "><img id="icon_svg" :src="require('../img/weather_svg/temp.svg')" />
-                  </div>
-                  <div class="flex_item_box_3 "> <span> {{ item.temp }}</span>
-                  </div>
+                <div class="flex_box_2_item_2">
+                  <img id="icon_svg" :src="require('../img/weather_svg/temp.svg')" />
+
+                  <span> {{ item.temp }}</span>
+
+                </div>
+
+                <div class="flex_box_2_item_3">
+                  <img id="icon_svg" :src="require('../img/static_icon/' + item.WD_code + '.svg')" />
+
+
+                  <span> {{ item.WD }}</span>
+
+
                 </div>
 
               </div>
-              <div class="flex_item_box_2">
-                <div class="flex_box_3">
-                  <div class="flex_item_box_3 "> <img id="icon_svg" :src="require('../img/weather_svg/cloudy.svg')" />
-                  </div>
-                  <div class="flex_item_box_3 ">
-                    <span> {{ item.WD }}</span>
-                  </div>
-                </div>
-              </div>
 
+              <div class="hr" v-if="item.time_2 == '晚上'">
+
+              </div>
             </div>
+
           </div>
         </div>
       </div>
-
-
 
       <svg id="tw_box" viewBox="0 0 370 500">
         <g class="counties"></g>
         <path class="county-borders"></path>
       </svg>
-
-
     </div>
   </div>
 </template>
@@ -141,33 +144,25 @@
         this.show_list = !this.show_list;
       },
     },
-    async mounted() {
+    mounted() {
       //地區列表
       const citys_list = require("../json/citys_list.json");
       this.citys_list = citys_list[0];
       let taiwan_weatger;
 
-      //獲取天氣axios
-      try {
-        const data = await this.axios
-          .get(this.api_url + "/city/taiwan")
-          .then((response) => {
-            taiwan_weatger = response["data"];
-            this.taiwan_weatger = response["data"];
-          });
-      } catch (err) {
-        console.log(err);
-      }
+      this.axios
+        .get(this.api_url + "/city/taiwan")
+        .then((response) => {
+          taiwan_weatger = response["data"];
+          this.taiwan_weatger = response["data"];
+          this.list_now = now_weather("臺北市");
+          this.list_full = full_weather("臺北市");
+
+        })
       //寫入預設天氣
-      this.list_now = now_weather("臺北市");
-      this.list_full = full_weather("臺北市");
 
-
-
-      if (window.innerWidth < 1550)
-        return
+      if (window.innerWidth < 1550) return;
       else {
-
         //D3繪製地圖
         const projection = d3
           .geoMercator()
@@ -242,14 +237,10 @@
           });
       }
 
-
-
-
-      () => console.log(this.taiwan_weatger)
+      () => console.log(this.taiwan_weatger);
 
       //從資料取得選取地區天氣
       function now_weather(COUNTYNAME) {
-
         const now_weather = taiwan_weatger.filter(
           (x) => x.cityname === COUNTYNAME
         );
@@ -266,6 +257,14 @@
         );
         //刪除第一筆
         full_weather.splice(0, 1);
+
+        //添加判斷顯示
+        if (full_weather[0].day_1 == full_weather[1].day_1) {
+          full_weather[0].show_day = full_weather[2].show_day = full_weather[4].show_day = true;
+        } else {
+          full_weather[0].show_day = full_weather[1].show_day = full_weather[2].show_day = full_weather[4].show_day =
+            true;
+        }
         return full_weather;
       }
 
@@ -280,11 +279,6 @@
 </script>
 
 <style lang="scss">
-  .b-icon.bi {
-    float: right;
-    right: 0rem;
-  }
-
   svg {
     width: auto;
     max-width: 600px;
@@ -311,31 +305,8 @@
     }
   }
 
-  #main_box {
-    padding: 0px 10px 100px 10px;
-    position: absolute;
-    width: 100%;
-  }
-
   #tw_box {
     float: right;
-
-  }
-
-  #info_box {
-    width: auto;
-    padding: 15px 10px;
-    position: absolute;
-    width: 900px;
-
-    .row {
-      margin: 0;
-    }
-
-    #list_now_container {
-      padding: 0;
-      max-width: none;
-    }
   }
 
   #taiwan_box {
@@ -343,18 +314,6 @@
     right: 100px;
     font-size: 1.5em;
     padding: 25px;
-
-  }
-
-  .other_box {
-    color: rgb(255, 255, 255);
-    background: rgba(82, 82, 82, 0.835);
-    border-radius: 50px;
-    margin: 5px 5px;
-    padding: 40px 10px;
-    font-size: 1.5em;
-    line-height: 4rem;
-    flex: 1
   }
 
   .citys_list_title {
@@ -392,15 +351,28 @@
     justify-content: space-between;
     text-align: none !important;
     max-height: 70px;
+
+    a {
+      display: block;
+      color: #fff;
+    }
+
+    .h4 {
+      margin-bottom: 0;
+      background: #ffffff30;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    span {
+      padding-right: 20px;
+    }
   }
 
-
   #local_icon {
-    background: #ffffff30;
-    padding: 20px 0px;
     width: 70px;
-    cursor: pointer;
-    height: 100%;
   }
 
   #pin_icon {
@@ -415,20 +387,32 @@
   }
 
   @media screen and (min-width: 1370px) {
-    .b-icon.bi {
-      display: none;
-    }
+
+
 
     .flex_box1 {
-      display: flex
+      display: flex;
     }
 
     .flex_box1_child {
       width: 300px;
       display: block;
     }
+  }
 
 
+  @media screen and (min-width: 1800px) {
+
+    svg {
+      margin-right: 200px;
+    }
+  }
+
+  @media screen and (max-width: 1527px) {
+
+    #info_box {
+      width: 800px;
+    }
 
   }
 
@@ -438,19 +422,14 @@
     #title_box_title {
       font-size: 2.5rem;
       padding-top: 5px;
-
     }
-
-    #pin_icon {}
-
-    #local_icon {}
 
     #left_icon {
       background: #2424248a;
     }
 
     .flex_box1 {
-      display: block
+      display: block;
     }
 
     .flex_box1_child {
@@ -460,23 +439,16 @@
     }
 
     .box_1 {
-      flex: 2
+      flex: 2;
     }
-
-
-
-
 
     /*  SVG */
-    svg {
-      padding: none;
+
+
+    #tw_box {
+      display: none;
     }
 
-    svg path {
-      fill: #ffffff;
-      stroke-width: 0.5;
-      cursor: pointer;
-    }
 
     #info_box {
       width: 100%;
@@ -487,8 +459,6 @@
       }
     }
 
-    #taiwan_box {
-      display: none;
-    }
+
   }
 </style>

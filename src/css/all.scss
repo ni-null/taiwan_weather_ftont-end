@@ -1,47 +1,30 @@
-@import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import 'node_modules/bootstrap-vue/src/index.scss';
-
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+@import "node_modules/bootstrap-vue/src/index.scss";
 
 html body #app {
 	height: auto;
-
 }
-
-
-
-
-
 
 svg {
 	margin: 25px;
 
 	path {
 		fill: none;
-		stroke: #76BF8A;
+		stroke: #76bf8a;
 		stroke-width: 3px;
 	}
-
-	;
 }
 
-
-
-
 #main_box {
-
 	background-image: url("../img/1.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
-
 }
-
-
 
 h1 {
 	font-size: 50px;
 	color: #fff;
 }
-
 
 //天氣資訊
 
@@ -54,7 +37,6 @@ h1 {
 	text-align: center;
 }
 
-
 .location_show {
 	overflow: hidden;
 	position: relative;
@@ -66,25 +48,18 @@ h1 {
 	margin-top: 10px;
 }
 
-
-
-
 .half_show {
 	margin: 10px 5px;
 
 	img {
 		width: 100%;
 		max-width: 196px;
-
-
-
 	}
 
 	.WD {
 		font-size: 3rem;
 		padding-bottom: 20px;
 	}
-
 
 	.temp {
 		font-size: 3rem;
@@ -101,23 +76,47 @@ h1 {
 	display: block;
 }
 
-
 #mobile {
 	display: none;
+}
 
+.other_box {
+	color: rgb(255, 255, 255);
+	background: rgba(82, 82, 82, 0.835);
+	border-radius: 50px;
+	margin: 10px 10px;
+	min-height: 720px;
+	padding: 40px 50px;
+	font-size: 1.5em;
+	line-height: 4rem;
+	flex: 1;
+}
+
+.other_box_title {
+	text-align: center;
 }
 
 @media screen and (max-width: 1370px) {
+	.flex_box_2_item_1 {
+		flex: 1;
+		font-size: 1.2rem;
+	}
 
+	.flex_box_2_item_2 {
+		flex: 4;
+		font-size: 1.2rem;
+	}
+
+	.flex_box_2_item_3 {
+		font-size: 1.2rem;
+	}
 
 	#mobile {
 		display: flex;
 	}
 
 	.half_show {
-
 		.WD {
-
 			font-size: 1.5rem;
 			padding-bottom: 10px;
 		}
@@ -126,20 +125,10 @@ h1 {
 			font-size: 1.5rem;
 			padding-bottom: 10px;
 		}
-
-
 	}
-
-
-
 }
 
-
-
-
-
 //
-
 
 #city_button {
 	display: inline;
@@ -157,11 +146,12 @@ h1 {
 .flex_box1 {
 	display: flex;
 	align-items: stretch;
-
 }
 
 .box_1 {
 	width: auto;
+	height: 50%;
+	max-height: 360px;
 }
 
 .flex_box1_child {
@@ -174,45 +164,115 @@ h1 {
 	text-align: center;
 	flex-wrap: wrap;
 
+	p {
+		width: 100%;
+	}
 }
 
-.flex_item_box_2 {
+.flex_box_2_item_1 {
 	flex: 1;
 	white-space: nowrap;
 	justify-content: center;
 	text-align: center;
 }
 
-
-.flex_box_3 {
-	display: flex;
+.flex_box_2_item_2 {
+	flex: 4;
+	white-space: nowrap;
+	justify-content: center;
 	text-align: center;
 }
 
-.flex_item_box_3 {
-
+.flex_box_2_item_3 {
+	flex: 4;
+	white-space: nowrap;
+	justify-content: center;
 	text-align: center;
-
+	overflow: scroll;
+	overflow-y: auto;
+	overflow-x: auto;
 }
 
-.left {}
+::-webkit-scrollbar {
+	height: 4px;
+	/* height of horizontal scrollbar ← You're missing this */
+	width: 0px;
+	/* width of vertical scrollbar */
+	background: #2c2c2c;
+	overflow: hidden;
+}
 
-@media(max-width:560px) {
-	.flex_box_2 {
-		flex-direction: column;
+
+
+#main_box {
+	padding: 0px 10px 100px 10px;
+	position: absolute;
+	width: 100%;
+}
+
+#info_box {
+	width: auto;
+	padding: 15px 10px;
+	position: absolute;
+	width: 900px;
+
+
+	#list_now_container {
+		padding: 0;
+		max-width: none;
+	}
+}
+
+
+
+@media screen and (max-width: 560px) {
+
+	#main_box {
+		padding: 0;
+		position: relative;
 	}
 
-}
+	#info_box {
+		width: auto;
+		padding: 20px 0px;
+	}
 
+	.hr {
+		border-bottom: 1px solid rgb(26, 26, 26);
+		padding-top: 30px;
+		margin-bottom: 50px;
+	}
+
+	.other_box {
+		padding: 0;
+	}
+
+	.box_1 {
+		height: auto;
+	}
+
+	.other_box {
+		padding: 5px 10px;
+	}
+
+	.other_box_title p {
+		font-size: 2rem;
+		margin-top: 50px;
+	}
+
+	#title_box span {
+		display: none;
+	}
+
+
+}
 
 //動畫
 
 .fade-enter-active,
 .fade.leave.active {
-
 	transition: ease 1s;
 }
-
 
 .fade-enter,
 .fade-leave-to {

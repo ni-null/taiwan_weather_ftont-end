@@ -52,7 +52,8 @@ module.exports = {
 		splitChunks: {
 			chunks: "all",
 			maxInitialRequests: Infinity,
-			minSize: 3000,
+			minSize: 30000,
+			name: '嗨嗨',
 			cacheGroups: {
 				styles: {
 					name: 'styles',
@@ -63,12 +64,12 @@ module.exports = {
 				comm: {
 					test: /[\\/]node_modules[\\/]/,
 					name: "comm",
-					priority: 1
+					priority: 1,
 				}
 
 				,
 				vue: {
-					test: /[\\/]node_modules[\\/](axios).*|(vue).*[\\/]/,
+					test: /[\\/]node_modules[\\/](axios).*|(vue).*|(vue-router).*[\\/]/,
 					name: "vue",
 					priority: 10
 				}
@@ -82,98 +83,92 @@ module.exports = {
 
 
 				,
-				vue_Router: {
-					test: /[\\/]node_modules[\\/](vue-router).*[\\/]/,
-					name: "vue_router",
+				bootstarp: {
+					test: /[\\/]node_modules[\\/](d3).*[\\/]/,
+					name: "D3",
 					priority: 20
 				}
 
-				,
-				d3: {
-					test: /[\\/]node_modules[\\/](d3).*[\\/]/,
-					name: "D3",
-					priority: 10
-				}
 			}
 		}
 	},
 	module: {
 		rules: [{
-				test: /\.css$/i,
-				use: [{
-					loader: MiniCssExtractPlugin.loader,
-					options: {
-						publicPath: '../',
-					}
-				}, 'css-loader', "css-loader"],
-			},
+			test: /\.css$/i,
+			use: [{
+				loader: MiniCssExtractPlugin.loader,
+				options: {
+					publicPath: '../',
+				}
+			}, 'css-loader', "css-loader"],
+		},
 
-			{
-				test: /\.s[ac]ss$/i,
-				use: [{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							publicPath: './',
-						}
-					},
-					{
-						loader: 'css-loader'
-					},
-					{
-						loader: 'sass-loader'
-					}
-				],
+		{
+			test: /\.s[ac]ss$/i,
+			use: [{
+				loader: MiniCssExtractPlugin.loader,
+				options: {
+					publicPath: './',
+				}
 			},
 			{
-				test: /\.svg/,
-				use: {
-					loader: "svg-url-loader",
-					options: {
-						// make all svg images to work in IE
+				loader: 'css-loader'
+			},
+			{
+				loader: 'sass-loader'
+			}
+			],
+		},
+		{
+			test: /\.svg/,
+			use: {
+				loader: "svg-url-loader",
+				options: {
+					// make all svg images to work in IE
 
-						esModule: false,
-						encoding: "base64",
-						outputPath: "assets",
+					esModule: false,
+					encoding: "base64",
+					outputPath: "assets",
 
-					},
 				},
 			},
-			{
-				test: /\.(jpg|png|webp|jpeg)$/i,
-				use: [{
-					loader: 'thread-loader',
-				}, {
-					loader: "file-loader",
-					options: {
-						name: 'assets/img/[name].[hash:4].[ext]',
-						publicPath: '../../'
-					},
-				}, ],
-			},
+		},
+		{
+			test: /\.(jpg|png|webp|jpeg)$/i,
+			use: [{
+				loader: 'thread-loader',
+			}, {
+				loader: "file-loader",
+				options: {
+					name: 'assets/img/[name].[hash:4].[ext]',
+					publicPath: '../../'
+				},
+			},],
+		},
 
 
-			{
-				test: /\.m?js$/,
-				exclude: /(node_modules|bower_components)/,
-				include: path.resolve(__dirname, "src"),
-				use: [{
-						loader: 'thread-loader',
+		{
+			test: /\.m?js$/,
+			exclude: /(node_modules|bower_components)/,
+			include: path.resolve(__dirname, "src"),
+			use: [{
+				loader: 'thread-loader',
 
-					},
-					{
-						loader: "babel-loader",
-						options: {
-							presets: ["@babel/preset-env"]
-
-						},
-
-					}
-				]
 			},
 			{
-				test: /\.vue$/,
-				loader: "vue-loader",
-			},
+				loader: "babel-loader",
+				options: {
+					presets: ["@babel/preset-env"]
+
+				},
+
+			}
+			]
+		},
+		{
+			test: /\.vue$/,
+			loader: "vue-loader",
+		},
 		],
 	},
 

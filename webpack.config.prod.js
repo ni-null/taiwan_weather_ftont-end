@@ -8,6 +8,8 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 //css分離
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
 //gzip
 const CompressionPlugin = require("compression-webpack-plugin");
 
@@ -46,25 +48,35 @@ module.exports = {
 			new TerserPlugin({
 				test: /\.js(\?.*)?$/i,
 				parallel: true // CPU数量 可输入 false true
-			})
+			}),
+			new CssMinimizerPlugin(
+				{ test: /\.s[ac]ss$/i }
+			)
 		],
 		runtimeChunk: "single",
 		splitChunks: {
 			chunks: "all",
 			maxInitialRequests: Infinity,
 			minSize: 30000,
-			name: '嗨嗨',
+			name: 'other',
 			cacheGroups: {
 				styles: {
 					name: 'styles',
 					test: /\.css$/,
-					chunks: 'all',
-					enforce: true,
+					chunks: 'all'
 				},
 				comm: {
 					test: /[\\/]node_modules[\\/]/,
 					name: "comm",
+					minChunks: 2,
 					priority: 1,
+				}
+
+				,
+				src: {
+					test: /[\\/]src[\\/]img[\\/]/,
+					name: "img",
+					priority: 30
 				}
 
 				,
@@ -83,12 +95,18 @@ module.exports = {
 
 
 				,
-				bootstarp: {
+				D3: {
 					test: /[\\/]node_modules[\\/](d3).*[\\/]/,
 					name: "D3",
-					priority: 20
+					priority: 40
 				}
 
+				,
+				chartjs: {
+					test: /[\\/]node_modules[\\/](chart.js).*[\\/]/,
+					name: "Chart",
+					priority: 40
+				}
 			}
 		}
 	},
@@ -97,6 +115,7 @@ module.exports = {
 			test: /\.css$/i,
 			use: [{
 				loader: MiniCssExtractPlugin.loader,
+
 				options: {
 					publicPath: '../',
 				}

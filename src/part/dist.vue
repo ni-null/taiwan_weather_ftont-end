@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div id="main_box">
-
-
+    <div class="main_box">
 
       <h1>{{ $route.params.dist }}</h1>
       <table class="table">

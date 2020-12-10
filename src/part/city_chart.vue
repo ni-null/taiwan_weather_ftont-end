@@ -99,11 +99,22 @@ export default {
         };
       };
 
+      //處理降雨日為空
+      let rain_day = [];
+      if (this.rain[6] == null) {
+        this.rain.splice(6, 1);
+        this.day.splice(6, 1);
+        rain_day = this.day;
+      } else {
+        rain_day = this.day;
+      }
+      //圖表降雨
       const ctx2 = this.$refs.myChart2;
+
       const myChart2 = new Chart(ctx2, {
         type: "line",
         data: {
-          labels: this.day,
+          labels: rain_day,
           datasets: [
             {
               label: "降雨機率",
@@ -300,6 +311,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.chart_box {
+  margin: 5px 10px;
+}
 #myChart,
 #myChart2 {
   max-height: 400px;

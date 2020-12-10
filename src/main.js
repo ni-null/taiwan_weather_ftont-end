@@ -1,12 +1,9 @@
 //css
 import Vue from "vue";
 
-import {
-	BootstrapVue
-} from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue)
 
-import "./js/all";
 import "./css/all.scss";
 
 

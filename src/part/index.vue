@@ -2,28 +2,23 @@
   <div>
     <div class="main_box">
       <div class="info_box">
+        <!--  標題/縣市列表 -->
         <div class="info_box_title_box">
           <div class="h4 hover">
             <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
-              <img
-                id="local_icon"
-                :src="require('../img/weather_svg/city.svg')"
-              />
-              <span>鄉鎮天氣</span>
+              <img id="local_icon" :src="require('../img/svg/more.svg')" />
+              <span>詳細天氣</span>
             </router-link>
           </div>
 
-          <div class="title_box_title">
+          <div class="title_box_title" @click="switch_list()">
             {{ list_now.cityname }}
-          </div>
-          <div class="pin hover">
-            <img
-              id="pin_icon"
-              @click="switch_list()"
-              :src="require('../img/weather_svg/pin.svg')"
-            />
+
+            <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
           </div>
         </div>
+        <!--  標題/縣市列表 -->
+
         <!--  手機縣市列表 -->
         <transition name="fade">
           <div v-if="show_list" class="location_show">
@@ -48,21 +43,22 @@
             </div>
           </div>
         </transition>
+        <!--  手機縣市列表 -->
 
         <!--  天氣描述 -->
         <div class="now_weather_box1">
           <div class="now_weather_flex_box">
-            <div class="now_weather_flex_box_child">
+            <div class="now_weather_flex_box_child left_child">
               <img
                 :src="
-                  require('../img/weather_svg/' + list_now.WD_code + '.svg')
+                  require('../img/svg/weather_svg/' + list_now.WD_code + '.svg')
                 "
               />
               <div class="WD">{{ list_now.WD }}</div>
             </div>
             <!--  溫度 -->
             <div class="now_weather_flex_box_child">
-              <img :src="require('../img/weather_svg/temp_now.svg')" />
+              <img :src="require('../img/svg/temp_now.svg')" />
               <div class="temp">{{ list_now.temp }}</div>
             </div>
           </div>
@@ -87,7 +83,7 @@
                 </div>
 
                 <div class="flex_box_2_item_2">
-                  <img :src="require('../img/weather_svg/temp.svg')" />
+                  <img :src="require('../img/svg/temp.svg')" />
 
                   <span> {{ item.temp }}</span>
                 </div>
@@ -95,7 +91,7 @@
                 <div class="flex_box_2_item_3">
                   <img
                     :src="
-                      require('../img/static_icon/' + item.WD_code + '.svg')
+                      require('../img/svg/static_icon/' + item.WD_code + '.svg')
                     "
                   />
 
@@ -110,12 +106,15 @@
             </div>
           </div>
         </div>
+        <!--  天氣描述 -->
       </div>
 
+      <!--  D3 -->
       <svg id="tw_box" viewBox="0 0 370 500">
         <g class="counties"></g>
         <path class="county-borders"></path>
       </svg>
+      <!--  D3 -->
     </div>
   </div>
 </template>
@@ -179,7 +178,7 @@ export default {
     });
     //寫入預設天氣
 
-    if (window.innerWidth < 1550) return;
+    if (window.innerWidth < 1370) return;
     else {
       //D3繪製地圖
       const projection = d3

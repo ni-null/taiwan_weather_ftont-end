@@ -3,6 +3,8 @@
     <div class="main_box">
       <city_list></city_list>
 
+      <!--  手機縣市列表 -->
+
       <div class="city_box">
         <div class="other_box city_box_item">
           <div
@@ -24,14 +26,16 @@
               </div>
 
               <div class="flex_box_2_item_2">
-                <img :src="require('../img/weather_svg/temp.svg')" />
+                <img :src="require('../img/svg/temp.svg')" />
 
                 <span> {{ item.temp }}</span>
               </div>
 
               <div class="flex_box_2_item_3">
                 <img
-                  :src="require('../img/static_icon/' + item.WD_code + '.svg')"
+                  :src="
+                    require('../img/svg/static_icon/' + item.WD_code + '.svg')
+                  "
                 />
 
                 <span> {{ item.WD }}</span>
@@ -56,8 +60,10 @@ import city_chart from "./city_chart.vue";
 export default {
   data() {
     return {
+      list_now_title: null,
       city_weather: null,
       child_dist: null,
+      show_list: false,
     };
   },
   inject: ["api_url"],
@@ -66,7 +72,11 @@ export default {
     city_list,
     city_chart,
   },
-
+  methods: {
+    switch_list: function() {
+      this.show_list = !this.show_list;
+    },
+  },
   mounted() {
     const route_dist = this.$route.params.dist;
     const route_city = this.$route.params.city;
@@ -81,16 +91,18 @@ export default {
       } else {
         this.city_weather[0].show_day = this.city_weather[1].show_day = this.city_weather[3].show_day = this.city_weather[5].show_day = true;
       }
+      console.log(this.city_weather);
+
+      this.list_now_title = this.city_weather[0].cityname;
     });
   },
-
-  //監聽寬度
 };
 </script>
 
 <style lang="scss" scoped>
 .city_box {
   display: flex;
+  margin-top: 20px;
 
   .city_box_item {
     flex: 2;

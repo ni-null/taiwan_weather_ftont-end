@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar toggleable="lg" type="dark">
         <b-navbar-brand :to="{ path: '/' }">Ninull天氣預報</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -14,11 +14,7 @@
               <template #button-content>
                 <em> {{ item.name }}</em>
               </template>
-              <b-dropdown-item
-                :to="{ path: '/weather/' + child.eng }"
-                v-for="child in item.child"
-                :key="child.id"
-              >
+              <b-dropdown-item :to="{ path: '/weather/' + child.eng }" v-for="child in item.child" :key="child.id">
                 {{ child.che }}
               </b-dropdown-item>
             </b-nav-item-dropdown>
@@ -30,17 +26,17 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      nav_list: "",
-    };
-  },
-  mounted() {
-    const citys_list = require("../json/citys_list.json");
-    this.nav_list = citys_list[0];
-  },
-};
+  export default {
+    data() {
+      return {
+        nav_list: "",
+      };
+    },
+    mounted() {
+      const citys_list = require("../json/citys_list.json");
+      this.nav_list = citys_list[0];
+    },
+  };
 </script>
 
 <style lang="stylus" scoped></style>

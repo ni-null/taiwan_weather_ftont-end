@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.prod.js --mode production ",
-    "start": "webpack-dev-server --open  --port 4000 --contentBase src --hot"
+    "start": "webpack-dev-server --open  --port 4500 --contentBase src --hot"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "svg-url-loader": "^7.1.1",
     "vue": "^2.6.12",
     "vue-axios": "^3.2.0",
+    "vue-cookies": "^1.7.4",
     "vue-dayjs": "^1.0.2",
     "vue-router": "^3.4.9",
     "webpack": "^5.10.0"

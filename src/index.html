@@ -13,9 +13,7 @@
     <div id="app">
       <navbar></navbar>
 
-      <transition name="fade" mode="out-in">
-        <router-view :key="$route.fullPath"></router-view>
-      </transition>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
   </body>
 </html>

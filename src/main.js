@@ -14,14 +14,16 @@ const navbar = () => import( /* webpackPreload: true */ /* webpackChunkName: 'na
 //axios
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+//設置axios快取時間
 import {
 	setupCache
 } from 'axios-cache-adapter'
 
-//設置axios快取時間
 const cache = setupCache({
 	maxAge: 5 * 60 * 1000
 })
+//設置axios快取時間
+axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.adapter = cache.adapter
 
@@ -51,7 +53,19 @@ const router = new VueRouter({
 		{
 			path: '/weather/:city/:dist',
 			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'dist' */ './part/dist.vue')
+		},
+
+		{
+			path: '/account/',
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'account' */ './part/account.vue')
 		}
+		,
+
+		{
+			path: '/account/user/',
+			component: () => import( /* webpackPreload: true */ /* webpackChunkName: 'user' */ './part/user.vue')
+		}
+
 
 
 	]
@@ -68,8 +82,8 @@ const vm = new Vue({
 		navbar
 	},
 	provide: {
-		api_url: 'https://weather-api.ninull.com'
-		//api_url: 'http://127.0.0.1:5000'
+		//	api_url: 'https://weather-api.ninull.com'
+		api_url: 'http://127.0.0.1:5000'
 	},
 	router
 });

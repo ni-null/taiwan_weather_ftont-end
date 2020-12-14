@@ -23,21 +23,23 @@
         min_temp: [],
       };
     },
-    inject: ["api_url"],
     props: {
-      city_weather: null
+      dist_weathers: null,
+      required: true,
     },
+
+    inject: ["api_url"],
+
     mounted() {
-
-
       //監聽螢幕寬度
+
       this.$nextTick(() => {
         window.addEventListener("resize", this.onResize);
       });
 
       //降雨機率整理
 
-      this.city_weather.forEach((e) => {
+      this.dist_weathers.forEach((e) => {
         let origin_day = [];
 
         //降雨
@@ -55,9 +57,9 @@
         mobile_day.splice(1, 0, "/");
 
         mobile_day.push("：");
+
         const arr_1 = e.time_2.split("");
         mobile_day.push(arr_1[0]);
-
         mobile_day.push(arr_1[1]);
 
         this.mobile_day.push(mobile_day);
@@ -67,11 +69,11 @@
         this.max_temp.push(split_temp[1]);
         this.min_temp.push(split_temp[0]);
       });
-
       //寬度檢測
       let scales_yAxes_fontSize = 18;
       if (this.window_width < 560) {
         //替換日期格式
+
         this.day = this.mobile_day;
         //圖表左方刻度
         scales_yAxes_fontSize = 0;
@@ -104,6 +106,7 @@
       } else {
         rain_day = this.day;
       }
+
       //圖表降雨
       const ctx2 = this.$refs.myChart2;
 
@@ -277,8 +280,6 @@
           },
         },
       });
-
-
     },
 
     //監聽寬度

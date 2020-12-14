@@ -1,19 +1,65 @@
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
 
-html body #app {
-	height: auto;
-}
-
-svg {
-	margin: 25px;
-
-	path {
-		fill: none;
-		stroke: #76bf8a;
-		stroke-width: 3px;
+@mixin mobile {
+	@media screen and (max-width:560px) {
+		@content;
 	}
 }
+
+@mixin pad {
+	@media screen and (max-width:1370px) {
+		@content;
+	}
+}
+
+@mixin pc_min {
+	@media screen and (max-width:1527px) {
+		@content;
+	}
+}
+
+@mixin pc {
+	@media screen and (min-width:1527px) {
+		@content;
+	}
+}
+
+
+
+
+html body #app {
+	height: auto;
+
+	@include mobile {
+		body {
+			img {
+				transition: all .2s ease-in-out;
+			}
+
+			img:active {
+				transition: all .4s ease;
+				-webkit-transform: scale(1.15);
+				transform: scale(1.15);
+			}
+		}
+	}
+}
+
+nav {
+	background-color: #4be6fe;
+	font-weight: 600;
+
+	@include mobile {
+
+		background-color: #71edff;
+		font-weight: 600;
+
+	}
+}
+
+
+
 
 .main_box {
 	background-image: url("../img/1.jpg");
@@ -23,7 +69,24 @@ svg {
 	position: absolute;
 	width: 100%;
 
+
+	@include pad {
+		margin: 0
+	}
+
+	@include mobile {
+		padding: 10px 10px 50px;
+		position: relative;
+		background-color: #71edff;
+		background-image: none;
+	}
+
 }
+
+
+
+
+
 
 h1 {
 	font-size: 50px;
@@ -34,6 +97,7 @@ h1 {
 
 
 .location_show {
+	display: flex;
 	overflow: hidden;
 	position: relative;
 	color: rgb(255, 255, 255);
@@ -46,70 +110,115 @@ h1 {
 
 
 
-.half_show_button {
-	color: #fff;
-	font-size: 2rem;
-	height: 100%;
-	width: 100%;
-	display: block;
-}
 
-#mobile {
-	display: none;
-}
 
 .other_box {
-	color: rgb(255, 255, 255);
-	background: #2c2c2c;
+	color: #fff;
+	background: #2a2a2ac4;
 	border-radius: 15px;
 	margin: 10px 0px 10px 10px;
 	min-height: 720px;
 	padding: 10px 50px;
 	font-size: 1.5em;
+	font-weight: 600;
 	line-height: 4rem;
 	flex: 1;
 
 	p {
 		margin-bottom: 0;
 	}
+
+
+	@include mobile {
+		padding: 0;
+		padding: 5px 10px;
+		background: #fff;
+		color: #2c2c2c;
+		margin: 0;
+
+		span {
+			color: #2c2c2c;
+		}
+
+		.flex_box_2_item_1 {
+			color: #2c2c2c;
+		}
+	}
 }
 
 .other_box_title {
 	text-align: center;
+
+
+	@include mobile {
+		p {
+			font-size: 2rem;
+			margin-top: 50px;
+			font-weight: 600;
+		}
+	}
 }
 
 
 //
 
+//按鈕圖示
 #city_button {
 	display: inline;
 
 	a {
 		margin: 5px 5px;
-		background-color: rgb(88, 88, 88);
+		background-color: #38383863;
 		border-style: none;
+		font-weight: 600;
 		font-size: 1.5rem;
+
+		@include mobile {
+			background-color: #ffda6d;
+		}
 	}
 }
 
-.info_box {
-	width: 100%;
-	position: relative;
+#pin_icon {
+
+	float: right;
+	height: 72px;
+	position: absolute;
+	right: 0;
+}
+
+#local_icon {
+	width: 70px;
+}
+
+//按鈕圖示
 
 
+.hr {
+	border-bottom: 1px solid rgb(26, 26, 26);
+	padding-top: 15px;
+	margin-bottom: 15px;
 }
 
 
 
-/* 地區選單列表 */
+
+/* 標題縣市名選單列表 */
 
 
 .title_box_title {
-	background: rgba(82, 82, 82, 0.835);
+	background: #48494b7d;
+	color: #ffffff;
 	font-size: 3rem;
 	border-radius: 15px;
 	flex: 1;
 	cursor: pointer;
+
+	@include mobile {
+		padding-right: 50px;
+		background: #fff;
+		color: rgb(156, 156, 156);
+	}
 }
 
 .info_box_title_box {
@@ -125,20 +234,22 @@ h1 {
 	max-height: 70px;
 	align-items: center;
 
-
-	a {
-		display: block;
-		color: #fff;
+	span {
+		color: #ffffff;
+		font-weight: 600;
 	}
 
 	.h4 {
 		margin-bottom: 0;
-		background: rgba(82, 82, 82, 0.835);
+		color: #fff;
+		background: #48494b7d;
 		max-width: 200px;
 		margin-right: 10px;
 		border-radius: 15px;
+		display: block;
 		cursor: pointer;
 	}
+
 
 	.hover:hover {
 		img {
@@ -157,16 +268,44 @@ h1 {
 		padding-right: 20px;
 	}
 
+	@include mobile {
+		.h4 {
+			background: #fff;
+			color: #2c2c2c;
+		}
+
+		span {
+			display: none;
+
+		}
+	}
+
 }
 
 
+//鄉鎮選單
+.dist_list {
 
-//FLEX
+	@include mobile {
+		margin-top: 15px;
+		height: 140px;
+		overflow: scroll;
+		overflow-y: auto;
+		overflow-x: auto;
+		display: flex;
+	}
+}
+
+//鄉鎮選單
+
+
+//FLEX box
 
 .flex_box1 {
 	display: flex;
 	align-items: stretch;
 }
+
 
 .now_weather_flex_box_child:hover {
 	img {
@@ -174,21 +313,16 @@ h1 {
 		-webkit-transform: scale(1.15);
 		transform: scale(1.15);
 	}
-
-
-
 }
-
-
 
 .now_weather_flex_box_child {
 
-	width: 50%;
+	width: auto;
 	height: calc(50% - 20px);
 	overflow: hidden;
 	position: relative;
-	color: rgb(255, 255, 255);
-	background: rgba(82, 82, 82, 0.835);
+	color: #fff;
+	background: #2a2a2ac4;
 	border-radius: 15px;
 	text-align: center;
 	margin: 10px 0px 10px;
@@ -213,18 +347,37 @@ h1 {
 		padding-bottom: 20px;
 		font-weight: bolder;
 	}
+
+	@include pad {
+		width: 50%;
+		margin: 10px;
+
+		.WD {
+			font-size: 2rem;
+			padding-bottom: 10px;
+		}
+
+		.temp {
+			font-size: 2rem;
+			padding-bottom: 10px;
+		}
+	}
+
+	@include mobile {
+		height: auto;
+		background: #fff;
+		font-weight: 600;
+		color: #2c2c2c;
+		margin: 15px 10px 15px;
+	}
 }
 
-.flex_box1_child {
-	width: 300px;
-	display: flex;
-}
 
 .flex_box_2 {
 	display: flex;
 	text-align: center;
 	flex-wrap: wrap;
-	color: #ccc;
+	color: #d6d6d6;
 
 	p {
 		width: 100%;
@@ -273,48 +426,75 @@ h1 {
 
 
 
-
 .info_box {
+
 	position: absolute;
 	width: 900px;
-
 
 	#list_now_container {
 		padding: 0;
 		max-width: none;
 	}
+
+	@include pad {
+		width: 100%;
+		position: relative;
+
+	}
+
+	@include mobile {
+		width: 100%;
+		position: relative;
+	}
+
+
 }
+
+
 
 
 /* 天氣列表 */
 .now_weather_box1 {
-	display: block;
+	display: flex;
+
+	@include pad {
+		display: block;
+	}
 }
 
 .now_weather_flex_box {
-	display: flex;
+
 	align-content: flex-start;
-	width: 100%;
+
+	width: 300px;
+	display: block;
+
+	@include pad {
+		width: 100%;
+		display: flex;
+	}
 
 }
 
-/* 手機縣市列表  */
+/* 縣市下拉列表  */
 .citys_list_title {
-	font-size: 2rem;
+	font-size: 1.5rem;
+	padding: 20px;
+	width: 20%;
+	display: inline-block;
 	background: rgba(26, 25, 25, 0.63);
 }
 
 .citys_list {
-	display: flex;
+
 	list-style: none;
 	width: 100%;
-	align-items: flex-start;
-	-webkit-flex-flow: row wrap;
-	justify-content: space-around;
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
+	overflow: scroll;
+	overflow-y: auto;
+	overflow-x: auto;
+	display: flex;
+
+
 }
 
 .citys_list_child {
@@ -333,85 +513,9 @@ h1 {
 /* RDW START */
 
 
-@media screen and (max-width: 560px) {
-
-	.title_box_title {
-		padding-right: 50px;
-	}
-
-	.info_box_title_box span {
-		display: none;
-	}
-
-	.main_box {
-		padding: 10px 10px 50px;
-		position: relative;
-
-	}
-
-	.info_box {
-		width: 100%;
-	}
-
-	.hr {
-		border-bottom: 1px solid rgb(26, 26, 26);
-		padding-top: 30px;
-		margin-bottom: 50px;
-	}
-
-	.other_box {
-		padding: 0;
-	}
-
-	.now_weather_flex_box_child {
-		height: auto;
-	}
-
-	.other_box {
-		padding: 5px 10px;
-	}
-
-	.other_box_title p {
-		font-size: 2rem;
-		margin-top: 50px;
-		font-weight: 600;
-	}
-
-	#title_box span {
-		display: none;
-	}
-
-
-}
-
 @media screen and (max-width: 1370px) {
-	.left_child {
-		margin-right: 10px;
-	}
-
-	.other_box {
-		margin: 0
-	}
-
-	.now_weather_flex_box_child {
-
-		.WD {
-			font-size: 1.5rem;
-			padding-bottom: 10px;
-		}
-
-		.temp {
-			font-size: 1.5rem;
-			padding-bottom: 10px;
-		}
-	}
 
 
-
-	.info_box {
-		width: 100%;
-		position: relative;
-	}
 
 	.flex_box_2_item_1 {
 		flex: 1;
@@ -427,45 +531,14 @@ h1 {
 		font-size: 1.2rem;
 	}
 
-	#mobile {
-		display: flex;
-	}
+
 
 }
 
 @media screen and (min-width: 1370px) {
 
-	.info_box {
-		width: 700px;
-	}
-
-
-	.now_weather_flex_box_child {
-		width: auto;
-	}
-
 
 	/* 天氣列表 */
-
-	.now_weather_box1 {
-		display: flex;
-	}
-
-	.now_weather_flex_box {
-		width: 200px;
-		display: block;
-	}
-
-	/* 天氣列表 */
-
-
-}
-
-@media screen and (min-width: 1527px) {
-
-	.info_box {
-		width: 900px;
-	}
 
 
 
@@ -474,29 +547,8 @@ h1 {
 	/* 天氣列表 */
 
 
-	.now_weather_flex_box {
-		width: 300px;
-	}
-
-	/* 天氣列表 */
-
 }
 
-
-/* icon */
-#local_icon {
-	width: 70px;
-}
-
-
-
-#pin_icon {
-
-	float: right;
-	height: 72px;
-	position: absolute;
-	right: 0;
-}
 
 //動畫
 

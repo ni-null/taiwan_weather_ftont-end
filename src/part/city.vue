@@ -6,6 +6,8 @@
       <!--  手機縣市列表 -->
 
       <div class="city_box">
+
+
         <div class="other_box city_box_item">
           <div class="other_box_title" v-for="(item, index) in city_weather" :key="item.id">
             <p v-if="item.show_day">
@@ -40,10 +42,14 @@
             <div class="hr" v-if="(item.time_2 == '晚上') & (index != 6)"></div>
           </div>
         </div>
+
         <div class="city_box_item">
           <city_chart v-if="city_weather" :city_weather="city_weather"></city_chart>
         </div>
+
       </div>
+
+
     </div>
   </div>
 </template>

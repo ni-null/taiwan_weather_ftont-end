@@ -5,12 +5,12 @@
 
 
 
-      <account_register v-if="show!='login'"></account_register>
-
-      <account_login v-if="show=='login'" @child_show="child_show"></account_login>
 
 
-
+      <transition name="fade_long" mode="out-in">
+        <account_register v-if="show!='login'" @child_show="child_show"></account_register>
+        <account_login v-if="show=='login'" @child_show="child_show"></account_login>
+      </transition>
 
     </div>
 
@@ -22,7 +22,7 @@
     data() {
       return {
         show: 'login',
-        login_check: null
+        login_check_result: null
 
       }
     },
@@ -30,6 +30,25 @@
     methods: {
 
 
+      //登入驗證
+      login_check: function () {
+
+        this.axios.post(this.api_url + "/account/login_check")
+          .then((response) => {
+
+
+            if (response["data"] != 'error') {
+              this.login_check_result = response["data"]
+              this.$router.push({
+                path: '/account/user'
+              })
+            } else {
+
+            }
+            //if
+
+          });
+      },
       child_show: function (value) {
         this.show = value
         console.log(value)
@@ -39,7 +58,7 @@
     inject: ["api_url"],
     mounted() {
 
-      this.after_login()
+      this.login_check()
 
     },
 

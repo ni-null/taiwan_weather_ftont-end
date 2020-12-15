@@ -1,10 +1,12 @@
 //css
 import Vue from "vue";
 
-import BootstrapVue from 'bootstrap-vue'
-Vue.use(BootstrapVue)
+/* import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue) */
 
 import "./css/all.scss";
+
+import "./css/normal.scss";
 
 
 
@@ -82,8 +84,8 @@ const vm = new Vue({
 		navbar
 	},
 	provide: {
-		//	api_url: 'https://weather-api.ninull.com'
-		api_url: 'http://127.0.0.1:5000'
+		api_url: 'https://weather-api.ninull.com'
+		//	api_url: 'http://127.0.0.1:5000'
 	},
 	router
 });

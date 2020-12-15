@@ -1,6 +1,3 @@
-@import "node_modules/bootstrap/scss/bootstrap.scss";
-@import "node_modules/bootstrap-vue/src/index.scss";
-
 @mixin mobile {
 	@media screen and (max-width:560px) {
 		@content;
@@ -30,19 +27,26 @@
 
 html body #app {
 	height: auto;
+	font-family: Microsoft JhengHei;
+	margin: 0;
+	padding: 0;
+	display: contents;
+
+
 
 	@include mobile {
-		body {
-			img {
-				transition: all .2s ease-in-out;
-			}
+		padding: 10px;
 
-			img:active {
-				transition: all .4s ease;
-				-webkit-transform: scale(1.15);
-				transform: scale(1.15);
-			}
+		img {
+			transition: all .2s ease-in-out;
 		}
+
+		img:active {
+			transition: all .4s ease;
+			-webkit-transform: scale(1.15);
+			transform: scale(1.15);
+		}
+
 	}
 }
 
@@ -65,17 +69,18 @@ nav {
 	background-image: url("../img/1.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
-	padding: 20px 10px 100px 10px;
-	position: absolute;
 	width: 100%;
-
+	height: 100%;
+	padding: 10px;
 
 	@include pad {
-		margin: 0
+		margin: 0;
+		width: auto;
+		height: 100%;
+		position: relative;
 	}
 
 	@include mobile {
-		padding: 10px 10px 50px;
 		position: relative;
 		background-color: #71edff;
 		background-image: none;
@@ -116,9 +121,9 @@ h1 {
 	color: #fff;
 	background: #2a2a2ac4;
 	border-radius: 15px;
-	margin: 10px 0px 10px 10px;
 	min-height: 720px;
 	padding: 10px 50px;
+	margin: 10px;
 	font-size: 1.5em;
 	font-weight: 600;
 	line-height: 4rem;
@@ -128,13 +133,16 @@ h1 {
 		margin-bottom: 0;
 	}
 
+	@include pad {
+		margin: 0px;
+	}
+
 
 	@include mobile {
 		padding: 0;
-		padding: 5px 10px;
+		padding: 10px;
 		background: #fff;
 		color: #2c2c2c;
-		margin: 0;
 
 		span {
 			color: #2c2c2c;
@@ -165,16 +173,25 @@ h1 {
 //按鈕圖示
 #city_button {
 	display: inline;
+	text-align: center;
+
 
 	a {
-		margin: 5px 5px;
 		background-color: #38383863;
 		border-style: none;
 		font-weight: 600;
 		font-size: 1.5rem;
+		padding: 20px;
+		margin: 10px;
+		color: white;
+		border-radius: 8px;
+
+		display: inline-block;
+
 
 		@include mobile {
 			background-color: #ffda6d;
+			padding: 20px 10px;
 		}
 	}
 }
@@ -209,15 +226,23 @@ h1 {
 .title_box_title {
 	background: #48494b7d;
 	color: #ffffff;
-	font-size: 3rem;
 	border-radius: 15px;
 	flex: 1;
+	height: 72px;
 	cursor: pointer;
+
 
 	@include mobile {
 		padding-right: 50px;
 		background: #fff;
 		color: rgb(156, 156, 156);
+	}
+
+	h2 {
+		display: inline-block;
+		font-size: 50px;
+		padding: 10px;
+		height: 70px;
 	}
 }
 
@@ -237,6 +262,7 @@ h1 {
 	span {
 		color: #ffffff;
 		font-weight: 600;
+		font-size: 1.5rem;
 	}
 
 	.h4 {
@@ -246,8 +272,11 @@ h1 {
 		max-width: 200px;
 		margin-right: 10px;
 		border-radius: 15px;
-		display: block;
+		display: flex;
 		cursor: pointer;
+		justify-content: center;
+		align-items: center;
+
 	}
 
 
@@ -286,15 +315,33 @@ h1 {
 //鄉鎮選單
 .dist_list {
 
+	margin-top: 20px;
+
+
 	@include mobile {
 		margin-top: 15px;
 		height: 140px;
 		overflow: scroll;
+
 		overflow-y: auto;
 		overflow-x: auto;
 		display: flex;
 	}
 }
+
+
+.dist_list::-webkit-scrollbar-track {
+	border: 1px solid rgb(255, 255, 255);
+	padding: 2px 0;
+	background-color: #ffffff;
+}
+
+.dist_list::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #26bad1;
+	border: 1px solid #26bad1;
+}
+
 
 //鄉鎮選單
 
@@ -350,7 +397,7 @@ h1 {
 
 	@include pad {
 		width: 50%;
-		margin: 10px;
+
 
 		.WD {
 			font-size: 2rem;
@@ -368,10 +415,25 @@ h1 {
 		background: #fff;
 		font-weight: 600;
 		color: #2c2c2c;
-		margin: 15px 10px 15px;
+
 	}
 }
 
+
+.now_weather_flex_box_child_line {
+	display: none;
+
+	@include pad {
+		width: 10px;
+		display: block;
+	}
+
+	@include mobile {
+		width: 10px;
+		display: block;
+
+	}
+}
 
 .flex_box_2 {
 	display: flex;
@@ -465,9 +527,9 @@ h1 {
 .now_weather_flex_box {
 
 	align-content: flex-start;
-
 	width: 300px;
 	display: block;
+
 
 	@include pad {
 		width: 100%;
@@ -483,6 +545,7 @@ h1 {
 	width: 20%;
 	display: inline-block;
 	background: rgba(26, 25, 25, 0.63);
+	cursor: pointer;
 }
 
 .citys_list {
@@ -510,6 +573,51 @@ h1 {
 
 
 
+
+/* 圖表 */
+
+.chart_body {
+	margin: 10px;
+
+	@include mobile {
+		margin: 30px 0px 00px 0px;
+	}
+
+}
+
+.chart_box {
+	margin: 5px 30px 50px 10px;
+	background: #000000b0;
+	padding: 20px;
+	border-radius: 20px;
+	text-align: center;
+
+	.chart_box_title {
+		font-size: 2rem;
+		color: white;
+
+		@include mobile {
+			margin-bottom: 20px;
+		}
+	}
+
+	@include pad {
+		margin: 5px 0px 20px 0px;
+	}
+
+	@include mobile {
+		margin: 0px 0px 20px 0px;
+	}
+
+}
+
+#myChart,
+#myChart2 {
+	max-height: 400px;
+
+}
+
+/* 圖表 */
 /* RDW START */
 
 
@@ -560,4 +668,16 @@ h1 {
 .fade-enter,
 .fade-leave-to {
 	opacity: 0;
+}
+
+
+.fade_long-enter-active,
+.fade_long.leave.active {
+	transition: ease 2s;
+}
+
+.fade_long-enter,
+.fade_long-leave-to {
+	opacity: 0;
+
 }

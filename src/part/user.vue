@@ -5,7 +5,7 @@
 
 
       <p>
-        登入狀態 {{login_check}}
+        登入狀態 {{login_check_result}}
       </p>
 
 
@@ -21,7 +21,7 @@
     data() {
       return {
         show: 'login',
-        login_check: null
+        login_check_result: null
 
       }
     },
@@ -29,17 +29,15 @@
     methods: {
 
 
-      //登入
-      after_login: function () {
+      //登入驗證
+      login_check: function () {
 
           this.axios.post(this.api_url + "/account/login_check")
             .then((response) => {
 
 
               if (response["data"] != 'error') {
-                this.login_check = response["data"]
-
-                console.log(this.login_check + 'cxc')
+                this.login_check_result = response["data"]
               } else {
                 this.$router.push({
                   path: '/account/'
@@ -48,12 +46,6 @@
               //if
 
             });
-
-
-
-          console.log(this.login_check)
-          console.log('132')
-
         }
 
         ,
@@ -64,7 +56,7 @@
           this.axios.delete(this.api_url + "/account/login")
             .then((response) => {
               console.log('登出')
-              this.login_check = '尚未登入'
+              this.login_check_result = '尚未登入'
 
             });
 
@@ -84,9 +76,21 @@
     inject: ["api_url"],
     mounted() {
 
-      this.after_login()
+      this.login_check()
 
       //如果沒登入轉跳回登入頁面
+
+
+
+
+      this.axios.put(this.api_url + "/account/user/sub", {
+
+
+      }).then((response) => {
+
+
+      });
+
 
 
     },

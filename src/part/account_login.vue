@@ -80,9 +80,6 @@
 
           else {
 
-
-            this.$emit('after_login', 'success')
-
             //登入成功後轉跳
 
             this.$router.push({

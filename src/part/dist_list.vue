@@ -9,7 +9,7 @@
       </router-link>
 
       <div class="title_box_title" @click="switch_dist_list">
-        {{ list_now_title }}
+        <h2>{{ list_now_title }} </h2>
         <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
       </div>
     </div>

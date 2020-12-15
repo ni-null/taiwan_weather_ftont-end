@@ -7,7 +7,8 @@
       </div>
 
       <div class="title_box_title" @click="switch_list()">
-        {{ list_now_title }}
+
+        <h2>{{ list_now_title }} </h2>
 
         <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
       </div>
@@ -40,7 +41,7 @@
     <transition name="fade">
       <div class="dist_list" v-if="show_dist_list">
         <div v-for="item,index in dist_list" :key="item.index" id="city_button">
-          <router-link :to="{ path:  '/weather/'+route_city+'/' + item}" class="btn btn-primary">
+          <router-link :to="{ path:  '/weather/'+route_city+'/' + item}">
             {{ item}}
           </router-link>
         </div>

@@ -1,12 +1,17 @@
 <template>
-  <div class="chart_box">
-    <div class="rain_title">降雨機率</div>
-    <canvas ref="myChart2" id="myChart2" height="400"></canvas>
-    <div class="chart_buttom"></div>
-    <p></p>
-    <div class="temp_title">溫度變化</div>
-    <canvas ref="myChart" id="myChart" height="400"></canvas>
-    <div class="chart_buttom"></div>
+  <div>
+    <div class="chart_body">
+      <div class="chart_box">
+        <div class="chart_box_title">降雨機率</div>
+        <canvas ref="myChart2" id="myChart2" height="400"></canvas>
+        <div class="chart_buttom"></div>
+      </div>
+      <div class="chart_box">
+        <div class="chart_box_title">溫度變化</div>
+        <canvas ref="myChart" id="myChart" height="400"></canvas>
+        <div class="chart_buttom"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -295,51 +300,15 @@
 </script>
 
 <style lang="scss" scoped>
-  .chart_box {
-    margin: 5px 10px;
-  }
-
-  #myChart,
-  #myChart2 {
-    max-height: 400px;
-    background: #000000b0;
-    padding: 0px 10px;
-  }
-
-  .rain_title {
-    font-size: 2rem;
-    text-align: center;
-    padding: 30px;
-    color: #fff;
-    background: #000000b0;
-    border-radius: 30px 30px 0px 0px;
-  }
-
-  .temp_title {
-    font-size: 2rem;
-    text-align: center;
-    color: #fff;
-    padding: 30px;
-    background: #000000b0;
-    border-radius: 30px 30px 0px 0px;
-  }
-
-  .chart_buttom {
-    height: 50px;
-    background: #000000b0;
-    border-radius: 0px 0px 30px 30px;
-  }
-
-  @media screen and (max-width: 560px) {
-
-    .city_box_item {
-      margin-top: 20px;
+  @mixin mobile {
+    @media screen and (max-width:560px) {
+      @content;
     }
+  }
 
-    .chart_box {
-      margin: 0;
-      margin-top: 20px
+  @mixin pad {
+    @media screen and (max-width:1370px) {
+      @content;
     }
-
   }
 </style>

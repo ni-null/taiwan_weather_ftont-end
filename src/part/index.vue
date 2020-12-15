@@ -5,15 +5,15 @@
         <!--  標題/縣市列表 -->
 
         <div class="info_box_title_box">
-          <div class="h4 hover">
-            <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
+          <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
+            <div class="h4 hover">
               <img id="local_icon" :src="require('../img/svg/more.svg')" />
               <span>詳細天氣</span>
-            </router-link>
-          </div>
-
+            </div>
+          </router-link>
           <div class="title_box_title" @click="switch_list()">
-            {{ list_now.cityname }}
+
+            <h2>{{ list_now.cityname }} </h2>
 
             <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
           </div>
@@ -49,6 +49,7 @@
                 " />
               <div class="WD">{{ list_now.WD }}</div>
             </div>
+            <span class="now_weather_flex_box_child_line"> </span>
             <!--  溫度 -->
             <div class="now_weather_flex_box_child">
               <img :src="require('../img/svg/temp_now.svg')" />
@@ -303,6 +304,45 @@
 </script>
 
 <style lang="scss">
+  @mixin mobile {
+    @media screen and (max-width:560px) {
+      @content;
+    }
+  }
+
+  @mixin pad {
+    @media screen and (max-width:1370px) {
+      @content;
+    }
+  }
+
+
+
+  .main_box {
+    background-image: url("../img/1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    height: 1000px;
+    padding: 10px;
+
+    @include pad {
+      margin: 0;
+      width: auto;
+      height: 100%;
+      position: relative;
+    }
+
+    @include mobile {
+      position: relative;
+      background-color: #71edff;
+      background-image: none;
+    }
+
+  }
+
   /* D3 地圖 */
   svg {
     width: auto;

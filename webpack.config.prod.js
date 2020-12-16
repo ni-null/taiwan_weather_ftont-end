@@ -57,13 +57,16 @@ module.exports = {
 		splitChunks: {
 			chunks: "all",
 			maxInitialRequests: Infinity,
-			minSize: 30000,
+			minSize: 3000,
 			name: 'other',
 			cacheGroups: {
 				styles: {
 					name: 'styles',
-					test: /\.css$/,
-					chunks: 'all'
+					test: /\.s?css$/,
+					chunks: 'all',
+					minChunks: 1,
+					reuseExistingChunk: true,
+					enforce: true,
 				},
 				comm: {
 					test: /[\\/]node_modules[\\/]/,
@@ -83,7 +86,7 @@ module.exports = {
 				vue: {
 					test: /[\\/]node_modules[\\/](axios).*|(vue).*|(vue-router).*[\\/]/,
 					name: "vue",
-					priority: 10
+					priority: 5
 				}
 
 				,

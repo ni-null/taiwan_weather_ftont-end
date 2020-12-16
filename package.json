@@ -18,6 +18,7 @@
     "chart.js": "^2.9.4",
     "d3": "^4.13.0",
     "html-webpack-plugin": "^4.5.0",
+    "mitt": "^2.1.0",
     "svg-url-loader": "^7.1.1",
     "vue": "^2.6.12",
     "vue-axios": "^3.2.0",

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <navbar></navbar>
     <div class="main_box">
       <city_list></city_list>
 
@@ -8,7 +9,7 @@
       <div class="city_box">
 
 
-        <div class="other_box city_box_item">
+        <div class="other_box city_box_item city_other_box ">
           <div class="other_box_title" v-for="(item, index) in city_weather" :key="item.id">
             <p v-if="item.show_day">
 
@@ -55,8 +56,8 @@
 </template>
 
 <script>
-  import city_list from "./city_list.vue";
-  import city_chart from "./city_chart.vue";
+  import "../css/city.scss";
+
 
   export default {
     data() {
@@ -71,8 +72,11 @@
     inject: ["api_url"],
 
     components: {
-      city_list,
-      city_chart,
+
+      city_list: () => import( /* webpackPreload: true */ /* webpackChunkName: 'city' */ './city_list.vue'),
+      city_chart: () => import( /* webpackPreload: true */ /* webpackChunkName: 'city' */ './city_chart.vue'),
+      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue')
+
     },
     methods: {
       switch_list: function () {
@@ -139,37 +143,4 @@
 </script>
 
 <style lang="scss" scoped>
-  .city_box {
-    display: flex;
-    margin-top: 20px;
-
-    .city_box_item {
-      flex: 2;
-    }
-  }
-
-  .other_box {
-    max-width: 800px;
-  }
-
-  .other_box_title p {
-    font-size: 2rem;
-    margin-top: 50px;
-  }
-
-  .hr {
-    border-bottom: 1px solid #1a1a1a;
-    padding-top: 10px;
-    margin-bottom: 30px;
-  }
-
-  @media screen and (max-width: 1100px) {
-    .other_box {
-      max-width: none;
-    }
-
-    .city_box {
-      flex-direction: column;
-    }
-  }
 </style>

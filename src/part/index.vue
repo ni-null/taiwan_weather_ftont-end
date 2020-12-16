@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="main_box">
-      <div class="info_box">
+    <navbar></navbar>
+    <div class="index">
+      <div class="info_box index_child">
         <!--  標題/縣市列表 -->
 
         <div class="info_box_title_box">
@@ -87,7 +88,7 @@
                 </div>
               </div>
 
-              <div class="hr" v-if="(item.time_2 == '晚上') & (index != 6)"></div>
+              <div class="hr" v-if="(item.time_2 == '晚上') & (index != 5)"></div>
             </div>
           </div>
         </div>
@@ -95,10 +96,12 @@
       </div>
 
       <!--  D3 -->
-      <svg id="tw_box" viewBox="0 0 370 500">
-        <g class="counties"></g>
-        <path class="county-borders"></path>
-      </svg>
+      <div class="index_child">
+        <svg id="tw_box" viewBox="0 0 370 500">
+          <g class="counties"></g>
+          <path class="county-borders"></path>
+        </svg>
+      </div>
       <!--  D3 -->
     </div>
   </div>
@@ -106,6 +109,7 @@
 
 <script>
   import * as d3 from "d3";
+  import "../css/index.scss";
 
   export default {
     data() {
@@ -262,10 +266,12 @@
 
       //從資料取得選取地區天氣
       function full_weather(COUNTYNAME) {
-        const full_weather = taiwan_weatger.filter(
+        let full_weather = taiwan_weatger.filter(
           (x) => x.cityname === COUNTYNAME
         );
 
+        full_weather.splice(6, 1)
+        console.log(full_weather)
 
 
         //添加判斷顯示
@@ -283,7 +289,7 @@
 
         } else if (full_weather[0].time_1 == full_weather[1].time_1) {
 
-          full_weather[0].show_day = full_weather[2].show_day = full_weather[4].show_day = full_weather[6].show_day =
+          full_weather[0].show_day = full_weather[2].show_day = full_weather[4].show_day =
             true;
           console.log('2')
 
@@ -300,102 +306,18 @@
 
       }
     },
+
+    components: {
+
+      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue')
+
+
+    }
+
+
   };
 </script>
 
 <style lang="scss">
-  @mixin mobile {
-    @media screen and (max-width:560px) {
-      @content;
-    }
-  }
 
-  @mixin pad {
-    @media screen and (max-width:1370px) {
-      @content;
-    }
-  }
-
-
-
-  .main_box {
-    background-image: url("../img/1.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    height: 1000px;
-    padding: 10px;
-
-    @include pad {
-      margin: 0;
-      width: auto;
-      height: 100%;
-      position: relative;
-    }
-
-    @include mobile {
-      position: relative;
-      background-color: #71edff;
-      background-image: none;
-    }
-
-  }
-
-  /* D3 地圖 */
-  svg {
-    width: auto;
-    max-width: 600px;
-
-    path {
-      fill: #7fe4ff;
-      stroke: white;
-      stroke-width: 1.5;
-      cursor: pointer;
-    }
-
-    path.active {
-      fill: pink;
-      transform: translateY(-5px);
-      transition: all 0.5s ease;
-    }
-
-    text {
-      fill: rgb(0, 0, 0);
-      font-size: 0.8rem;
-      font-weight: bold;
-      -webkit-user-select: none;
-      cursor: pointer;
-    }
-  }
-
-  #tw_box {
-    float: right;
-  }
-
-  #taiwan_box {
-    text-align: right;
-    right: 100px;
-    font-size: 1.5em;
-    padding: 25px;
-  }
-
-  @media screen and (min-width: 1800px) {
-
-    /* D3 */
-    svg {
-      margin-right: 200px;
-    }
-
-    /* D3 */
-  }
-
-  @media screen and (max-width: 1370px) {
-    /*  SVG */
-
-    #tw_box {
-      display: none;
-    }
-  }
 </style>

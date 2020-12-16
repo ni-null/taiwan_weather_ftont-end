@@ -300,15 +300,4 @@
 </script>
 
 <style lang="scss" scoped>
-  @mixin mobile {
-    @media screen and (max-width:560px) {
-      @content;
-    }
-  }
-
-  @mixin pad {
-    @media screen and (max-width:1370px) {
-      @content;
-    }
-  }
 </style>

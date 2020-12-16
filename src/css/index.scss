@@ -1,0 +1,123 @@
+@mixin mobile {
+    @media screen and (max-width:560px) {
+        @content;
+    }
+}
+
+@mixin pad {
+    @media screen and (max-width:1370px) {
+        @content;
+    }
+}
+
+@mixin pc_min {
+    @media screen and (max-width:1527px) {
+        @content;
+    }
+}
+
+@mixin pc {
+    @media screen and (max-width:1750px) {
+        @content;
+    }
+}
+
+
+
+
+.index {
+
+    background-image: url("../img/1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    height: 900px;
+
+    @include pad {
+        display: block;
+        margin: 0;
+        width: auto;
+        height: 100%;
+        position: relative;
+    }
+
+    @include mobile {
+        position: relative;
+        background-color: #71edff;
+        background-image: none;
+    }
+
+}
+
+.index_child {
+    flex: 2;
+}
+
+/* D3 地圖 */
+svg {
+    width: auto;
+    max-width: 600px;
+    margin-right: 200px;
+
+    @include pc {
+        margin-right: 50px;
+    }
+
+
+    path {
+        fill: #7fe4ff;
+        stroke: white;
+        stroke-width: 1.5;
+        cursor: pointer;
+    }
+
+    path.active {
+        fill: pink;
+        transform: translateY(-5px);
+        transition: all 0.5s ease;
+    }
+
+    text {
+        fill: rgb(0, 0, 0);
+        font-size: 0.8rem;
+        font-weight: bold;
+        -webkit-user-select: none;
+        cursor: pointer;
+    }
+}
+
+#tw_box {
+    float: right;
+
+    @include pc_min {
+
+        display: none;
+    }
+}
+
+#taiwan_box {
+    text-align: right;
+    right: 100px;
+    font-size: 1.5em;
+    padding: 25px;
+}
+
+@media screen and (min-width: 1800px) {
+
+    /* D3 */
+    svg {
+        margin-right: 200px;
+    }
+
+    /* D3 */
+}
+
+@media screen and (max-width: 1370px) {
+    /*  SVG */
+
+    #tw_box {
+        display: none;
+    }
+}

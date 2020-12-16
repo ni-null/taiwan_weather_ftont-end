@@ -1,5 +1,6 @@
 <template>
   <div>
+    <navbar></navbar>
     <div class="main_box">
       <dist_list :city_data="city_data" v-if="city_data"></dist_list>
 
@@ -50,6 +51,7 @@
 <script>
   import dist_list from "./dist_list.vue";
   import dist_chart from "./dist_chart.vue";
+  import '../css/dist.scss'
 
   export default {
     data() {
@@ -64,8 +66,9 @@
     inject: ["api_url"],
 
     components: {
-      dist_list,
-      dist_chart,
+      dist_list: () => import( /* webpackPreload: true */ /* webpackChunkName: 'dist' */ './dist_list.vue'),
+      dist_chart: () => import( /* webpackPreload: true */ /* webpackChunkName: 'dist' */ './dist_chart.vue'),
+      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue')
     },
     methods: {
       switch_list: function () {
@@ -128,37 +131,5 @@
 </script>
 
 <style lang="scss" scoped>
-  .city_box {
-    display: flex;
-    margin-top: 20px;
 
-    .city_box_item {
-      flex: 2;
-    }
-  }
-
-  .other_box {
-    max-width: 800px;
-  }
-
-  .other_box_title p {
-    font-size: 2rem;
-    margin-top: 50px;
-  }
-
-  .hr {
-    border-bottom: 1px solid #1a1a1a;
-    padding-top: 10px;
-    margin-bottom: 30px;
-  }
-
-  @media screen and (max-width: 1100px) {
-    .other_box {
-      max-width: none;
-    }
-
-    .city_box {
-      flex-direction: column;
-    }
-  }
 </style>

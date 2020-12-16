@@ -1,17 +1,12 @@
 //css
 import Vue from "vue";
 
-/* import BootstrapVue from 'bootstrap-vue'
-Vue.use(BootstrapVue) */
 
 import "./css/all.scss";
 
 import "./css/normal.scss";
 
 
-
-//part
-const navbar = () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './part/navbar.vue')
 
 //axios
 import axios from 'axios'
@@ -33,7 +28,9 @@ Vue.axios.defaults.adapter = cache.adapter
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-
+//VueCookies
+import VueCookies from "vue-cookies";
+Vue.use(VueCookies);
 
 const router = new VueRouter({
 
@@ -80,12 +77,42 @@ const vm = new Vue({
 	data: {
 
 	},
+	methods: {
+		//登入驗證
+		login_check: function () {
+
+			this.axios.post(this.api_url + "/account/login_check")
+				.then((response) => {
+
+
+					if (response["data"] != 'error') {
+						this.login_check_result = response["data"]
+					} else {
+						this.$router.push({
+							path: '/account/'
+						})
+					}
+					//if
+
+				});
+		}
+
+	}
+	,
+	mounted() {
+
+	}
+	,
 	components: {
-		navbar
 	},
 	provide: {
-		api_url: 'https://weather-api.ninull.com'
-		//	api_url: 'http://127.0.0.1:5000'
+		//	api_url: 'https://weather-api.ninull.com'
+		api_url: 'http://127.0.0.1:5000'
 	},
+	created() {
+
+
+	},
+
 	router
 });

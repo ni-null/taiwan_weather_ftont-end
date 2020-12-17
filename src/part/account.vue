@@ -30,27 +30,26 @@
 
 
       //登入驗證
-      login_check: function () {
+      login_check: async function () {
 
+        const response = await this.axios.get(this.api_url + "/account/login", {
+          cache: false
+        })
 
-        this.axios.get(this.api_url + "/account/login", {
-            cache: false
+        //成功
+        if (response["data"] != 'error') {
+          this.login_check_result = response["data"]
+          this.$cookies.set('user', this.login_check_result) //return this
+          this.$router.push({
+            path: '/account/user'
           })
-          .then((response) => {
+        }
+        //失敗
+        else {
+          this.$cookies.remove('user')
+        }
 
-            //this.$cookies.remove('user')
-            if (response["data"] != 'error') {
-              this.login_check_result = response["data"]
-              this.$cookies.set('user', this.login_check_result) //return this
-              this.$router.push({
-                path: '/account/user'
-              })
-            } else {
-              this.$cookies.remove('user')
-            }
-            //if
 
-          });
       },
       child_show: function (value) {
         this.show = value
@@ -75,8 +74,3 @@
     }
   };
 </script>
-
-
-<style lang="scss" scoped>
-
-</style>

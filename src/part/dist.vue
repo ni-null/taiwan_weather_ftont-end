@@ -74,29 +74,7 @@
       switch_list: function () {
         this.show_list = !this.show_list;
       },
-    },
-    provide() {
-      return {
-        city_data: this.city_data,
-      };
-    },
-    mounted() {
-      const route_dist = this.$route.params.dist;
-      const route_city = this.$route.params.city;
-
-      this.axios.get(this.api_url + "/city/" + route_city).then((response) => {
-        //組件傳遞的資料
-        this.city_data = response["data"];
-
-        //天氣篩選
-        this.dist_weathers = response["data"].filter(function (item) {
-          return item.cityname == route_dist;
-        });
-
-        this.dist_weathers.splice(7, 8);
-
-        //添加判斷顯示
-
+      show_day: function () {
         if (this.dist_weathers[1].time_1 == this.dist_weathers[2].time_1) {
 
 
@@ -124,12 +102,36 @@
             true;
 
         }
+      }
+    },
+    provide() {
+      return {
+        city_data: this.city_data,
+      };
+    },
+    mounted() {
+      const route_dist = this.$route.params.dist;
+      const route_city = this.$route.params.city;
 
-      });
+
+      (async () => {
+
+        const response = await this.axios.get(this.api_url + "/city/" + route_city)
+
+        //組件傳遞的資料
+        this.city_data = response["data"];
+
+        //天氣篩選
+        this.dist_weathers = response["data"].filter(function (item) {
+          return item.cityname == route_dist;
+        });
+
+        this.dist_weathers.splice(7, 8);
+
+        //添加判斷顯示
+        this.show_day()
+      })()
+
     },
   };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -78,8 +78,6 @@
       //透過路由獲取地名
       this.list_now_title = route_dist;
 
-      //獲取資料
-
       //鄉鎮列表處理
       this.dist_list = Object.keys(groupByKey(this.city_data, "cityname"));
       this.dist_list.forEach((e, i) => {
@@ -101,7 +99,3 @@
     }, {});
   }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

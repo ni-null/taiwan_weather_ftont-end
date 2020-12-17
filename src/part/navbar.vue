@@ -63,56 +63,40 @@
 
         }
 
-        //檢查訂閱合法性
 
       },
-      send: function (sub_data) {
+      send: async function (sub_data) {
 
         //發送訂閱
-        this.axios.put(this.api_url + "/account/user/sub", {
-            sub_data: sub_data,
-          })
-          .then((response) => {
+        const response = await this.axios.put(this.api_url + "/account/user/sub", {
+          sub_data: sub_data,
+        })
 
-              console.log(response["data"])
-              if (response["data"] == "login_fail") {
-                $cookies.remove('user')
-                this.login_user = null,
-                  this.$router.push({
-                    path: '/account/'
-                  })
-              }
+        if (response["data"] == "login_fail") {
+          $cookies.remove('user')
+          this.login_user = null,
+            this.$router.push({
+              path: '/account/'
+            })
+        }
 
-            }
 
-          )
       }
     },
     mounted() {
 
-      //
 
 
+      //馬上寫入防止用戶修改網址
       this.route_dist = this.$route.params.dist;
       this.route_city = this.$route.params.city;
 
       if (this.$router.currentRoute.fullPath.split("/")[1] == "weather") this.sub_show = true
 
-
       //判斷cookie使否有使用者
       if ($cookies.get('user')) this.login_user = $cookies.get('user').split(":")[1]
-
-
-
-
-    },
-    created() {
 
 
     }
   };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

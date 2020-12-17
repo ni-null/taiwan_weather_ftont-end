@@ -62,8 +62,6 @@
   export default {
     data() {
       return {
-        axios_city_weather: null,
-        list_now_title: null,
         city_weather: null,
         child_dist: null,
         show_list: false,
@@ -82,31 +80,10 @@
       switch_list: function () {
         this.show_list = !this.show_list;
       },
-    },
-
-
-    mounted() {
-      const route_dist = this.$route.params.dist;
-      const route_city = this.$route.params.city;
-
-      this.axios.get(this.api_url + "/city/taiwan").then((response) => {
-
-        //原始資料
-        this.axios_city_weather = response["data"]
-
-        //資料處理
-        this.city_weather = response["data"].filter(
-          (x) => x.cityname_eng === route_city
-        );
-
-
-
-        console.log(this.city_weather)
-
+      show_day: function () {
 
 
         if (this.city_weather[1].time_1 == this.city_weather[2].time_1) {
-
 
 
           if (this.city_weather[0].time_1 != this.city_weather[1].time_1) {
@@ -134,13 +111,29 @@
 
         }
 
+      }
+    },
 
-        this.list_now_title = this.city_weather[0].cityname;
 
-      });
+    mounted() {
+
+      const route_city = this.$route.params.city;
+
+      //獲取資料
+      (async () => {
+        const response = await this.axios.get(this.api_url + "/city/taiwan")
+
+        //資料處理，獲取該縣市天區
+        this.city_weather = response["data"].filter(
+          (x) => x.cityname_eng === route_city
+        );
+
+        //添加show_day
+        this.show_day()
+
+      })()
+
+
     },
   };
 </script>
-
-<style lang="scss" scoped>
-</style>

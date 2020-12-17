@@ -27,61 +27,45 @@
     methods: {
 
       //獲取定用
-      get_sub: function () {
+      get_sub: async function () {
 
-          this.axios.get(this.api_url + "/account/user/sub", {
-              cache: false
-            })
-            .then((response) => {
+          const response = await this.axios.get(this.api_url + "/account/user/sub", {
+            cache: false
+          })
 
-                if (response["data"] == "login_fail") {
-                  console.log('訂閱獲取失敗')
-                  $cookies.remove('user')
-                } else {
-                  console.log('獲取成功')
+          if (response["data"] == "login_fail") {
+            console.log('訂閱獲取失敗')
+            $cookies.remove('user')
+          } else {
+            console.log('獲取成功')
 
-                  let data = []
+            let data = []
 
-                  response["data"].forEach(e => {
-                    data.push(e.sub)
-                  });
+            response["data"].forEach(e => {
+              data.push(e.sub)
+            });
 
-                  this.user_subs = data
+            this.user_subs = data
 
-                  console.log(data)
+            console.log(data)
 
 
-                }
+          }
 
-              }
-
-            )
         }
 
         ,
 
-      delete_sub: function (item) {
-
-        console.log(item)
+      delete_sub: async function (item) {
 
 
-        this.axios.delete(this.api_url + "/account/user/sub",
-
-          {
-            data: {
-              sub: item
-            }
+        const response = await
+        this.axios.delete(this.api_url + "/account/user/sub", {
+          data: {
+            sub: item
           }
-        ).then((response) => {
-
-            console.log(response["data"])
-
-            this.get_sub()
-
-          }
-
-        )
-
+        })
+        this.get_sub()
 
       }
 
@@ -92,29 +76,10 @@
     inject: ["api_url"],
     mounted() {
 
-
       this.get_sub()
 
     },
 
-    created() {
 
-
-
-
-    },
-
-    components: {
-
-
-
-    }
   };
 </script>
-
-
-<style lang="scss" scoped>
-
-</style>
-
-</style>

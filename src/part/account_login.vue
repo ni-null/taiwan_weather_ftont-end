@@ -64,28 +64,25 @@
 
     methods: {
 
-      send_login: function () {
+      send_login: async function () {
 
 
 
-        this.axios.post(this.api_url + "/account/login", {
+        const response = await this.axios.post(this.api_url + "/account/login", {
           user_name: this.user_name,
           user_passowrd: this.user_passowrd
-        }).then((response) => {
+        })
 
 
-          if (response["data"] == "login_fail")
-            this.login_check = "登入失敗"
-          else {
-            $cookies.set('user', this.user_name)
-            //登入成功後轉跳
-            this.$router.push({
-              path: '/account/user/'
-            })
+        if (response["data"] == "login_fail")
+          this.login_check = "登入失敗"
+        else {
+          $cookies.set('user', this.user_name)
+          this.$router.push({
+            path: '/account/user/'
+          })
+        }
 
-          }
-
-        });
       },
       switch_register: function () {
 
@@ -104,7 +101,3 @@
     },
   };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

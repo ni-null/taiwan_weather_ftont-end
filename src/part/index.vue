@@ -114,7 +114,7 @@
   export default {
     data() {
       return {
-        taiwan_weatger: null,
+        taiwan_weather: null,
         list_now: {
           WD_code: "14",
         },
@@ -151,7 +151,7 @@
       },
       //顯示切換 - 鄉鎮列表
       switch_now: function (data) {
-        const now_weather = this.taiwan_weatger.filter(
+        const now_weather = this.taiwan_weather.filter(
           (x) => x.cityname === data
         );
 
@@ -160,23 +160,7 @@
         this.list_now = now_weather[0];
         this.show_list = !this.show_list;
       },
-    },
-    mounted() {
-      //地區列表
-      const citys_list = require("../json/citys_list.json");
-      this.citys_list = citys_list[0];
-      let taiwan_weatger;
-
-      this.axios.get(this.api_url + "/city/taiwan").then((response) => {
-        taiwan_weatger = response["data"];
-        this.taiwan_weatger = response["data"];
-        this.list_now = now_weather("臺北市");
-        this.list_full = full_weather("臺北市");
-      });
-      //寫入預設天氣
-
-      if (window.innerWidth < 1370) return;
-      else {
+      creat_D3_map: function () {
         //D3繪製地圖
         const projection = d3
           .geoMercator()
@@ -212,8 +196,8 @@
             d3.select(this).attr("class", "none");
           })
           .on("click", (i) => {
-            this.list_now = now_weather(i.properties["COUNTYNAME"]);
-            this.list_full = full_weather(i.properties["COUNTYNAME"]);
+
+            this.list_full = this.full_weather(i.properties["COUNTYNAME"]);
           });
 
         //標籤
@@ -246,32 +230,19 @@
             );
           })
           .on("click", (i) => {
-            this.list_now = now_weather(i.properties["COUNTYNAME"]);
-            this.list_full = full_weather(i.properties["COUNTYNAME"]);
+
+            this.list_full = this.full_weather(i.properties["COUNTYNAME"]);
           });
-      }
 
-      () => console.log(this.taiwan_weatger);
+      },
 
-      //從資料取得選取地區天氣
-      function now_weather(COUNTYNAME) {
-        const now_weather = taiwan_weatger.filter(
-          (x) => x.cityname === COUNTYNAME
-        );
+      full_weather: function (COUNTYNAME) {
 
-        if (parseInt(now_weather[0].WD_code) > 18) now_weather[0].WD_code = "04";
-
-        return now_weather[0];
-      }
-
-      //從資料取得選取地區天氣
-      function full_weather(COUNTYNAME) {
-        let full_weather = taiwan_weatger.filter(
+        let full_weather = this.taiwan_weather.filter(
           (x) => x.cityname === COUNTYNAME
         );
 
         full_weather.splice(6, 1)
-        console.log(full_weather)
 
 
         //添加判斷顯示
@@ -279,7 +250,8 @@
         if (full_weather[1].time_1 == full_weather[2].time_1) {
 
           if (full_weather[0].time_1 != full_weather[1].time_1) {
-            full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = full_weather[5].show_day =
+            full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = full_weather[5]
+              .show_day =
               true;
 
           } else {
@@ -294,17 +266,47 @@
           console.log('2')
 
         } else {
-          full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = full_weather[5].show_day =
+          full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = full_weather[5]
+            .show_day =
             true;
           console.log('3')
         }
 
-        console.log(full_weather)
+        full_weather.forEach(e => {
+          if (parseInt(e.WD_code) > 18) e.WD_code = "04";
+        });
+
+        //現在天氣
+        this.list_now = full_weather[0]
 
         //添加判斷顯示
         return full_weather;
 
       }
+
+    },
+    mounted() {
+      //地區列表
+      const citys_list = require("../json/citys_list.json");
+      this.citys_list = citys_list[0];
+      let taiwan_weather;
+
+      //獲取資料
+      (async () => {
+        const response = await this.axios.get(this.api_url + "/city/taiwan")
+        taiwan_weather = response["data"];
+        this.taiwan_weather = response["data"];
+        this.list_full = this.full_weather("臺北市");
+      })()
+
+
+      //判斷寬度顯示繪製地圖
+      if (window.innerWidth < 1370) return;
+      else {
+        this.creat_D3_map()
+      }
+
+
     },
 
     components: {
@@ -317,7 +319,3 @@
 
   };
 </script>
-
-<style lang="scss">
-
-</style>

@@ -31,42 +31,40 @@
 
     methods: {
 
-      login_check: function () {
+      login_check: async function () {
 
-        this.axios.get(this.api_url + "/account/login")
-          .then((response) => {
 
-            //this.$cookies.remove('user')
-            if (response["data"] != 'error') {
-              this.login_check_result = response["data"]
-              $cookies.set('user', this.login_check_result) //return this
-            } else {
-
-              this.$router.push({
-                path: '/account/'
-              })
-            }
+        const response = await this.axios.get(this.api_url + "/account/login")
 
 
 
+        //this.$cookies.remove('user')
+        if (response["data"] != 'error') {
+          this.login_check_result = response["data"].split(":")[1]
+          this.$cookies.set('user', this.login_check_result) //return this
+        } else {
+          this.$cookies.remove('user')
+          this.$router.push({
+            path: '/account/'
           })
+        }
+
       },
 
       //登出
-      delete_login: function () {
+      delete_login: async function () {
+        const response = await
 
         this.axios.delete(this.api_url + "/account/login")
-          .then((response) => {
-              console.log('登出')
-              this.login_check_result = '尚未登入'
-              $cookies.remove('user')
-              //登出後返回
-              this.$router.push({
-                path: '/account/'
-              })
-            }
 
-          )
+        console.log('登出')
+        this.login_check_result = '尚未登入'
+        $cookies.remove('user')
+        //登出後返回
+        this.$router.push({
+          path: '/account/'
+        })
+
 
 
       }
@@ -77,16 +75,8 @@
 
       this.login_check()
 
-
-
     },
 
-    created() {
-
-
-
-
-    },
 
     components: {
 
@@ -97,8 +87,3 @@
     }
   }
 </script>
-
-
-<style lang="scss" scoped>
-
-</style>

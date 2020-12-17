@@ -81,7 +81,7 @@
     },
     methods: {
 
-      send_reg: function () {
+      send_reg: async function () {
 
         const re = /^[\d|a-zA-Z]+$/
 
@@ -92,16 +92,18 @@
         else if (this.user_passowrd == this.user_passowrd_check)
 
         {
-          this.axios.post(this.api_url + "/account/register", {
+
+          const response = await this.axios.post(this.api_url + "/account/register", {
             user_name: this.user_name,
             user_passowrd: this.user_passowrd
-          }).then((response) => {
-            this.account_check = response["data"]
-          });
+          })
+
+          this.account_check = response["data"]
+
 
         } else {
 
-          this.account_check = "資料輸入錯誤"
+          this.account_check = "兩次密碼不一致"
         }
 
 
@@ -118,15 +120,6 @@
     inject: ["api_url"],
     mounted() {
 
-
-
-
-
     },
   };
 </script>
-<style lang="scss" scoped>
-
-
-
-</style>

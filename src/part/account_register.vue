@@ -1,55 +1,51 @@
 <template>
-  <div>
+  <div class="account_info_box">
 
 
 
-    <div class="reg">
-
-      <div class="reg_title"> 註冊帳號 </div>
+    <div class="account_info_title"> 註冊帳號 </div>
 
 
-      <div class="reg_box">
+    <div class="account_main_box">
 
-        <div class="reg_account_box">
-          <span> <img :src="require('../img/svg/account.svg')" />
-          </span>
-          <input type="text" v-model="user_name" placeholder="Account">
-
-        </div>
-
-
-        <div class="reg_password_box">
-          <span> <img :src="require('../img/svg/lock.svg')" />
-          </span>
-          <input type="text" v-model="user_passowrd" placeholder="Password">
-        </div>
-
-        <div class="reg_password_box">
-          <span> <img :src="require('../img/svg/lock.svg')" />
-          </span>
-          <input type="text" v-model="user_passowrd_check" placeholder="Password_Check">
-        </div>
-        <div class="account_check">
-          {{account_check}}
-        </div>
-        <div>
-          <input class="reg_input_button" type="button" value="註冊" @click="send_reg">
-        </div>
-
-        <div class=" switch_register" @click="switch_login">
-
-          已經有帳號 ? 立即登入!
-
-        </div>
+      <div class="account_type_box">
+        <span> <img :src="require('../img/svg/account.svg')" />
+        </span>
+        <input type="text" v-model="user_name" placeholder="Account">
 
       </div>
 
 
+      <div class="account_type_box">
+        <span> <img :src="require('../img/svg/lock.svg')" />
+        </span>
+        <input type="text" v-model="user_passowrd" placeholder="Password">
+      </div>
 
+      <div class="account_type_box">
+        <span> <img :src="require('../img/svg/lock.svg')" />
+        </span>
+        <input type="text" v-model="user_passowrd_check" placeholder="Password_Check">
+      </div>
+      <div class="account_check">
+        {{account_check}}
+      </div>
+      <div>
+        <input class="account_input_button" type="button" value="註冊" @click="send_reg">
+      </div>
 
+      <div class=" switch_register" @click="switch_login">
 
+        已經有帳號 ? 立即登入!
+
+      </div>
 
     </div>
+
+
+
+
+
     <!--    
     帳號
     <input type="text" v-model="user_name">
@@ -68,6 +64,7 @@
 </template>
 
 <script>
+  import md5 from 'md5'
   export default {
     data() {
       return {
@@ -93,12 +90,22 @@
 
         {
 
+
           const response = await this.axios.post(this.api_url + "/account/register", {
             user_name: this.user_name,
-            user_passowrd: this.user_passowrd
+            user_passowrd: md5(this.user_passowrd),
+            bind_code: 'TG@' + md5(this.user_name).substr(0, 5)
+
           })
 
-          this.account_check = response["data"]
+          if (!response["data"]) {
+            this.account_check = "註冊失敗，請再試一次"
+          } else if (response["data"] == 'user_have_exist') {
+            this.account_check = "帳號已經存在，請使用其他用戶名"
+          } else {
+            this.account_check = "註冊成功"
+          }
+
 
 
         } else {

@@ -6,6 +6,7 @@
         <canvas ref="myChart2" id="myChart2" height="400"></canvas>
         <div class="chart_buttom"></div>
       </div>
+      <div class="chart_line"></div>
       <div class="chart_box">
         <div class="chart_box_title">溫度變化</div>
         <canvas ref="myChart" id="myChart" height="400"></canvas>
@@ -25,14 +26,15 @@
         mobile_day: [],
         rain: [],
         max_temp: [],
-        min_temp: [],
+        min_temp: []
       };
     },
     inject: ["api_url"],
     props: {
-      city_weather: null
+      city_weather: Array,
     },
-    mounted() {
+    async mounted() {
+
 
 
       //監聽螢幕寬度
@@ -298,6 +300,3 @@
     },
   };
 </script>
-
-<style lang="scss" scoped>
-</style>

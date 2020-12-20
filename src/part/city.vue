@@ -56,9 +56,6 @@
 </template>
 
 <script>
-  import "../css/city.scss";
-
-
   export default {
     data() {
       return {
@@ -115,24 +112,21 @@
     },
 
 
-    mounted() {
+    async mounted() {
 
       const route_city = this.$route.params.city;
 
       //獲取資料
-      (async () => {
-        const response = await this.axios.get(this.api_url + "/city/taiwan")
 
-        //資料處理，獲取該縣市天區
-        this.city_weather = response["data"].filter(
-          (x) => x.cityname_eng === route_city
-        );
+      const response = await this.axios.get(this.api_url + "/city/taiwan")
 
-        //添加show_day
-        this.show_day()
+      //資料處理，獲取該縣市天區
+      this.city_weather = response["data"].filter(
+        (x) => x.cityname_eng === route_city
+      );
 
-      })()
-
+      //添加show_day
+      this.show_day()
 
     },
   };

@@ -1,14 +1,18 @@
 <template>
   <div>
     <nav>
-      <router-link :to="{ path: '/'}">
-        <span> Ninull天氣預報 </span>
-      </router-link>
-      登入訊息: {{this.login_user}}
-      <input v-if="sub_show" @click="sub_button" type="button" value="訂閱">
-      <router-link :to="{ path: '/account/user'}">
-        <span> 用戶中心 </span>
-      </router-link>
+      <div class="nav_box ">
+        <div class="website_title_box">
+          <router-link :to="{ path: '/'}">
+            <h1> Ninull天氣預報 </h1>
+          </router-link>
+        </div>
+
+
+        <router-link :to="{ path: '/account/user'}">
+          <span> 用戶中心 </span>
+        </router-link>
+      </div>
     </nav>
   </div>
 </template>
@@ -30,58 +34,14 @@
         login_user: null,
         login_check_result: null,
         //訂閱
-        show_sub_button: null
+        show_sub_button: null,
+
       };
     },
     inject: ["api_url"],
     methods: {
 
-      sub_button: function () {
 
-
-        const city = this.route_city
-        const dist = this.route_dist
-
-        //檢查訂閱合法性
-        if (this.$router.currentRoute.fullPath.split("/")[1] != "weather") return
-
-
-        if (city !== null && dist == undefined) {
-          for (let i = 0; i < dist_json.length; i++) {
-            if (dist_json[i].eng == city) {
-              this.send(city)
-              return
-            }
-          }
-        } else {
-          for (let i = 0; i < dist_json.length; i++) {
-            if (dist_json[i].eng == city) {
-              this.send(city + '/' + dist)
-              return
-            }
-          }
-
-        }
-
-
-      },
-      send: async function (sub_data) {
-
-        //發送訂閱
-        const response = await this.axios.put(this.api_url + "/account/user/sub", {
-          sub_data: sub_data,
-        })
-
-        if (response["data"] == "login_fail") {
-          $cookies.remove('user')
-          this.login_user = null,
-            this.$router.push({
-              path: '/account/'
-            })
-        }
-
-
-      }
     },
     mounted() {
 

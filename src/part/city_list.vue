@@ -6,11 +6,17 @@
         <span>鄉鎮天氣</span>
       </div>
 
-      <div class="title_box_title" @click="switch_list()">
+      <div class="title_box_title">
 
-        <h2>{{ list_now_title }} </h2>
+        <h2 @click="switch_list()">{{ list_now_title }} </h2>
 
-        <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
+        <div @click="sub_button" class="sub_button">
+          <div class="sub_text"> {{check_sub_stats_text}}</div>
+          <img v-show="check_sub_stats" :src="require('../img/svg/favorite.svg')" />
+          <img v-show="!check_sub_stats" :src="require('../img/svg/un_favorite.svg')" />
+        </div>
+
+
       </div>
     </div>
 
@@ -40,7 +46,7 @@
     <!--  鄉鎮列表 -->
     <transition name="fade">
       <div class="dist_list" v-if="show_dist_list">
-        <div v-for="item,index in dist_list" :key="item.index" id="city_button">
+        <div v-for="item in dist_list" :key="item" id="city_button">
           <router-link :to="{ path:  '/weather/'+route_city+'/' + item}">
             {{ item}}
           </router-link>
@@ -48,6 +54,8 @@
       </div>
     </transition>
     <!--  鄉鎮列表 -->
+
+
   </div>
 </template>
 
@@ -67,7 +75,6 @@
         dist_list: null,
         citys_list: [],
 
-
         //列表切換
         show_dist_child: {
           0: false,
@@ -78,6 +85,8 @@
         },
         show_list: false,
         show_dist_list: true,
+        check_sub_stats: false,
+        check_sub_stats_text: "未訂閱"
       };
     },
     inject: ["api_url"],
@@ -110,10 +119,84 @@
       switch_router: function (city_eng) {
         this.$router.push("/weather/" + city_eng);
       },
+
+
+      //訂閱按鈕 檢查合法性
+      sub_button: function () {
+
+
+        const city = this.route_city
+
+        //檢查城市是否存在及當前訂閱狀態
+        for (let i = 0; i < dist_json.length; i++) {
+          if (dist_json[i].eng == city) {
+            if (this.check_sub_stats) this.delete_sub(city)
+            if (!this.check_sub_stats) this.send_sub(city)
+            return
+          }
+        }
+
+      },
+      //發送訂閱 發送訂閱
+      send_sub: async function (sub_data) {
+
+
+        const response = await this.axios.put(this.api_url + "/account/user/sub", {
+          sub_data: sub_data,
+        })
+
+        if (response["data"] == "login_fail") {
+          $cookies.remove('user')
+          this.login_user = null,
+            this.$router.push({
+              path: '/account/'
+            })
+        } else {
+          this.get_sub()
+        }
+
+
+      },
+      //獲取訂閱內容
+      get_sub: async function () {
+
+        const response = await this.axios.get(this.api_url + "/account/user/sub")
+
+        if (response["data"] == "login_fail") {
+          $cookies.remove('user')
+        } else {
+          this.check_sub_stats = false
+          this.check_sub_stats_text = "未訂閱"
+          response["data"].forEach(e => {
+            if (this.route_city == e.sub) {
+              this.check_sub_stats = true
+              this.check_sub_stats_text = "已訂閱"
+            }
+          });
+
+
+        }
+
+      },
+      //刪除訂閱
+      delete_sub: async function (sub_data) {
+
+
+        const response = await
+        this.axios.delete(this.api_url + "/account/user/sub", {
+          data: {
+            sub: sub_data
+          }
+        })
+        this.get_sub()
+
+      }
     },
 
     mounted() {
-      this.$forceUpdate();
+
+      this.get_sub()
+      // this.$forceUpdate();
 
       this.route_city = this.$route.params.city;
 
@@ -132,6 +215,3 @@
     },
   };
 </script>
-
-<style lang="scss" scoped>
-</style>

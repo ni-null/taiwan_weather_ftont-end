@@ -8,9 +8,15 @@
         </div>
       </router-link>
 
-      <div class="title_box_title" @click="switch_dist_list">
-        <h2>{{ list_now_title }} </h2>
-        <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
+      <div class="title_box_title">
+        <h2 @click="switch_dist_list">{{ list_now_title }} </h2>
+
+        <div @click="sub_button" class="sub_button">
+          <div class="sub_text"> {{check_sub_stats_text}}</div>
+          <img v-show="check_sub_stats" :src="require('../img/svg/favorite.svg')" />
+          <img v-show="!check_sub_stats" :src="require('../img/svg/un_favorite.svg')" />
+        </div>
+
       </div>
     </div>
 
@@ -33,6 +39,9 @@
 </template>
 
 <script>
+  const citys_json = require("../json/citys_list.json");
+  const dist_json = require("../json/dist_list.json");
+
   export default {
     data() {
       return {
@@ -40,16 +49,26 @@
         list_now_title: null,
 
         //地區列表
-        dist_list: null,
+        dist_list: [],
 
         show_list: false,
         show_dist_list: true,
+
+
+        //路由
+        route_dist: null,
+        route_city: null,
+
+
+        //訂閱
+        check_sub_stats: false,
+        check_sub_stats_text: "未訂閱"
+
       };
     },
     inject: ["api_url"],
     props: {
-      city_data: null,
-      required: true,
+      dist_weathers: Object
     },
 
     methods: {
@@ -69,33 +88,134 @@
         this.show_dist_list = !this.show_dist_list;
         if (this.show_dist_list) this.show_list = false;
       },
+
+
+
+      //訂閱按鈕 檢查合法性
+      sub_button: function () {
+
+
+        const city = this.route_city
+        const dist = this.route_dist
+
+
+        //檢查城市和鄉鎮是否存在及當前訂閱狀態
+        for (let i = 0; i < dist_json.length; i++) {
+          if (dist_json[i].eng == city) {
+
+
+
+
+            for (let i = 0; i < dist_json.length; i++) {
+              if (dist_json[i].eng == city) {
+
+
+
+
+                for (let a = 0; a < dist_json[i].dist.length; a++) {
+                  if (dist_json[i].dist[a] == dist) {
+                    if (this.check_sub_stats) this.delete_sub(city + "/" + dist)
+                    if (!this.check_sub_stats) this.send_sub(city + "/" + dist)
+                    return
+                  }
+
+                }
+
+
+              }
+            }
+
+
+
+          }
+        }
+
+      },
+      //發送訂閱 發送訂閱
+      send_sub: async function (sub_data) {
+
+
+        const response = await this.axios.put(this.api_url + "/account/user/sub", {
+          sub_data: sub_data,
+        })
+
+        if (response["data"] == "login_fail") {
+          $cookies.remove('user')
+          this.login_user = null,
+            this.$router.push({
+              path: '/account/'
+            })
+        } else {
+          this.get_sub()
+        }
+
+
+      },
+      //獲取訂閱內容
+      get_sub: async function () {
+
+        const response = await this.axios.get(this.api_url + "/account/user/sub")
+
+        if (response["data"] == "login_fail") {
+          $cookies.remove('user')
+        } else {
+          this.check_sub_stats = false
+          this.check_sub_stats_text = "未訂閱"
+          response["data"].forEach(e => {
+            if (this.route_city + '/' + this.route_dist == e.sub) {
+              this.check_sub_stats = true
+              this.check_sub_stats_text = "已訂閱"
+            }
+          });
+
+
+        }
+
+      },
+      //刪除訂閱
+      delete_sub: async function (sub_data) {
+
+
+        const response = await
+        this.axios.delete(this.api_url + "/account/user/sub", {
+          data: {
+            sub: sub_data
+          }
+        })
+        this.get_sub()
+
+      }
     },
 
     mounted() {
-      const route_city = this.$route.params.city;
-      const route_dist = this.$route.params.dist;
 
+
+      this.route_city = this.$route.params.city;
+      this.route_dist = this.$route.params.dist;
+
+      this.get_sub()
       //透過路由獲取地名
-      this.list_now_title = route_dist;
+      this.list_now_title = this.route_dist;
 
-      //鄉鎮列表處理
-      this.dist_list = Object.keys(groupByKey(this.city_data, "cityname"));
-      this.dist_list.forEach((e, i) => {
-        this.dist_list[i] = {
-          city: route_city,
-          dist: e,
-        };
-      });
+
+
+
+
+      for (let i = 0; i < dist_json.length; i++) {
+
+
+
+        if (dist_json[i].eng == this.route_city) {
+          dist_json[i].dist.forEach(e => {
+            this.dist_list.push({
+              city: this.route_city,
+              dist: e,
+            })
+          });
+        }
+      }
+
+
     },
   };
-
-  //鄉鎮列表處理
-  function groupByKey(array, key) {
-    return array.reduce((hash, obj) => {
-      if (obj[key] === undefined) return hash;
-      return Object.assign(hash, {
-        [obj[key]]: (hash[obj[key]] || []).concat(obj),
-      });
-    }, {});
-  }
 </script>

@@ -4,12 +4,13 @@
     <navbar></navbar>
     <div class="main_box">
 
+      <div class="account_box">
+        <transition name=" fade_long" mode="out-in">
+          <account_register v-if="show!='login'" @child_show="child_show"></account_register>
+          <account_login v-if="show=='login'" @child_show="child_show"></account_login>
+        </transition>
+      </div>
 
-      <transition name="fade_long" mode="out-in">
-        <account_register v-if="show!='login'" @child_show="child_show"></account_register>
-        <account_login v-if="show=='login'" @child_show="child_show"></account_login>
-      </transition>
-      132
     </div>
 
   </div>
@@ -37,7 +38,7 @@
         })
 
         //成功
-        if (response["data"] != 'error') {
+        if (response["data"]) {
           this.login_check_result = response["data"]
           this.$cookies.set('user', this.login_check_result) //return this
           this.$router.push({

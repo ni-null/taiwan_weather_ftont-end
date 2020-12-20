@@ -7,9 +7,9 @@
       <!--  手機縣市列表 -->
 
       <div class="city_box">
-        <div class="other_box city_box_item">
-          <div class="other_box_title" v-for="(item, index) in dist_weathers" :key="item.id">
-            <p v-if="item.show_day">
+        <div class="other_box city_box_item city_other_box">
+          <div v-for="(item, index) in dist_weathers" :key="item.id">
+            <p class="other_box_title" v-if="item.show_day">
               <span v-if="item.day_1 != null">
                 {{ item.day_1 }}({{ item.day_2 }})
               </span>
@@ -51,7 +51,6 @@
 <script>
   import dist_list from "./dist_list.vue";
   import dist_chart from "./dist_chart.vue";
-  import '../css/dist.scss'
 
   export default {
     data() {

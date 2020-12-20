@@ -39,7 +39,7 @@
 
 
         //this.$cookies.remove('user')
-        if (response["data"] != 'error') {
+        if (response["data"]) {
           this.login_check_result = response["data"].split(":")[1]
           this.$cookies.set('user', this.login_check_result) //return this
         } else {
@@ -53,18 +53,19 @@
 
       //登出
       delete_login: async function () {
-        const response = await
 
-        this.axios.delete(this.api_url + "/account/login")
+        const response = await this.axios.delete(this.api_url + "/account/login")
 
-        console.log('登出')
-        this.login_check_result = '尚未登入'
-        $cookies.remove('user')
-        //登出後返回
-        this.$router.push({
-          path: '/account/'
-        })
+        if (response) {
+          console.log('登出')
+          this.login_check_result = '尚未登入'
+          $cookies.remove('user')
+          //登出後返回
+          this.$router.push({
+            path: '/account/'
+          })
 
+        }
 
 
       }

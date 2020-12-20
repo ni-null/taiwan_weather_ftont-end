@@ -14,7 +14,11 @@
     setup
   } from 'axios-cache-adapter'
 
-
+  const axios_cache = setup({
+    cache: {
+      maxAge: 0
+    }
+  })
 
   export default {
     data() {
@@ -26,11 +30,11 @@
 
     methods: {
 
-      //獲取定用
+      //獲取訂閱
       get_sub: async function () {
 
-          const response = await this.axios.get(this.api_url + "/account/user/sub", {
-            cache: false
+          const response = await axios_cache.get(this.api_url + "/account/user/sub", {
+            maxAge: 0
           })
 
           if (response["data"] == "login_fail") {

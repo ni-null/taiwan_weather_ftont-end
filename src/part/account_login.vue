@@ -1,47 +1,44 @@
 <template>
-  <div>
+  <div class="account_info_box">
 
-    <div class="login">
-
-      <div class="login_title"> 登入帳號 </div>
+    <div class="account_info_title"> 登入帳號 </div>
 
 
-      <div class="login_box">
+    <div class="account_main_box">
 
-        <div class="login_account_box">
-          <span> <img :src="require('../img/svg/account.svg')" />
-          </span>
-          <input type="text" v-model="user_name" placeholder="Account">
-
-        </div>
-
-
-        <div class="login_password_box">
-          <span> <img :src="require('../img/svg/lock.svg')" />
-          </span>
-          <input type="text" v-model="user_passowrd" placeholder="Password">
-        </div>
-        <div>
-          <input class="login_input_button" type="button" value="登入" @click="send_login">
-        </div>
-
-        <div class=" switch_register" @click="switch_register">
-
-          沒有帳號 ? 立即註冊
-
-        </div>
+      <div class="account_type_box">
+        <span> <img :src="require('../img/svg/account.svg')" />
+        </span>
+        <input type="text" v-model="user_name" placeholder="Account">
 
       </div>
 
 
-
-      <div class="login_check">
-
-        {{login_check}}
+      <div class="account_type_box">
+        <span> <img :src="require('../img/svg/lock.svg')" />
+        </span>
+        <input type="text" v-model="user_passowrd" placeholder="Password">
+      </div>
+      <div>
+        <input class="account_input_button " type="button" value="登入" @click="send_login">
       </div>
 
+      <div class=" switch_register" @click="switch_register">
+
+        沒有帳號 ? 立即註冊
+
+      </div>
 
     </div>
+
+
+
+    <div class="login_check">
+      {{login_check}}
+    </div>
+
+
+  </div>
 
 
 
@@ -50,6 +47,7 @@
 </template>
 
 <script>
+  import md5 from 'md5'
   export default {
     data() {
       return {
@@ -70,11 +68,11 @@
 
         const response = await this.axios.post(this.api_url + "/account/login", {
           user_name: this.user_name,
-          user_passowrd: this.user_passowrd
+          user_passowrd: md5(this.user_passowrd)
         })
 
 
-        if (response["data"] == "login_fail")
+        if (!response["data"])
           this.login_check = "登入失敗"
         else {
           $cookies.set('user', this.user_name)

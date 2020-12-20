@@ -6,6 +6,8 @@
         <canvas ref="myChart2" id="myChart2" height="400"></canvas>
         <div class="chart_buttom"></div>
       </div>
+      <div class="chart_line"></div>
+
       <div class="chart_box">
         <div class="chart_box_title">溫度變化</div>
         <canvas ref="myChart" id="myChart" height="400"></canvas>
@@ -26,16 +28,17 @@
         rain: [],
         max_temp: [],
         min_temp: [],
+
       };
     },
     props: {
-      dist_weathers: null,
-      required: true,
+      dist_weathers: Array,
     },
 
     inject: ["api_url"],
 
-    mounted() {
+    async mounted() {
+
       //監聽螢幕寬度
 
       this.$nextTick(() => {

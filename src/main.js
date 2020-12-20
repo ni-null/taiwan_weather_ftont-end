@@ -101,13 +101,16 @@ const vm = new Vue({
 	,
 	mounted() {
 
+
 	}
 	,
 	components: {
+
+
 	},
 	provide: {
-		//	api_url: 'https://weather-api.ninull.com'
-		api_url: 'http://127.0.0.1:5000'
+		api_url: 'https://weather-api.ninull.com'
+		//	api_url: 'http://127.0.0.1:5000'
 	},
 	created() {
 

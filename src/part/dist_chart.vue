@@ -53,9 +53,8 @@
         //降雨
         this.rain.push(e.rain);
 
-        //日期
-        origin_day.push(e.time_1);
-        origin_day.push(e.time_2);
+        //桌面日期
+        origin_day.push(e.time_1, e.time_2);
         this.day.push(origin_day);
 
         //手機日期
@@ -64,11 +63,8 @@
 
         mobile_day.splice(1, 0, "/");
 
-        mobile_day.push("：");
-
         const arr_1 = e.time_2.split("");
-        mobile_day.push(arr_1[0]);
-        mobile_day.push(arr_1[1]);
+        mobile_day.push("：", arr_1[0], arr_1[1]);
 
         this.mobile_day.push(mobile_day);
 
@@ -77,8 +73,10 @@
         this.max_temp.push(split_temp[1]);
         this.min_temp.push(split_temp[0]);
       });
-      //寬度檢測
+
+      //寬度檢測，字體大小
       let scales_yAxes_fontSize = 18;
+
       if (this.window_width < 560) {
         //替換日期格式
 

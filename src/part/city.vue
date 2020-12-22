@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar></navbar>
+
     <div class="main_box">
       <city_list></city_list>
 
@@ -70,7 +70,6 @@
 
       city_list: () => import( /* webpackPreload: true */ /* webpackChunkName: 'city' */ './city_list.vue'),
       city_chart: () => import( /* webpackPreload: true */ /* webpackChunkName: 'city' */ './city_chart.vue'),
-      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue')
 
     },
     methods: {

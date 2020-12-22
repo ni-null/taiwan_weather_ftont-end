@@ -78,24 +78,6 @@ const vm = new Vue({
 
 	},
 	methods: {
-		//登入驗證
-		login_check: function () {
-
-			this.axios.post(this.api_url + "/account/login_check")
-				.then((response) => {
-
-
-					if (response["data"] != 'error') {
-						this.login_check_result = response["data"]
-					} else {
-						this.$router.push({
-							path: '/account/'
-						})
-					}
-					//if
-
-				});
-		}
 
 	}
 	,
@@ -106,11 +88,12 @@ const vm = new Vue({
 	,
 	components: {
 
+		navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './part/navbar.vue')
 
 	},
 	provide: {
-		api_url: 'https://weather-api.ninull.com'
-		//	api_url: 'http://127.0.0.1:5000'
+		//api_url: 'https://weather-api.ninull.com'
+		api_url: 'http://127.0.0.1:5000'
 	},
 	created() {
 

@@ -45,6 +45,7 @@
     @include mobile {
         background-color: #71edff;
         background-image: none;
+        padding-bottom: 50px;
 
     }
 
@@ -53,6 +54,7 @@
 .index_child {
     flex: 2;
 
+    text-align: center;
 
     @include pc_min {
         width: 100%;
@@ -65,7 +67,6 @@
 svg {
     width: auto;
     max-width: 600px;
-    margin-right: 200px;
 
     @include pc {
         margin-right: 50px;
@@ -95,11 +96,8 @@ svg {
 }
 
 #tw_box {
-    float: right;
-    margin-top: 50px;
 
     @include pc_min {
-
         display: none;
     }
 }

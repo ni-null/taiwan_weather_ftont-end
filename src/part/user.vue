@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <navbar></navbar>
+
     <div class="main_box">
 
 
@@ -80,8 +80,6 @@
 
 
     components: {
-
-      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue'),
       user_sub: () => import( /* webpackPreload: true */ /* webpackChunkName: 'user' */ './user_sub.vue')
 
 

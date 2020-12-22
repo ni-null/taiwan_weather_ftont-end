@@ -1,7 +1,8 @@
 <template>
   <div>
 
-    <navbar></navbar>
+
+
     <div class="main_box">
 
       <div class="account_box">
@@ -67,10 +68,9 @@
 
     components: {
 
-      account_register: () => import("./account_register.vue"),
-      account_login: () => import("./account_login.vue"),
-      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue'),
-
+      account_register: () => import( /* webpackPreload: true */ /* webpackChunkName: 'account' */
+        "./account_register.vue"),
+      account_login: () => import( /* webpackPreload: true */ /* webpackChunkName: 'account' */ "./account_login.vue"),
 
     }
   };

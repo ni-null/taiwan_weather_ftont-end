@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar></navbar>
+
     <div class="index">
       <div class="info_box index_child">
         <!--  標題/縣市列表 -->
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-  import * as d3 from "d3";
+  const d3 = Object.assign({}, require("d3-geo"), require("d3-selection"), )
   import "../css/index.scss";
 
   export default {
@@ -183,11 +183,15 @@
           .append("path")
           .attr("d", path)
           .attr("class", "none")
-          .attr("id", function (i) {
+          .attr("id", (i) => {
             return "block_" + i.properties["COUNTYCODE"];
           })
-          .on("mouseover", (i) => {
-            d3.selectAll("#block_" + i.properties["COUNTYCODE"]).attr(
+          .attr("name", (i) => {
+            return i.properties["COUNTYNAME"];
+          })
+          .on("mouseover", function () {
+
+            d3.select(this).attr(
               "class",
               "active"
             );
@@ -197,7 +201,8 @@
           })
           .on("click", (i) => {
 
-            this.list_full = this.full_weather(i.properties["COUNTYNAME"]);
+
+            this.list_full = this.full_weather(d3.selectAll('#' + i.currentTarget.id).attr('name'));
           });
 
         //標籤
@@ -213,25 +218,31 @@
               return path.centroid(i)[1] + i.properties["Y"];
             else return path.centroid(i)[1] + 8;
           })
+          .attr("id", (i) => {
+            return "block_" + i.properties["COUNTYCODE"];
+          })
           .text((i) => {
             return i.properties["COUNTYNAME"];
           })
           .on("mouseover", (i) => {
-            //  this.temp = ;
-            d3.selectAll("#block_" + i.properties["COUNTYCODE"]).attr(
+
+
+            d3.selectAll("#" + i.target.id).attr(
               "class",
               "active"
             );
           })
           .on("mouseleave", (i) => {
-            d3.selectAll("#block_" + i.properties["COUNTYCODE"]).attr(
+
+            d3.selectAll("#" + i.target.id).attr(
               "class",
               "none"
             );
           })
           .on("click", (i) => {
 
-            this.list_full = this.full_weather(i.properties["COUNTYNAME"]);
+
+            this.list_full = this.full_weather(i.target.innerHTML);
           });
 
       },
@@ -250,9 +261,8 @@
         if (full_weather[1].time_1 == full_weather[2].time_1) {
 
           if (full_weather[0].time_1 != full_weather[1].time_1) {
-            full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = full_weather[5]
-              .show_day =
-              true;
+            full_weather.splice(5, 1)
+            full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = true;
 
           } else {
             full_weather[0].show_day = full_weather[3].show_day = full_weather[5].show_day = true;
@@ -263,13 +273,12 @@
 
           full_weather[0].show_day = full_weather[2].show_day = full_weather[4].show_day =
             true;
-          console.log('2')
+
 
         } else {
-          full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = full_weather[5]
-            .show_day =
-            true;
-          console.log('3')
+          full_weather.splice(5, 1)
+          full_weather[0].show_day = full_weather[1].show_day = full_weather[3].show_day = true;
+
         }
 
         full_weather.forEach(e => {
@@ -285,20 +294,17 @@
       }
 
     },
-    mounted() {
+    async mounted() {
       //地區列表
       const citys_list = require("../json/citys_list.json");
       this.citys_list = citys_list[0];
       let taiwan_weather;
 
       //獲取資料
-      (async () => {
-        const response = await this.axios.get(this.api_url + "/city/taiwan")
-        taiwan_weather = response["data"];
-        this.taiwan_weather = response["data"];
-        this.list_full = this.full_weather("臺北市");
-      })()
-
+      const response = await this.axios.get(this.api_url + "/city/taiwan")
+      taiwan_weather = response["data"];
+      this.taiwan_weather = response["data"];
+      this.list_full = this.full_weather("臺北市");
 
       //判斷寬度顯示繪製地圖
       if (window.innerWidth < 1370) return;
@@ -306,12 +312,10 @@
         this.creat_D3_map()
       }
 
-
     },
 
-    components: {
 
-      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue')
+    components: {
 
 
     }

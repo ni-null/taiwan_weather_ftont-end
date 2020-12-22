@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar></navbar>
+
     <div class="main_box">
       <dist_list :city_data="city_data" v-if="city_data"></dist_list>
 
@@ -67,7 +67,6 @@
     components: {
       dist_list: () => import( /* webpackPreload: true */ /* webpackChunkName: 'dist' */ './dist_list.vue'),
       dist_chart: () => import( /* webpackPreload: true */ /* webpackChunkName: 'dist' */ './dist_chart.vue'),
-      navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './navbar.vue')
     },
     methods: {
       switch_list: function () {

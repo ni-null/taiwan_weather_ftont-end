@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require('webpack');
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -27,6 +28,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 
 module.exports = {
+	externals: ['moment'],
 
 	entry: "./src/main.js",
 	output: {
@@ -45,9 +47,10 @@ module.exports = {
 		sideEffects: false,
 		minimize: true,
 		minimizer: [
+			//壓縮
+
 			new TerserPlugin({
 				test: /\.js(\?.*)?$/i,
-				parallel: true // CPU数量 可输入 false true
 			}),
 			new CssMinimizerPlugin(
 				{ test: /\.s[ac]ss$/i }
@@ -57,14 +60,13 @@ module.exports = {
 		splitChunks: {
 			chunks: "all",
 			maxInitialRequests: Infinity,
-			minSize: 3000,
+			minSize: 300000,
 			name: 'other',
 			cacheGroups: {
 				styles: {
 					name: 'styles',
 					test: /\.s?css$/,
 					chunks: 'all',
-					minChunks: 1,
 					reuseExistingChunk: true,
 					enforce: true,
 				},
@@ -85,23 +87,18 @@ module.exports = {
 				,
 				vue: {
 					test: /[\\/]node_modules[\\/](axios).*|(vue).*|(vue-router).*[\\/]/,
+					chunks: 'initial',
 					name: "vue",
 					priority: 5
 				}
 
 				,
-				bootstarp: {
-					test: /[\\/]node_modules[\\/](bootstrap).*[\\/]/,
-					name: "bootstrap",
-					priority: 20
-				}
 
-
-				,
 				D3: {
 					test: /[\\/]node_modules[\\/](d3).*[\\/]/,
 					name: "D3",
-					priority: 40
+					priority: 40,
+					enforce: true,
 				}
 
 				,
@@ -146,8 +143,6 @@ module.exports = {
 			use: {
 				loader: "svg-url-loader",
 				options: {
-					// make all svg images to work in IE
-
 					esModule: false,
 					encoding: "base64",
 					outputPath: "assets",
@@ -196,10 +191,10 @@ module.exports = {
 
 	plugins: [
 
-
+		//打包分析
 		new BundleAnalyzerPlugin(),
-		//刪除dist資料夾
 
+		//刪除dist資料夾
 		new CleanWebpackPlugin(),
 
 
@@ -211,13 +206,15 @@ module.exports = {
 		}),
 
 
-
-
+		//vue解析
 		new VueLoaderPlugin(),
+
+		//拆分css
 		new MiniCssExtractPlugin({
 			filename: './assets/css/[name].[hash:6].css',
 		}),
 
+		//壓縮
 		new CompressionPlugin({
 			filename: "[path][base].gz",
 			algorithm: "gzip",

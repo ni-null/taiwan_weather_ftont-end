@@ -1,0 +1,416 @@
+@mixin mobile {
+    @media screen and (max-width:560px) {
+        @content;
+    }
+}
+
+
+@mixin pad_mini {
+    @media screen and (max-width:900px) {
+        @content;
+    }
+}
+
+
+@mixin pad {
+    @media screen and (max-width:1370px) {
+        @content;
+    }
+}
+
+
+
+.main_user {
+
+    min-height: 800px;
+}
+
+.user_nav {
+    display: flex;
+
+    .user_nav_item {
+        flex: 1;
+        padding: 20px 0px;
+        font-size: 2rem;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            padding: 0px 0px;
+        }
+
+        img {
+
+            height: 50px;
+
+            @include mobile {
+
+                display: block;
+            }
+        }
+
+
+        p {
+
+
+            @include mobile {
+
+                display: none;
+            }
+        }
+
+
+
+    }
+
+    .item_1 {
+        background: rgba(0, 0, 0, 0.281);
+
+    }
+
+    .item_2 {
+        background: rgba(255, 152, 152, 0.69);
+        cursor: pointer;
+    }
+
+    .item_3 {
+        background: rgba(25, 201, 255, 0.78);
+        cursor: pointer;
+    }
+}
+
+
+.user_box {
+
+
+    min-height: 550px;
+    text-align: center;
+    margin: 0 auto;
+    background: rgba(32, 32, 32, 0.7);
+    border-radius: 30px;
+    overflow: hidden;
+    max-width: 1000px;
+    padding-bottom: 20px;
+    margin-top: 50px;
+
+    @include mobile {
+
+        padding-bottom: 50px;
+    }
+
+
+
+}
+
+/* 用戶訂閱 */
+
+
+.sub_list {
+
+    -webkit-flex-flow: row wrap;
+    width: 100%;
+    display: flex;
+    padding-top: 50px;
+
+    h2 {
+        width: 100%;
+        font-size: 3rem;
+        color: #fff;
+        margin-bottom: 50px;
+
+        @include mobile {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+    }
+}
+
+.sub_item_box {
+    display: flex;
+    margin-bottom: 50px;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 20px 10px;
+    width: calc(50% - 20px);
+    justify-content: space-between;
+
+    @include pad_mini {
+        width: calc(100%);
+    }
+
+    .sub_item_text {
+
+        width: 100%;
+        font-size: 2rem;
+        margin: 15px 10px;
+        cursor: pointer;
+
+        @include mobile {
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+    }
+
+    .sub_item_button {
+        button {
+            width: 80px;
+            height: 100%;
+            border-style: none;
+            background: rgb(255, 152, 152);
+            color: #fff;
+            font-weight: 900;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                display: none;
+                height: 30px;
+
+                @include mobile {
+                    display: block;
+                }
+            }
+
+
+            p {
+
+                @include mobile {
+                    display: none;
+                }
+
+            }
+
+        }
+
+
+
+    }
+}
+
+
+/* 用戶訂閱 */
+
+
+/* user_info */
+
+.user_info_nav {
+    display: flex;
+    height: 50px;
+    color: #fff;
+
+    .user_info_nav_items {
+        flex: 1;
+        height: 100%;
+        background: #626262;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        img {
+            height: 100%;
+        }
+
+    }
+
+    .line {
+        border: 1px solid rgba(32, 32, 32, 0);
+        ;
+    }
+}
+
+
+.telegram_box h2,
+.change_password_box h2 {
+    padding-top: 50px;
+
+    font-size: 3rem;
+    color: #fff;
+    padding-bottom: 50px;
+
+    @include mobile {
+
+        font-size: 2rem;
+    }
+
+
+}
+
+.change_password_box_item_box {
+
+    max-width: 350px;
+    width: auto;
+    margin: 0 auto;
+    padding: 20px 0px 0px 0px;
+
+
+
+    .password_item {
+        display: flex;
+        justify-content: space-between;
+        color: #fff;
+        margin-bottom: 50px;
+        height: 30px;
+        align-items: center;
+        font-size: 1.2rem;
+
+        input {
+            height: 100%;
+            background: #000;
+            border-style: none;
+            border-radius: 10px;
+            padding: 5px 20px;
+            color: #ccc;
+        }
+    }
+
+
+    button {
+
+        border-style: none;
+        width: calc(100% - 40px);
+        margin: 0px 20px;
+        height: 40px;
+        background: #6eb81d;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 900;
+        font-size: 1.5rem;
+
+    }
+
+}
+
+
+
+
+
+
+//telegtam
+
+.telegram_box {
+    height: 100%;
+}
+
+
+.telegtam_item_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+
+    @include mobile {
+
+        flex-direction: column;
+        margin-top: 50px;
+
+    }
+
+    .telegram_item {
+        flex: 1;
+        color: #fff;
+        height: 200px;
+
+
+        .item_status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                height: 40px;
+                padding-right: 10px;
+            }
+
+            #update {
+
+                height: 25px;
+                padding-left: 10px;
+                cursor: pointer;
+            }
+
+        }
+
+
+        .item_user {
+
+
+            margin-top: 50px;
+
+            @include mobile {
+
+                margin-top: 30px;
+                margin-bottom: 30px;
+
+            }
+
+
+            .bind_box {
+                padding: 10px 0px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                p {
+                    background: #000;
+                    padding: 15px;
+                    border-radius: 10px 0px 0px 10px;
+
+                }
+
+
+                button {
+                    height: 46px;
+                    width: 50px;
+                    border-radius: 0px 10px 10px 0px;
+                    border-style: none;
+                    background: rgba(34, 32, 32, 0.63);
+                    cursor: pointer;
+
+                    img {
+                        height: 20px;
+
+                    }
+                }
+
+            }
+
+
+            .notice_box {
+
+                height: 50px;
+            }
+
+            .notice {
+
+                color: #fff;
+                background: #fa5959;
+                width: 100px;
+                padding: 5px;
+                margin: 0 auto;
+                margin-bottom: 20px;
+                border-radius: 10px;
+                z-index: 10;
+            }
+
+        }
+
+
+    }
+
+}
+
+.bind_status {
+
+    font-size: 2rem;
+}
+
+
+/* user_info */

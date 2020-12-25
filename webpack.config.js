@@ -10,43 +10,54 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "./bulind.js",
+		publicPath: "/"
 	},
+	devServer: {
+		contentBase: path.join(__dirname, 'dist'),
+		historyApiFallback: true,
+		compress: true,
+		host: '127.0.0.1',
+		port: 4500
+	}
+
+
+	,
 	module: {
 		rules: [{
-				test: /\.css$/i,
-				use: ["style-loader", "css-loader"],
-			},
+			test: /\.css$/i,
+			use: ["style-loader", "css-loader"],
+		},
 
-			{
-				test: /\.s[ac]ss$/i,
-				use: ["style-loader", "css-loader", "sass-loader"],
-			},
+		{
+			test: /\.s[ac]ss$/i,
+			use: ["style-loader", "css-loader", "sass-loader"],
+		},
 
-			{
-				test: /\.(jpg|png|webp|jpeg|svg)$/i,
-				use: [{
-					loader: "url-loader",
-					options: {
-						name: "[hash:7].[ext]",
-						outputPath: "assets",
-						esModule: false
-					},
-				}, ],
-			},
-			{
-				test: /\.m?js$/,
-				exclude: /(node_modules|bower_components)/,
-				use: {
-					loader: "babel-loader",
-					options: {
-						presets: ["@babel/preset-env"],
-					},
+		{
+			test: /\.(jpg|png|webp|jpeg|svg)$/i,
+			use: [{
+				loader: "url-loader",
+				options: {
+					name: "[hash:7].[ext]",
+					outputPath: "assets",
+					esModule: false
+				},
+			},],
+		},
+		{
+			test: /\.m?js$/,
+			exclude: /(node_modules|bower_components)/,
+			use: {
+				loader: "babel-loader",
+				options: {
+					presets: ["@babel/preset-env"],
 				},
 			},
-			{
-				test: /\.vue$/,
-				loader: "vue-loader",
-			},
+		},
+		{
+			test: /\.vue$/,
+			loader: "vue-loader",
+		},
 		],
 	},
 

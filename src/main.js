@@ -1,10 +1,8 @@
 //css
-import Vue from "vue";
-
-
 import "./css/all.scss";
-
 import "./css/normal.scss";
+
+import Vue from "vue";
 
 
 
@@ -19,21 +17,26 @@ import {
 const cache = setupCache({
 	maxAge: 5 * 60 * 1000
 })
-//設置axios快取時間
 axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.adapter = cache.adapter
+//設置axios快取時間
 
 //VueRouter
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
+//VueRouter
 
 //VueCookies
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
+//VueCookies
 
+
+
+//路由配置
 const router = new VueRouter({
-
+	mode: 'history',
 	routes: [
 
 

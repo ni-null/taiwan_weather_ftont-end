@@ -108,7 +108,6 @@
 </template>
 
 <script>
-  const d3 = Object.assign({}, require("d3-geo"), require("d3-selection"), )
   import "../css/index.scss";
 
   export default {
@@ -161,6 +160,8 @@
         this.show_list = !this.show_list;
       },
       creat_D3_map: function () {
+        const d3 = Object.assign({}, require("d3-geo"), require("d3-selection"), )
+
         //D3繪製地圖
         const projection = d3
           .geoMercator()
@@ -311,12 +312,6 @@
       else {
         this.creat_D3_map()
       }
-
-    },
-
-
-    components: {
-
 
     }
 

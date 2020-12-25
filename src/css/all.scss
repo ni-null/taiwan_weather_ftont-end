@@ -4,6 +4,14 @@
 	}
 }
 
+
+@mixin pad_mini {
+	@media screen and (max-width:900px) {
+		@content;
+	}
+}
+
+
 @mixin pad {
 	@media screen and (max-width:1370px) {
 		@content;
@@ -716,6 +724,15 @@ footer {
 
 
 
+
+
+
+
+
+
+
+
+
 /* 圖表 */
 
 
@@ -759,7 +776,8 @@ footer {
 
 	@include mobile {
 
-		padding: 50px 0px;
+		padding: 50px 10px;
+
 		margin: 0px 0px 20px 0px;
 
 	}
@@ -801,8 +819,7 @@ footer {
 
 //動畫
 
-.fade-enter-active,
-.fade.leave.active {
+.fade-enter-active {
 	transition: ease 1s;
 }
 
@@ -816,8 +833,8 @@ footer {
 
 
 .fade_long-enter-active,
-.fade_long.leave.active {
-	transition: ease 2s;
+.fade_long-leave-active {
+	transition: all ease 0.5s;
 }
 
 .fade_long-enter,

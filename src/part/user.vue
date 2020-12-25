@@ -2,14 +2,35 @@
   <div>
 
 
-    <div class="main_box">
+    <div class="main_box main_user">
+
+
+      <div class="user_box">
+        <div class="user_nav">
+
+          <div class="user_nav_item item_2" @click="user_sub">
+            <img :src="require('../img/svg/favorite.svg')" />
+            <p>我的訂閱</p>
+          </div>
+          <div class="user_nav_item item_3" @click="user_info">
+            <img :src="require('../img/svg/me.svg')" />
+            <p>我的帳號</p>
+          </div>
+        </div>
+
+
+        <transition name="fade">
+          <user_sub v-show="show==`user_sub`"></user_sub>
+        </transition>
+
+        <transition name="fade">
+          <user_info v-show="show==`user_info`"></user_info>
+        </transition>
 
 
 
-      <user_sub v-if="login_check_result"></user_sub>
-      <p>
-        登入狀態 {{login_check_result}}
-      </p>
+      </div>
+
 
 
       <input @click="delete_login" type="button" value="登出">
@@ -20,10 +41,12 @@
 </template>
 
 <script>
+  import('../css/user.scss')
   export default {
     data() {
       return {
-        show: 'login',
+        show: 'user_sub',
+
         login_check_result: null
 
       }
@@ -31,17 +54,19 @@
 
     methods: {
 
+      //登入檢查
       login_check: async function () {
 
 
         const response = await this.axios.get(this.api_url + "/account/login")
 
-
-
-        //this.$cookies.remove('user')
         if (response["data"]) {
+
           this.login_check_result = response["data"].split(":")[1]
           this.$cookies.set('user', this.login_check_result) //return this
+
+
+
         } else {
           this.$cookies.remove('user')
           this.$router.push({
@@ -68,6 +93,16 @@
         }
 
 
+      },
+
+      //切換訂閱
+      user_sub: function () {
+        this.show = 'user_sub'
+      },
+
+      //telegram切換
+      user_info: function () {
+        this.show = 'user_info'
       }
     },
 
@@ -80,7 +115,8 @@
 
 
     components: {
-      user_sub: () => import( /* webpackPreload: true */ /* webpackChunkName: 'user' */ './user_sub.vue')
+      user_sub: () => import( /* webpackPreload: true */ /* webpackChunkName: 'user' */ './user_sub.vue'),
+      user_info: () => import( /* webpackPreload: true */ /* webpackChunkName: 'user' */ './user_info.vue')
 
 
     }

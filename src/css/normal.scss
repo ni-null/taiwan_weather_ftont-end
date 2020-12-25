@@ -119,3 +119,11 @@ table {
 a {
     text-decoration: none;
 }
+
+
+input:focus,
+button:focus {
+    outline: none;
+    box-shadow: none;
+
+}

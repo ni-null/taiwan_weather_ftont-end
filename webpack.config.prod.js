@@ -33,7 +33,8 @@ module.exports = {
 	entry: "./src/main.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "assets/js/[name]-[hash:6].js",
+		publicPath: "/",
+		filename: "./assets/js/[name]-[hash:6].js",
 	},
 
 
@@ -79,8 +80,8 @@ module.exports = {
 
 				,
 				src: {
-					test: /[\\/]src[\\/]img[\\/]/,
-					name: "img",
+					test: /[\\/]src[\\/]img[\\/]svg[\\/]static_icon|weather_svg[\\/]/,
+					name: "weather_svg",
 					priority: 30
 				}
 
@@ -103,7 +104,7 @@ module.exports = {
 
 				,
 				chartjs: {
-					test: /[\\/]node_modules[\\/](chart.js).*[\\/]/,
+					test: /[\\/]node_modules[\\/](chart).*[\\/]/,
 					name: "Chart",
 					priority: 40
 				}

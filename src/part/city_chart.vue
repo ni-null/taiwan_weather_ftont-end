@@ -17,7 +17,8 @@
 </template>
 
 <script>
-  import Chart from "chart.js";
+  import Chart from 'chart.js';
+  import ChartDataLabels from 'chartjs-plugin-datalabels';
   export default {
     data() {
       return {
@@ -77,11 +78,16 @@
 
       //寬度檢測
       let scales_yAxes_fontSize = 18;
+      let yAxes_padding = 10
+      let datalabels_offset = 10
+
       if (this.window_width < 560) {
         //替換日期格式
         this.day = this.mobile_day;
         //圖表左方刻度
         scales_yAxes_fontSize = 0;
+        yAxes_padding = 0
+        datalabels_offset = 0
       }
 
       //自訂定提示位置
@@ -130,6 +136,20 @@
             pointHoverBorderWidth: 6,
             pointStyle: "circle",
             pointBorderColor: "rgba(0, 186, 236)",
+            datalabels: {
+
+              labels: {
+                title: {
+                  font: {
+                    weight: 'bold',
+                    size: 20
+                  },
+                  align: 'top',
+                  color: 'white',
+                  offset: datalabels_offset,
+                }
+              }
+            }
           }, ],
         },
         options: {
@@ -137,25 +157,10 @@
             titleFontSize: 30,
             bodyFontSize: 30,
             position: "custom",
-          },
-          animation: {
-            onProgress: function (tooltip) {
-              const ctx = this.chart.ctx;
-              ctx.font = "16pt Arial";
-              ctx.fillStyle = "white";
-              ctx.textAlign = "left";
-              ctx.textBaseline = "bottom";
+          }
 
-              this.data.datasets.forEach(function (dataset) {
-                dataset.data.forEach((e, i) => {
-                  for (let key in dataset._meta) {
-                    let model = dataset._meta[key].data[i]._model;
-                    ctx.fillText(dataset.data[i], model.x - 10, model.y - 5);
-                  }
-                });
-              });
-            },
-          },
+          ,
+
 
           maintainAspectRatio: false,
 
@@ -168,6 +173,7 @@
                 steps: 10,
                 stepValue: 5,
                 max: 100,
+                padding: yAxes_padding
               },
             }, ],
             xAxes: [{
@@ -178,7 +184,7 @@
                 steps: 10,
                 stepValue: 5,
                 max: 100,
-                padding: 10,
+                padding: datalabels_offset
               },
             }, ],
           },
@@ -212,6 +218,20 @@
               pointBorderWidth: 8,
               pointHoverBorderWidth: 8,
               pointBackgroundColor: "#fff",
+              datalabels: {
+                labels: {
+                  title: {
+                    font: {
+                      weight: 'bold',
+                      size: 20
+                    },
+                    align: 'top',
+                    color: 'white',
+                    offset: datalabels_offset
+                  }
+                }
+              }
+
             },
             {
               label: "最低溫",
@@ -223,38 +243,36 @@
               pointBorderWidth: 8,
               pointHoverBorderWidth: 8,
               pointBackgroundColor: "#fff",
-
-              // Changes this dataset to become a line
               type: "line",
+              datalabels: {
+                labels: {
+                  title: {
+                    font: {
+                      weight: 'bold',
+                      size: 20
+                    },
+                    align: 'top',
+                    color: 'white',
+                    offset: datalabels_offset
+                  }
+                }
+              }
+
             },
           ],
           labels: this.day,
         },
-
+        hover: {
+          animationDuration: 0
+        },
         options: {
           tooltips: {
             titleFontSize: 30,
             bodyFontSize: 30,
             position: "custom",
-          },
-          animation: {
-            onProgress: function () {
-              var ctx = this.chart.ctx;
-              ctx.font = "12pt Arial";
-              ctx.fillStyle = "white";
-              ctx.textAlign = "left";
-              ctx.textBaseline = "bottom";
 
-              this.data.datasets.forEach(function (dataset) {
-                dataset.data.forEach((e, i) => {
-                  for (let key in dataset._meta) {
-                    let model = dataset._meta[key].data[i]._model;
-                    ctx.fillText(dataset.data[i], model.x - 10, model.y - 5);
-                  }
-                });
-              });
-            },
           },
+
           responsive: true,
           maintainAspectRatio: false,
 
@@ -265,6 +283,7 @@
                 fontSize: scales_yAxes_fontSize,
                 steps: 2,
                 stepSize: 1,
+                padding: yAxes_padding
               },
             }, ],
             xAxes: [{

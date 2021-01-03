@@ -63,6 +63,7 @@ module.exports = {
 			maxInitialRequests: Infinity,
 			minSize: 300000,
 			name: 'other',
+
 			cacheGroups: {
 				styles: {
 					name: 'styles',
@@ -158,6 +159,7 @@ module.exports = {
 			}, {
 				loader: "file-loader",
 				options: {
+					esModule: false,
 					name: 'assets/img/[name].[hash:4].[ext]',
 					publicPath: '../../'
 				},

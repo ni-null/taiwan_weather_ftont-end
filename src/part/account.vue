@@ -4,14 +4,15 @@
 
 
     <div class="main_box">
+      <transition name="bob">
 
-      <div class="account_box">
-        <transition name=" fade_long" mode="out-in">
+        <div class="account_box" v-show="ani_show">
+
           <account_register v-if="show!='login'" @child_show="child_show"></account_register>
           <account_login v-if="show=='login'" @child_show="child_show"></account_login>
-        </transition>
-      </div>
 
+        </div>
+      </transition>
     </div>
 
   </div>
@@ -23,7 +24,9 @@
     data() {
       return {
         show: 'login',
-        login_check_result: null
+        login_check_result: null,
+        //特效
+        ani_show: false
 
       }
     },
@@ -41,7 +44,7 @@
         //成功
         if (response["data"]) {
           this.login_check_result = response["data"]
-          this.$cookies.set('user', this.login_check_result) //return this
+          //     this.$cookies.set('user', this.login_check_result) //return this
           this.$router.push({
             path: '/account/user'
           })
@@ -58,7 +61,7 @@
       }
     },
 
-    inject: ["api_url"],
+    inject: ["api_url", "remove_loading"],
     mounted() {
 
       this.login_check()
@@ -71,6 +74,16 @@
       account_register: () => import( /* webpackPreload: true */ /* webpackChunkName: 'account' */
         "./account_register.vue"),
       account_login: () => import( /* webpackPreload: true */ /* webpackChunkName: 'account' */ "./account_login.vue"),
+
+    }
+
+    ,
+    created() {
+
+      setInterval(() => {
+        this.ani_show = true
+      }, 0);
+      this.remove_loading()
 
     }
   };

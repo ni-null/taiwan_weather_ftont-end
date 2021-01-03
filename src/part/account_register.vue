@@ -9,22 +9,22 @@
     <div class="account_main_box">
 
       <div class="account_type_box">
-        <span> <img :src="require('../img/svg/account.svg')" />
-        </span>
+        <div> <img :src="require('../img/svg/account.svg')" />
+        </div>
         <input type="text" v-model="user_name" placeholder="Account">
 
       </div>
 
 
       <div class="account_type_box">
-        <span> <img :src="require('../img/svg/lock.svg')" />
-        </span>
+        <div> <img :src="require('../img/svg/lock.svg')" />
+        </div>
         <input type="text" v-model="user_passowrd" placeholder="Password">
       </div>
 
       <div class="account_type_box">
-        <span> <img :src="require('../img/svg/lock.svg')" />
-        </span>
+        <div> <img :src="require('../img/svg/lock.svg')" />
+        </div>
         <input type="text" v-model="user_passowrd_check" placeholder="Password_Check">
       </div>
       <div class="account_check">

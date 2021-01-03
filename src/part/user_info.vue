@@ -1,126 +1,126 @@
 <template>
+  <transition name="fade">
+    <div>
 
-  <div>
-
-    <div class="user_info_nav">
-      <div class="user_info_nav_items" @click="chamge_password_box">
-        <img :src="require('../img/svg/key.svg')" />
-        <p>修改密碼</p>
+      <div class="user_info_nav">
+        <div class="user_info_nav_items" @click="chamge_password_box">
+          <img :src="require('../img/svg/key.svg')" />
+          <p>修改密碼</p>
+        </div>
+        <div class="line"></div>
+        <div class="user_info_nav_items" @click="telegram_box">
+          <img :src="require('../img/svg/telegram.svg')" />
+          <p>Telegram</p>
+        </div>
       </div>
-      <div class="line"></div>
-      <div class="user_info_nav_items" @click="telegram_box">
-        <img :src="require('../img/svg/telegram.svg')" />
-        <p>Telegram</p>
-      </div>
-    </div>
 
 
+      <transition name="fade">
+        <div v-show="show=='telegram_box' " class="telegram_box">
+          <h2> Telegram綁定狀態</h2>
 
-    <div v-show="show=='telegram_box' " class="telegram_box">
-      <h2> Telegram綁定狀態</h2>
+
+          <div class="telegtam_item_box">
+
+            <div class="telegram_item">
+
+              <div v-show="bind_code">
+
+                <div class="item_status">
+
+                  <img :src="require('../img/svg/sad.svg')" />
+                  <p class="bind_status"> {{bind_status}} </p>
+                  <img :src="require('../img/svg/refresh.svg')" id="update" @click="get_telegtam_status" />
+                </div>
 
 
-      <div class="telegtam_item_box">
+                <div class="item_user">
+                  <p> 打開機器人輸入綁定碼</p>
 
-        <div class="telegram_item">
+                  <div class="bind_box">
+                    <p> {{bind_code}}</p>
+                    <button @click.stop.prevent="copyTestingCode">
+                      <img :src="require('../img/svg/copy.svg')" />
+                    </button>
 
-          <div v-show="bind_code">
+                  </div>
+                  <div class="notice_box">
+                    <transition name="fade_long" mode="out-in">
+                      <div v-show="notice" class="notice"> {{notice_text}} </div>
+                    </transition>
+                  </div>
 
-            <div class="item_status">
+                  <input type="hidden" id="testing-code" :value="bind_code">
 
-              <img :src="require('../img/svg/sad.svg')" />
-              <p class="bind_status"> {{bind_status}} </p>
-              <img :src="require('../img/svg/refresh.svg')" id="update" @click="get_telegtam_status" />
+                </div>
+
+              </div>
+
+
+              <div v-show="bind_user">
+
+
+                <div class="item_status">
+                  <img :src="require('../img/svg/tick.svg')" />
+                  <p class="bind_status"> {{bind_status}} </p>
+                </div>
+
+                <div class="item_user"> 用戶名 『{{bind_user}} 』</div>
+
+
+              </div>
             </div>
 
 
-            <div class="item_user">
-              <p> 打開機器人輸入綁定碼</p>
 
-              <div class="bind_box">
-                <p> {{bind_code}}</p>
-                <button @click.stop.prevent="copyTestingCode">
-                  <img :src="require('../img/svg/copy.svg')" />
-                </button>
 
-              </div>
-              <div class="notice_box">
-                <transition name="fade_long" mode="out-in">
-                  <div v-show="notice" class="notice"> {{notice_text}} </div>
-                </transition>
-              </div>
+            <div class="telegram_item">
 
-              <input type="hidden" id="testing-code" :value="bind_code">
+              <img :src="require('../img/qr-code.png')" />
+
 
             </div>
 
           </div>
 
 
-          <div v-show="bind_user">
+        </div>
+      </transition>
+      <transition name="fade">
+        <div v-show="show=='change_password_box' " class="change_password_box">
+          <h2> 修改密碼</h2>
 
+          <div class="change_password_box_item_box ">
 
-            <div class="item_status">
-              <img :src="require('../img/svg/tick.svg')" />
-              <p class="bind_status"> {{bind_status}} </p>
+            <div class="password_item">
+              <p> 舊密碼 </p>
+              <input type="text" v-model="user_passowrd_old" placeholder="Old Password">
             </div>
 
-            <div class="item_user"> 用戶名 『{{bind_user}} 』</div>
+            <div class="password_item">
+              <p>新密碼 </p>
+              <input type="text" v-model="user_passowrd_new" placeholder="NEW Password">
+            </div>
 
+            <div class="password_item">
+              <p>確認新密碼</p>
+              <input type="text" v-model="user_passowrd_new_check" placeholder="NEW Password Check">
+            </div>
+
+            <button class="change_button" @click="send_change"> 修改密碼 </button>
 
           </div>
-        </div>
 
 
 
-
-        <div class="telegram_item">
-
-          <img src="../img/qr-code.png">
+          {{send_change_result}}
 
         </div>
-
-      </div>
-
+      </transition>
 
     </div>
 
-    <div v-show="show=='change_password_box' " class="change_password_box">
-      <h2> 修改密碼</h2>
-
-      <div class="change_password_box_item_box ">
-
-        <div class="password_item">
-          <p> 舊密碼 </p>
-          <input type="text" v-model="user_passowrd_old" placeholder="Old Password">
-        </div>
-
-        <div class="password_item">
-          <p>新密碼 </p>
-          <input type="text" v-model="user_passowrd_new" placeholder="NEW Password">
-        </div>
-
-        <div class="password_item">
-          <p>確認新密碼</p>
-          <input type="text" v-model="user_passowrd_new_check" placeholder="NEW Password Check">
-        </div>
-
-        <button class="change_button" @click="send_change"> 修改密碼 </button>
-
-      </div>
-
-
-
-      {{send_change_result}}
-
-    </div>
-
-
-
-
-
-
-  </div>
+  </transition>
 
 
 </template>
@@ -199,7 +199,7 @@
 
       //登出
       delete_login: function () {
-        $cookies.remove('user')
+        this.$cookies.remove('user')
         this.$router.push({
           path: '/'
         })

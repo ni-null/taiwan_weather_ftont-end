@@ -1,59 +1,71 @@
 <template>
   <div>
     <div class="info_box_title_box">
-      <div class="h4 hover" @click="switch_dist_list">
-        <img id="local_icon" :src="require('../img/svg/down.svg')" />
-        <span>鄉鎮天氣</span>
-      </div>
-
+      <router-link :to="{ path:  '/weather/'+route_city+'/' +dist}">
+        <div class="h4 hover">
+          <img id="local_icon" :src="require('../img/svg/dist.svg')" />
+          <span>鄉鎮天氣</span>
+        </div>
+      </router-link>
       <div class="title_box_title">
 
-        <h2 @click="switch_list()">{{ list_now_title }} </h2>
+        <transition name="load">
+          <h2 v-show="city_name_che">
+            {{ city_name_che }}
+          </h2>
+        </transition>
 
         <div @click="sub_button" class="sub_button">
           <div class="sub_text"> {{check_sub_stats_text}}</div>
+
           <img v-show="check_sub_stats" :src="require('../img/svg/favorite.svg')" />
+
+
           <img v-show="!check_sub_stats" :src="require('../img/svg/un_favorite.svg')" />
+
         </div>
 
 
       </div>
     </div>
 
-    <!--  標題/縣市列表 -->
-    <transition name="fade">
-      <div v-if="show_list" class="location_show">
-        <div @click="switch_city_list(index)" v-for="(item, index) in citys_list" :key="item.id"
-          class="citys_list_title">
-          {{ item.name }}
+    <!--  地區列表 -->
+
+    <transition name="down">
+      <div class="location_show">
+        <div v-for="(item, index) in citys_list" :key="item.id" class="citys_list_title_box">
+
+          <div @click="switch_city_list(index)" class="citys_list_title">
+            <p> {{ item.name }} </p>
+          </div>
+
+
         </div>
+
       </div>
 
     </transition>
 
+    <!--  地區列表 -->
 
-    <div @click=" switch_city_list(index)" v-for="(item, index) in citys_list" :key="item.id">
-      <div v-if="show_dist_child[index]" class="citys_list">
-        <div @click="switch_router(child.eng)" v-for="child in item.child" :key="child.id" class="citys_list_child">
-          {{ child.che }}
-        </div>
+
+    <!--  標題/縣市列表 -->
+
+
+    <div class="citys_list">
+      <div v-for="(item, index) in select" :key="index">
+        <transition name="bob_mobile">
+          <div class="citys_list_child" @click="switch_router(item.eng)" v-show="select_ani">
+            {{ item.che }}
+          </div>
+        </transition>
       </div>
     </div>
 
 
     <!--  標題/縣市列表 -->
 
-    <!--  鄉鎮列表 -->
-    <transition name="fade">
-      <div class="dist_list" v-if="show_dist_list">
-        <div v-for="item in dist_list" :key="item" id="city_button">
-          <router-link :to="{ path:  '/weather/'+route_city+'/' + item}">
-            {{ item}}
-          </router-link>
-        </div>
-      </div>
-    </transition>
-    <!--  鄉鎮列表 -->
+
 
 
   </div>
@@ -69,55 +81,49 @@
 
         //
         route_city: null,
-        //標題
-        list_now_title: null,
-        //地區
-        dist_list: null,
+        //標題中文地名
+        city_name_che: null,
+        //預設進入地區
+        dist: null,
+        //
         citys_list: [],
 
         //列表切換
-        show_dist_child: {
-          0: false,
-          1: false,
-          2: false,
-          3: false,
-          4: false,
-        },
-        show_list: false,
-        show_dist_list: true,
+        show_list: true,
         check_sub_stats: false,
-        check_sub_stats_text: "未訂閱"
+        check_sub_stats_text: "未訂閱",
+        select: null,
+        select_ani: false
+
       };
     },
     inject: ["api_url"],
 
     methods: {
-      //顯示切換 - 北中南東
-      switch_list: function () {
-        this.show_list = !this.show_list;
-        if (this.show_list) this.show_dist_list = false;
-      },
 
       //顯示切換 - 北中南東 個別
       switch_city_list: function (a) {
 
-        for (let index in this.show_dist_child) {
-          if (index != a) this.show_dist_child[index] = false
-        }
+        document.querySelector(".citys_list").classList.add('citys_list_height')
+        this.select_ani = false
 
-        this.show_dist_child[a] = !this.show_dist_child[a];
+        this.select = this.citys_list[a].child
 
+
+        setTimeout(() => {
+          this.select_ani = true
+        }, 100)
       },
 
-      //顯示切換 - 鄉鎮列表
-      switch_dist_list: function () {
-        this.show_dist_list = !this.show_dist_list;
-        if (this.show_dist_list) this.show_list = false;
-      },
+
 
       //切換城市路由
       switch_router: function (city_eng) {
-        this.$router.push("/weather/" + city_eng);
+
+        if (city_eng != this.route_city)
+          this.$router.push("/weather/" + city_eng);
+
+
       },
 
 
@@ -193,24 +199,29 @@
       }
     },
 
+
     mounted() {
 
+      //獲取訂閱
       this.get_sub()
-      // this.$forceUpdate();
 
+
+      //路由
       this.route_city = this.$route.params.city;
-
       this.citys_list = citys_json[0];
 
-      //透過路由獲取地名
-      this.list_now_title = Object.keys(citys_json[1][0]).find(
-        (key) => citys_json[1][0][key] === this.$route.params.city
-      );
-      //獲取鄉鎮
-      dist_json.forEach(e => {
-        if (e.name == this.list_now_title)
-          this.dist_list = e.dist
+
+
+      //獲取中文名
+      this.city_name_che = citys_json[2][0][this.route_city]
+
+
+      //獲取第一個鄉鎮名稱
+      dist_json.find(e => {
+        if (e.name == this.city_name_che)
+          this.dist = e.dist[0]
       })
+
 
     },
   };

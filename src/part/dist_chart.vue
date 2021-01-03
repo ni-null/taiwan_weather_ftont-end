@@ -108,13 +108,13 @@
       };
 
       //處理降雨日為空
-      let rain_day = [];
-      if (this.rain[6] == null) {
-        this.rain.splice(6, 1);
-        this.day.splice(6, 1);
-        rain_day = this.day;
-      } else {
-        rain_day = this.day;
+      let rain_day = [...this.day]
+      if (this.rain[6] == 'null') {
+        rain_day.splice(6, 1)
+      } else if (this.rain[5] == 'null') {
+        rain_day.splice(5, 2)
+      } else if (this.rain[4] == 'null') {
+        rain_day.splice(4, 3)
       }
 
       //圖表降雨
@@ -153,6 +153,12 @@
           }, ],
         },
         options: {
+          layout: {
+            padding: {
+              top: 15,
+              right: 15
+            }
+          },
           tooltips: {
             titleFontSize: 30,
             bodyFontSize: 30,
@@ -208,6 +214,7 @@
           },
         }, ],
         data: {
+          labels: this.day,
           datasets: [{
               label: "最高溫",
               data: this.max_temp,
@@ -250,7 +257,7 @@
                       weight: 'bold',
                       size: 20
                     },
-                    align: 'top',
+                    align: 'bottom',
                     color: 'white',
                     offset: datalabels_offset,
                   }
@@ -260,8 +267,8 @@
               // Changes this dataset to become a line
 
             },
-          ],
-          labels: this.day,
+          ]
+
         },
 
         options: {
@@ -280,7 +287,7 @@
                 fontColor: "#fff",
                 fontSize: scales_yAxes_fontSize,
                 steps: 2,
-                stepSize: 1,
+                stepSize: 2,
                 padding: yAxes_padding
               },
             }, ],

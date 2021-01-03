@@ -1,109 +1,141 @@
 <template>
   <div>
 
-    <div class="index">
-      <div class="info_box index_child">
-        <!--  標題/縣市列表 -->
 
-        <div class="info_box_title_box">
-          <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
-            <div class="h4 hover">
-              <img id="local_icon" :src="require('../img/svg/more.svg')" />
-              <span>詳細天氣</span>
-            </div>
-          </router-link>
-          <div class="title_box_title" @click="switch_list()">
+    <transition name="fade_PC">
 
-            <h2>{{ list_now.cityname }} </h2>
+      <div class="index" v-show="ani_show">
+        <div class="info_box index_child">
+          <!--  標題/縣市列表 -->
 
-            <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
-          </div>
-        </div>
-        <!--  標題/縣市列表 -->
+          <div class="info_box_title_box">
+            <router-link :to="{ path: '/weather/' + list_now.cityname_eng }">
+              <div class="h4 hover">
+                <img id="local_icon" :src="require('../img/svg/more.svg')" />
+                <span>詳細天氣</span>
+              </div>
+            </router-link>
+            <div class="title_box_title" @click="switch_list()">
 
-        <!--  手機縣市列表 -->
-        <transition name="fade">
-          <div v-if="show_list" class="location_show">
-            <div @click="switch_city_list(index)" v-for="(item, index) in citys_list" :key="item.id"
-              class="citys_list_title">
-              {{ item.name }}
+              <h2>{{ list_now.cityname }} </h2>
+
+              <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
             </div>
           </div>
-        </transition>
+          <!--  標題/縣市列表 -->
 
+          <!--  縣市列表 -->
+          <transition name="fade">
+            <div v-if="show_list" class="location_show">
+              <div v-for="(item, index) in citys_list" :key="item.id" class="citys_list_title_box">
 
-        <div @click="switch_city_list(index)" v-for="(item, index) in citys_list" :key="item.id">
-          <div v-if="citys_list_child[index]" class="citys_list">
-            <div @click="switch_now(child.che)" v-for="child in item.child" :key="child.id" class="citys_list_child">
-              {{ child.che }}
-            </div>
-          </div>
-        </div>
-        <!--  手機縣市列表 -->
-
-        <!--  天氣描述 -->
-        <div class="now_weather_box1">
-          <div class="now_weather_flex_box">
-            <div class="now_weather_flex_box_child left_child">
-              <img :src="
-                  require('../img/svg/weather_svg/' + list_now.WD_code + '.svg')
-                " />
-              <div class="WD">{{ list_now.WD }}</div>
-            </div>
-            <span class="now_weather_flex_box_child_line"> </span>
-            <!--  溫度 -->
-            <div class="now_weather_flex_box_child">
-              <img :src="require('../img/svg/temp_now.svg')" />
-              <div class="temp">{{ list_now.temp }}</div>
-            </div>
-          </div>
-
-          <div class="other_box">
-            <div class="other_box_title" v-for="(item, index) in list_full" :key="item.id">
-              <p v-if="item.show_day">
-                <span v-if="item.day_1 != null">
-                  {{ item.day_1 }}({{ item.day_2 }})
-                </span>
-                <span v-if="item.day_1 == null">星期{{ item.day_2 }}</span>
-
-                <span> {{ item.time_1 }}</span>
-              </p>
-              <div class="flex_box_2">
-                <div class="flex_box_2_item_1">
-                  {{ item.time_2 }}
+                <div v-if="index!=0" @click="switch_city_list(index)" class="citys_list_title">
+                  {{ item.name }}
                 </div>
 
-                <div class="flex_box_2_item_2">
-                  <img :src="require('../img/svg/temp.svg')" />
 
-                  <span> {{ item.temp }}</span>
-                </div>
-
-                <div class="flex_box_2_item_3">
-                  <img :src="
-                      require('../img/svg/static_icon/' + item.WD_code + '.svg')
-                    " />
-
-                  <span> {{ item.WD }}</span>
+                <div v-if="index==0" @click="switch_city_list(index)" class="citys_list_title no_border">
+                  {{ item.name }}
                 </div>
               </div>
 
-              <div class="hr" v-if="(item.time_2 == '晚上') & (index != 5)"></div>
+            </div>
+
+          </transition>
+
+
+          <div @click="switch_city_list(index)" v-for="(item, index) in citys_list" :key="item.id">
+            <div v-if="citys_list_child[index]" class="citys_list">
+              <div @click="switch_now(child.che)" v-for="child in item.child" :key="child.id" class="citys_list_child">
+                {{ child.che }}
+              </div>
             </div>
           </div>
-        </div>
-        <!--  天氣描述 -->
-      </div>
+          <!--  手機縣市列表 -->
 
-      <!--  D3 -->
-      <div class="index_child">
-        <svg id="tw_box" viewBox="0 0 370 500">
-          <g class="counties"></g>
-          <path class="county-borders"></path>
-        </svg>
+          <!--  天氣描述 -->
+          <div class="now_weather_box1">
+            <div class="now_weather_flex_box">
+
+              <!--  天氣狀態 -->
+              <transition name="bob_long_mobile">
+
+                <div class="now_weather_flex_box_child " v-show="block_show">
+
+                  <img :src="
+                  require
+                  ('../img/svg/weather_svg/' + list_now.WD_code + '.svg')
+                " />
+                  <div class="WD">{{ list_now.WD }}</div>
+
+                </div>
+
+              </transition>
+
+              <span class="now_weather_flex_box_child_line"> </span>
+
+              <!--  溫度 -->
+              <transition name="bob_long_mobile">
+                <div class="now_weather_flex_box_child" v-show="block_show">
+                  <img :src="require('../img/svg/temp_now.svg')" />
+                  <div class="temp">{{ list_now.temp }}</div>
+                </div>
+              </transition>
+
+
+
+
+
+            </div>
+
+            <transition name="bob_long_mobile">
+              <div class="other_box" v-show="block_show">
+                <div class="other_box_title" v-for="(item, index) in list_full" :key="item.id">
+                  <p v-if="item.show_day">
+                    <span v-if="item.day_1 != null">
+                      {{ item.day_1 }}({{ item.day_2 }})
+                    </span>
+                    <span v-if="item.day_1 == null">星期{{ item.day_2 }}</span>
+
+                    <span> {{ item.time_1 }}</span>
+                  </p>
+                  <div class="flex_box_2">
+                    <div class="flex_box_2_item_1">
+                      {{ item.time_2 }}
+                    </div>
+
+                    <div class="flex_box_2_item_2">
+                      <img :src="require('../img/svg/temp.svg')" />
+
+                      <span> {{ item.temp }}</span>
+                    </div>
+
+                    <div class="flex_box_2_item_3">
+                      <img :src="
+                      require('../img/svg/static_icon/' + item.WD_code + '.svg')
+                    " />
+
+                      <span> {{ item.WD }}</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </transition>
+          </div>
+          <!--  天氣描述 -->
+        </div>
+
+        <!--  D3 -->
+
+
+        <component @map_click="map_click" :select_city="list_now.cityname" :is=" index_map" />
+
+
       </div>
-      <!--  D3 -->
-    </div>
+    </transition>
+
   </div>
 </template>
 
@@ -113,10 +145,12 @@
   export default {
     data() {
       return {
+        //天氣
         taiwan_weather: null,
         list_now: {
           WD_code: "14",
         },
+        //選單
         list_full: [],
         citys_list: [],
         citys_list_child: {
@@ -127,18 +161,33 @@
           4: false,
         },
         show_list: false,
+
+        //地圖
+        index_map: null,
+        //特效
+        ani_show: false,
+        block_show: false
+
       };
     },
-    inject: ["api_url"],
+    inject: ["api_url", "remove_loading"],
+    components: {},
 
     methods: {
 
-      //顯示切換 - 北中南東
+      //選單 -  顯示切換 - 北中南東
       switch_list: function () {
         this.show_list = !this.show_list;
+        if (!this.show_list) {
+
+          for (let i = 0; i < 5; i++) {
+            this.citys_list_child[i] = false
+          }
+
+        }
       },
 
-      //顯示切換 - 北中南東 個別
+      //選單 -  顯示切換 - 北中南東 個別
       switch_city_list: function (a) {
 
 
@@ -148,106 +197,24 @@
         this.citys_list_child[a] = !this.citys_list_child[a];
 
       },
-      //顯示切換 - 鄉鎮列表
+      //選單 - 切換城市
       switch_now: function (data) {
         const now_weather = this.taiwan_weather.filter(
           (x) => x.cityname === data
         );
+
+        this.block_show = false
+        setTimeout(() => {
+          this.block_show = true
+        }, 100);
 
         if (parseInt(now_weather[0].WD_code) > 18) now_weather[0].WD_code = "04";
 
         this.list_now = now_weather[0];
         this.show_list = !this.show_list;
       },
-      creat_D3_map: function () {
-        const d3 = Object.assign({}, require("d3-geo"), require("d3-selection"), )
 
-        //D3繪製地圖
-        const projection = d3
-          .geoMercator()
-          .center([122.95, 23.7])
-          .scale(7300);
-
-        const map = require("../json/taiwan_map_mod.json");
-
-        var path = d3.geoPath().projection(projection);
-
-        const svg = d3
-          .select("#tw_box")
-          .select("g")
-          .selectAll("path")
-          .data(map.features)
-          .enter();
-
-        //地圖
-        svg
-          .append("path")
-          .attr("d", path)
-          .attr("class", "none")
-          .attr("id", (i) => {
-            return "block_" + i.properties["COUNTYCODE"];
-          })
-          .attr("name", (i) => {
-            return i.properties["COUNTYNAME"];
-          })
-          .on("mouseover", function () {
-
-            d3.select(this).attr(
-              "class",
-              "active"
-            );
-          })
-          .on("mouseleave", function () {
-            d3.select(this).attr("class", "none");
-          })
-          .on("click", (i) => {
-
-
-            this.list_full = this.full_weather(d3.selectAll('#' + i.currentTarget.id).attr('name'));
-          });
-
-        //標籤
-        svg
-          .append("text")
-          .attr("x", (i) => {
-            if (i.properties["X"] != null)
-              return path.centroid(i)[0] + i.properties["X"];
-            else return path.centroid(i)[0] - 25;
-          })
-          .attr("y", (i) => {
-            if (i.properties["Y"] != null)
-              return path.centroid(i)[1] + i.properties["Y"];
-            else return path.centroid(i)[1] + 8;
-          })
-          .attr("id", (i) => {
-            return "block_" + i.properties["COUNTYCODE"];
-          })
-          .text((i) => {
-            return i.properties["COUNTYNAME"];
-          })
-          .on("mouseover", (i) => {
-
-
-            d3.selectAll("#" + i.target.id).attr(
-              "class",
-              "active"
-            );
-          })
-          .on("mouseleave", (i) => {
-
-            d3.selectAll("#" + i.target.id).attr(
-              "class",
-              "none"
-            );
-          })
-          .on("click", (i) => {
-
-
-            this.list_full = this.full_weather(i.target.innerHTML);
-          });
-
-      },
-
+      /* 設置天氣資料 */
       full_weather: function (COUNTYNAME) {
 
         let full_weather = this.taiwan_weather.filter(
@@ -292,6 +259,15 @@
         //添加判斷顯示
         return full_weather;
 
+      },
+
+
+
+      /*  地圖 */
+      map_click: function (map_click) {
+        // index_map傳值處理
+        this.full_weather(map_click)
+
       }
 
     },
@@ -307,14 +283,44 @@
       this.taiwan_weather = response["data"];
       this.list_full = this.full_weather("臺北市");
 
-      //判斷寬度顯示繪製地圖
-      if (window.innerWidth < 1370) return;
-      else {
-        this.creat_D3_map()
+    },
+    created() {
+
+
+      /* 首次在入動畫移除 */
+      this.remove_loading()
+
+
+      /*  地區切換動畫(mobile) */
+      setTimeout(() => {
+        this.ani_show = true
+        this.block_show = true
+      }, 0);
+
+
+
+
+
+      /*  動態引入地圖 */
+
+      //首此判定
+      if (window.innerWidth > 1527) {
+        this.index_map = () => import( /* webpackChunkName: 'index_map' */ './index_map.vue')
       }
 
-    }
+      //監聽視窗變動
+      window.onresize = () => {
 
+        if (window.innerWidth > 1527) {
+          this.index_map = () => import( /* webpackChunkName: 'index_map' */ './index_map.vue')
+        }
+
+      }
+
+
+
+
+    }
 
   };
 </script>

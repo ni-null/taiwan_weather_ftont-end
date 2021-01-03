@@ -88,7 +88,6 @@ video {
 
 /* HTML5 display-role reset for older browsers */
 
-
 body {
     line-height: 1;
 }
@@ -107,7 +106,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-    content: '';
+    content: "";
     content: none;
 }
 
@@ -120,10 +119,27 @@ a {
     text-decoration: none;
 }
 
-
 input:focus,
 button:focus {
     outline: none;
     box-shadow: none;
+}
 
+/* 刪除點擊效果 */
+
+div,
+a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* ios css 移除部分預設樣式 */
+
+input {
+    -webkit-appearance: none; /* Safari 和 Chrome，常用於iOS下移除內建樣式 */
+    -moz-appearance: none; /* FireFox */
+    appearance: none;
+    margin: 0;
+}
+input[type="button"] {
+    cursor: pointer;
 }

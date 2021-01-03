@@ -762,7 +762,8 @@
         "COUNTYENG": "Chiayi City",
         "auxiliary_storage_labeling_positionx": 120.40848630857643,
         "auxiliary_storage_labeling_positiony": 23.533678983468111,
-        "Y": -10
+        "Y": 15,
+        "X": -40
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -1180,8 +1181,8 @@
         "COUNTYENG": "Keelung City",
         "auxiliary_storage_labeling_positionx": 121.85903827945594,
         "auxiliary_storage_labeling_positiony": 25.202672980922092,
-        "Y": -10,
-        "X": 10
+        "Y": 10,
+        "X": 0
       },
       "geometry": {
         "type": "MultiPolygon",

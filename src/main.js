@@ -1,14 +1,14 @@
 //css
 import "./css/all.scss";
 import "./css/normal.scss";
-
 import Vue from "vue";
 
 
 
-//axios
+/* axios */
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+
 //設置axios快取時間
 import {
 	setupCache
@@ -21,6 +21,7 @@ axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.adapter = cache.adapter
 //設置axios快取時間
+/* axios */
 
 //VueRouter
 import VueRouter from 'vue-router'
@@ -31,6 +32,8 @@ Vue.use(VueRouter)
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
 //VueCookies
+
+
 
 
 
@@ -82,8 +85,12 @@ const vm = new Vue({
 	},
 	methods: {
 
+
+
 	}
 	,
+
+
 	mounted() {
 
 
@@ -91,17 +98,22 @@ const vm = new Vue({
 	,
 	components: {
 
-		navbar: () => import( /* webpackPreload: true */ /* webpackChunkName: 'navbar' */ './part/navbar.vue')
+		navbar: () => import(  /* webpackChunkName: 'navbar' */ './part/navbar.vue'),
 
 	},
 	provide: {
-		//api_url: 'https://weather-api.ninull.com'
-		api_url: 'http://127.0.0.1:5000'
+		//	api_url: 'https://weather-api.ninull.com',
+		api_url: 'http://127.0.0.1:5000',
+
+		//刪除動畫
+		remove_loading: function () {
+			const vue_first_loding = document.getElementById("vue_first_loding")
+			if (vue_first_loding != null)
+				vue_first_loding.remove()
+		}
 	},
-	created() {
 
 
-	},
 
 	router
 });

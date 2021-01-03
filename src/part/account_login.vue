@@ -7,16 +7,16 @@
     <div class="account_main_box">
 
       <div class="account_type_box">
-        <span> <img :src="require('../img/svg/account.svg')" />
-        </span>
+        <div> <img :src="require('../img/svg/account.svg')" />
+        </div>
         <input type="text" v-model="user_name" placeholder="Account">
 
       </div>
 
 
       <div class="account_type_box">
-        <span> <img :src="require('../img/svg/lock.svg')" />
-        </span>
+        <div> <img :src="require('../img/svg/lock.svg')" />
+        </div>
         <input type="text" v-model="user_passowrd" placeholder="Password">
       </div>
       <div>
@@ -48,6 +48,8 @@
 
 <script>
   import md5 from 'md5'
+  import bus from '../js/bus'
+
   export default {
     data() {
       return {
@@ -75,7 +77,9 @@
         if (!response["data"])
           this.login_check = "登入失敗"
         else {
-          $cookies.set('user', this.user_name)
+
+          //      $cookies.set('user', this.user_name)
+          bus.$emit('login', true)
           this.$router.push({
             path: '/account/user/'
           })

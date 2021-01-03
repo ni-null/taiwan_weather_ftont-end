@@ -4,36 +4,34 @@
 
     <div class="main_box main_user">
 
+      <transition name="bob">
+        <div class="user_box" v-show="animal_show">
+          <div class="user_nav">
 
-      <div class="user_box">
-        <div class="user_nav">
+            <div class="user_nav_item item_2" @click="user_sub">
+              <img :src="require('../img/svg/favorite.svg')" />
+              <p>我的訂閱</p>
+            </div>
+            <div class="user_nav_item item_3" @click="user_info">
+              <img :src="require('../img/svg/me.svg')" />
+              <p>我的帳號</p>
+            </div>
+          </div>
 
-          <div class="user_nav_item item_2" @click="user_sub">
-            <img :src="require('../img/svg/favorite.svg')" />
-            <p>我的訂閱</p>
-          </div>
-          <div class="user_nav_item item_3" @click="user_info">
-            <img :src="require('../img/svg/me.svg')" />
-            <p>我的帳號</p>
-          </div>
+
+
+          <user_sub v-show="show==`user_sub`"></user_sub>
+
+
+
+          <user_info v-show="show==`user_info`"></user_info>
+
+
+
+          <button @click="delete_login" id="login_out"> 登出 </button>
         </div>
 
-
-        <transition name="fade">
-          <user_sub v-show="show==`user_sub`"></user_sub>
-        </transition>
-
-        <transition name="fade">
-          <user_info v-show="show==`user_info`"></user_info>
-        </transition>
-
-
-
-      </div>
-
-
-
-      <input @click="delete_login" type="button" value="登出">
+      </transition>
 
     </div>
 
@@ -42,12 +40,17 @@
 
 <script>
   import('../css/user.scss')
+  import bus from '../js/bus'
+
+
   export default {
     data() {
       return {
         show: 'user_sub',
 
-        login_check_result: null
+        login_check_result: null,
+
+        animal_show: false
 
       }
     },
@@ -63,7 +66,7 @@
         if (response["data"]) {
 
           this.login_check_result = response["data"].split(":")[1]
-          this.$cookies.set('user', this.login_check_result) //return this
+          // this.$cookies.set('user', this.login_check_result) //return this
 
 
 
@@ -85,6 +88,7 @@
           console.log('登出')
           this.login_check_result = '尚未登入'
           $cookies.remove('user')
+          bus.$emit('login', false)
           //登出後返回
           this.$router.push({
             path: '/account/'
@@ -106,11 +110,20 @@
       }
     },
 
-    inject: ["api_url"],
+    inject: ["api_url", "remove_loading"],
     mounted() {
 
       this.login_check()
 
+    },
+    created() {
+
+      setInterval(() => {
+        this.animal_show = true
+      }, 0);
+
+
+      this.remove_loading()
     },
 
 

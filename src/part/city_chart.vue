@@ -22,7 +22,6 @@
   export default {
     data() {
       return {
-        window_width: window.innerWidth, //螢幕寬度
         day: [],
         mobile_day: [],
         rain: [],
@@ -80,14 +79,18 @@
       let scales_yAxes_fontSize = 18;
       let yAxes_padding = 10
       let datalabels_offset = 10
+      let labels_size = 20
+      let temp_offset = 10
 
-      if (this.window_width < 560) {
+      if (window.innerWidth < 560) {
         //替換日期格式
         this.day = this.mobile_day;
         //圖表左方刻度
         scales_yAxes_fontSize = 0;
         yAxes_padding = 0
         datalabels_offset = 0
+        labels_size = 15
+        temp_offset = 5
       }
 
       //自訂定提示位置
@@ -109,13 +112,16 @@
       };
 
       //處理降雨日為空
-      let rain_day = [];
-      if (this.rain[6] == null) {
-        this.rain.splice(6, 1);
-        this.day.splice(6, 1);
-        rain_day = this.day;
-      } else {
-        rain_day = this.day;
+
+
+      let rain_day = [...this.day]
+
+      if (this.rain[6] == 'null') {
+        rain_day.splice(6, 1)
+      } else if (this.rain[5] == 'null') {
+        rain_day.splice(5, 2)
+      } else if (this.rain[4] == 'null') {
+        rain_day.splice(4, 3)
       }
       //圖表降雨
       const ctx2 = this.$refs.myChart2;
@@ -153,6 +159,12 @@
           }, ],
         },
         options: {
+          layout: {
+            padding: {
+              top: 15,
+              right: 15
+            }
+          },
           tooltips: {
             titleFontSize: 30,
             bodyFontSize: 30,
@@ -223,11 +235,11 @@
                   title: {
                     font: {
                       weight: 'bold',
-                      size: 20
+                      size: labels_size
                     },
                     align: 'top',
                     color: 'white',
-                    offset: datalabels_offset
+                    offset: temp_offset
                   }
                 }
               }
@@ -249,11 +261,11 @@
                   title: {
                     font: {
                       weight: 'bold',
-                      size: 20
+                      size: labels_size
                     },
-                    align: 'top',
+                    align: 'bottom',
                     color: 'white',
-                    offset: datalabels_offset
+                    offset: temp_offset
                   }
                 }
               }
@@ -310,12 +322,10 @@
     //監聽寬度
 
     beforeDestroy() {
-      window.removeEventListener("resize", this.onResize);
+
     },
     methods: {
-      onResize() {
-        this.window_width = window.innerWidth;
-      },
+
     },
   };
 </script>

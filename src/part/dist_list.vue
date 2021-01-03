@@ -9,7 +9,10 @@
       </router-link>
 
       <div class="title_box_title">
-        <h2 @click="switch_dist_list">{{ list_now_title }} </h2>
+        <h2 @click="switch_dist_list">
+          <span> {{city_name_che}}</span>
+          {{ route_dist }}
+        </h2>
 
         <div @click="sub_button" class="sub_button">
           <div class="sub_text"> {{check_sub_stats_text}}</div>
@@ -26,9 +29,13 @@
 
     <!--  鄉鎮列表 -->
     <transition name="fade">
-      <div class="dist_list" v-if="show_dist_list">
-        <div v-for="item in dist_list" :key="item.id" id="city_button">
-          <router-link :to="{ path: item.dist }" class="btn btn-primary">
+
+      <div class="dist_list" v-show="show_dist_list">
+        <div class="dist_name">
+          {{city_name_che}}
+        </div>
+        <div v-for="item in dist_list" :key="item.id" class="city_button">
+          <router-link :to="{ path: item.dist }">
             {{ item.dist }}
           </router-link>
         </div>
@@ -45,8 +52,8 @@
   export default {
     data() {
       return {
-        //標題
-        list_now_title: null,
+        //縣市中文
+        city_name_che: null,
 
         //地區列表
         dist_list: [],
@@ -72,23 +79,13 @@
     },
 
     methods: {
-      //顯示切換 - 北中南東
-      switch_list: function () {
-        this.show_list = !this.show_list;
-        if (this.show_list) this.show_dist_list = false;
-      },
 
-      //顯示切換 - 北中南東 個別
-      switch_city_list: function (a) {
-        this.show_dist_child[a] = !this.show_dist_child[a];
-      },
 
       //顯示切換 - 鄉鎮列表
       switch_dist_list: function () {
         this.show_dist_list = !this.show_dist_list;
         if (this.show_dist_list) this.show_list = false;
       },
-
 
 
       //訂閱按鈕 檢查合法性
@@ -139,13 +136,27 @@
           sub_data: sub_data,
         })
 
+
+        //失敗
+        if (!response["data"]) return
+
+        //登入失敗
         if (response["data"] == "login_fail") {
           $cookies.remove('user')
           this.login_user = null,
             this.$router.push({
               path: '/account/'
             })
-        } else {
+        }
+
+        //達到上限
+        else if (response["data"] == "max") {
+
+          console.log("達到上限值")
+
+        }
+        //訂閱成功重新取得狀態
+        else {
           this.get_sub()
         }
 
@@ -154,11 +165,23 @@
       //獲取訂閱內容
       get_sub: async function () {
 
+
+
         const response = await this.axios.get(this.api_url + "/account/user/sub")
 
+        //失敗返回
+        if (!response["data"]) return
+
+        //登入失敗
         if (response["data"] == "login_fail") {
+          //   
+          this.check_sub_stats = false
+          this.check_sub_stats_text = "未訂閱"
           $cookies.remove('user')
-        } else {
+        }
+
+        //成功
+        else {
           this.check_sub_stats = false
           this.check_sub_stats_text = "未訂閱"
           response["data"].forEach(e => {
@@ -175,13 +198,23 @@
       //刪除訂閱
       delete_sub: async function (sub_data) {
 
-
-        const response = await
-        this.axios.delete(this.api_url + "/account/user/sub", {
+        const data = {
           data: {
             sub: sub_data
           }
-        })
+        }
+
+        const response = await this.axios.delete(this.api_url + "/account/user/sub", data)
+
+        //失敗返回
+        if (!response["data"]) return
+
+        //登入失敗
+        if (response["data"] == "login_fail") {
+          $cookies.remove('user')
+        }
+
+        //取得訂閱狀態
         this.get_sub()
 
       }
@@ -190,21 +223,16 @@
     mounted() {
 
 
+
+      //從路由獲取城市
       this.route_city = this.$route.params.city;
       this.route_dist = this.$route.params.dist;
-
-      this.get_sub()
-      //透過路由獲取地名
-      this.list_now_title = this.route_dist;
+      this.city_name_che = citys_json[2][0][this.route_city]
 
 
 
-
-
+      //獲取鄉鎮列表
       for (let i = 0; i < dist_json.length; i++) {
-
-
-
         if (dist_json[i].eng == this.route_city) {
           dist_json[i].dist.forEach(e => {
             this.dist_list.push({
@@ -214,6 +242,10 @@
           });
         }
       }
+
+      //獲取訂閱狀態
+      this.get_sub()
+
 
 
     },

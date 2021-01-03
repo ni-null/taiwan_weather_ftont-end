@@ -1,33 +1,28 @@
 @mixin mobile {
-    @media screen and (max-width:560px) {
+    @media screen and (max-width: 560px) {
         @content;
     }
 }
 
 @mixin pad {
-    @media screen and (max-width:1370px) {
+    @media screen and (max-width: 1370px) {
         @content;
     }
 }
 
 @mixin pc_min {
-    @media screen and (max-width:1527px) {
+    @media screen and (max-width: 1527px) {
         @content;
     }
 }
 
 @mixin pc {
-    @media screen and (max-width:1750px) {
+    @media screen and (max-width: 1750px) {
         @content;
     }
 }
 
-
-
-
 .index {
-
-    width: 100%;
     padding: 10px;
     display: flex;
     height: 1000px;
@@ -36,19 +31,18 @@
         display: block;
         margin: 0;
         width: auto;
-        height: 1000px;
+        height: auto;
+
         position: relative;
         height: auto;
     }
-
 
     @include mobile {
         background-color: #71edff;
         background-image: none;
         padding-bottom: 50px;
-
+        min-height: 500px;
     }
-
 }
 
 .index_child {
@@ -59,7 +53,6 @@
     @include pc_min {
         width: 100%;
         position: relative !important;
-
     }
 }
 
@@ -71,7 +64,6 @@ svg {
     @include pc {
         margin-right: 50px;
     }
-
 
     path {
         fill: #7fe4ff;
@@ -95,8 +87,11 @@ svg {
     }
 }
 
-#tw_box {
+.d3_select {
+    fill: #ffda98;
+}
 
+#tw_box {
     @include pc_min {
         display: none;
     }
@@ -110,5 +105,5 @@ svg {
 }
 
 #pin_icon {
-    width: 72px;
+    width: 60px;
 }

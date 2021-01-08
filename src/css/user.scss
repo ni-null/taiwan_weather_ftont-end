@@ -166,9 +166,19 @@
     }
 }
 
+.sub_item_box:hover {
+    transform: perspective(1px) scale(1.02);
+    transition: 0.2s ease;
+    background: #fff0c5;
+}
+
 /* 用戶訂閱 */
 
 /* user_info */
+
+.user_info_box {
+    min-height: 400px;
+}
 
 .user_info_nav {
     display: flex;

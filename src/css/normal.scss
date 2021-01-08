@@ -140,6 +140,7 @@ input {
     appearance: none;
     margin: 0;
 }
-input[type="button"] {
+input[type="button"],
+button {
     cursor: pointer;
 }

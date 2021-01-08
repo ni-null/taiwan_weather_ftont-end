@@ -4,7 +4,7 @@
     <div class="main_box">
 
       <!--  縣市列表 -->
-      <city_list></city_list>
+      <city_list @switch_city="switch_city"></city_list>
       <!--  縣市列表 -->
 
       <!--  動畫 -->
@@ -23,52 +23,47 @@
 
       <!--  天氣 -->
       <transition name="bob_mobile">
-        <div class="city_box" v-show="city_weather">
-
+        <div class="city_box" v-show="city_weather" :key="key">
 
           <div class="other_box city_box_item city_other_box ">
 
+            <div class="other_box_title" v-for="(item, index) in city_weather" :key="item.id">
 
-            <transition-group name="fade">
-              <div class="other_box_title" v-for="(item, index) in city_weather" :key="item.id">
+              <p v-if="item.show_day">
 
-                <p v-if="item.show_day">
+                <span v-if="item.day_1 != ''"> {{ item.day_1 }}({{ item.day_2 }}) </span>
+                <span v-else-if="item.day_1 == ''">星期{{ item.day_2 }}</span>
 
-                  <span v-if="item.day_1 != ''"> {{ item.day_1 }}({{ item.day_2 }}) </span>
-                  <span v-else-if="item.day_1 == ''">星期{{ item.day_2 }}</span>
+                <span> {{ item.time_1 }}</span>
 
-                  <span> {{ item.time_1 }}</span>
+              </p>
 
-                </p>
+              <div class="flex_box_2">
+                <div class="flex_box_2_item_1">
+                  {{ item.time_2 }}
+                </div>
 
-                <div class="flex_box_2">
-                  <div class="flex_box_2_item_1">
-                    {{ item.time_2 }}
-                  </div>
+                <div class="flex_box_2_item_2">
+                  <img :src="require('../img/svg/temp.svg')" />
 
-                  <div class="flex_box_2_item_2">
-                    <img :src="require('../img/svg/temp.svg')" />
+                  <span> {{ item.temp }}</span>
+                </div>
 
-                    <span> {{ item.temp }}</span>
-                  </div>
-
-                  <div class="flex_box_2_item_3">
-                    <img :src="
+                <div class="flex_box_2_item_3">
+                  <img :src="
                     require('../img/svg/static_icon/' + item.WD_code + '.svg')
                   " />
 
-                    <span> {{ item.WD }}</span>
-                  </div>
+                  <span> {{ item.WD }}</span>
                 </div>
-
               </div>
-            </transition-group>
 
+            </div>
 
           </div>
 
           <div class="city_box_item">
-            <city_chart v-if="city_weather" :city_weather="city_weather"></city_chart>
+            <city_chart :key="key" v-if="city_weather" :city_weather="city_weather"></city_chart>
           </div>
 
         </div>
@@ -83,10 +78,19 @@
   export default {
     data() {
       return {
+
+        //完整天氣
+        full_city_weather: null,
+        //選擇的天氣
         city_weather: null,
-        child_dist: null,
+        //顯示列表
         show_list: false,
-        city_list: null
+        //地區列表
+        city_list: null,
+
+        //key
+        key: null,
+        rwd: false
       };
     },
     inject: ["api_url", "remove_loading"],
@@ -134,7 +138,33 @@
 
         }
 
+      },
+
+      //天氣
+      set_weather: function (city) {
+
+        this.key = city
+
+        //天氣篩選
+        this.city_weather = this.full_city_weather.filter(
+          (x) => x.cityname_eng === city
+        );
+        //添加判斷顯示
+        this.show_day()
+      },
+
+      //子組件傳值，切換城市
+
+      switch_city: function (city) {
+
+
+        this.set_weather(city)
+
       }
+
+
+
+
     },
 
 
@@ -143,23 +173,28 @@
       const route_city = this.$route.params.city;
 
       //獲取資料
-
       const response = await this.axios.get(this.api_url + "/city/taiwan")
+      this.full_city_weather = response["data"]
 
-      //資料處理，獲取該縣市天氣
-      this.city_weather = response["data"].filter(
-        (x) => x.cityname_eng === route_city
-      );
+      //設置天氣
 
-      //添加show_day
-      this.show_day()
+      this.set_weather(route_city)
 
 
       //移除載入前效果
       setTimeout(() => {
         document.getElementById("Element_loding").remove();
 
-      }, 300)
+      }, 200)
+
+
+      //監聽視窗變動
+      window.onresize = () => {
+
+        this.rwd = !this
+        this.rwd = !this
+
+      }
 
 
     },

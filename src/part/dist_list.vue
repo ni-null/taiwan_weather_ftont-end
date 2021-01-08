@@ -1,7 +1,17 @@
 <template>
   <div>
+
+    <!-- 訂閱提示 -->
+    <transition name="bob_sub">
+      <div v-show="sub_info_show" class="sub_info">
+        <p> {{sub_info}}</p>
+      </div>
+    </transition>
+    <!-- 訂閱提示 -->
+
+    <!--  標題/縣市列表 -->
     <div class="info_box_title_box">
-      <router-link :to="{ path: './' }">
+      <router-link :to="{ path: `../${route_city}` }">
         <div class="h4 hover">
           <img id="local_icon" :src="require('../img/svg/back.svg')" />
           <span>返回</span>
@@ -9,10 +19,13 @@
       </router-link>
 
       <div class="title_box_title">
-        <h2 @click="switch_dist_list">
-          <span> {{city_name_che}}</span>
-          {{ route_dist }}
-        </h2>
+
+        <div class="title_city" @click="switch_dist_list()">
+          <p> <span> {{city_name_che}}</span>
+            {{ route_dist }}</p>
+        </div>
+
+
 
         <div @click="sub_button" class="sub_button">
           <div class="sub_text"> {{check_sub_stats_text}}</div>
@@ -22,26 +35,26 @@
 
       </div>
     </div>
-
     <!--  標題/縣市列表 -->
 
-    <!--  標題/縣市列表 -->
+    <!--  鄉鎮選單 -->
 
-    <!--  鄉鎮列表 -->
     <transition name="fade">
-
       <div class="dist_list" v-show="show_dist_list">
         <div class="dist_name">
           {{city_name_che}}
         </div>
-        <div v-for="item in dist_list" :key="item.id" class="city_button">
-          <router-link :to="{ path: item.dist }">
-            {{ item.dist }}
-          </router-link>
+        <div v-for="item in dist_list" :key="item.id" class="city_button" @click="switch_dist(item.dist)">
+
+
+          {{ item.dist }}
+
         </div>
       </div>
     </transition>
-    <!--  鄉鎮列表 -->
+
+    <!--  鄉鎮選單 -->
+
   </div>
 </template>
 
@@ -69,7 +82,11 @@
 
         //訂閱
         check_sub_stats: false,
-        check_sub_stats_text: "未訂閱"
+        check_sub_stats_text: "未訂閱",
+
+        //訂閱提示
+        sub_info_show: false,
+        sub_info: null
 
       };
     },
@@ -85,6 +102,24 @@
       switch_dist_list: function () {
         this.show_dist_list = !this.show_dist_list;
         if (this.show_dist_list) this.show_list = false;
+      },
+
+      //切換地區
+
+      switch_dist: function (dist) {
+
+        //路由推送
+
+        history.pushState(null, null, dist);
+        //傳值
+        this.$emit('switch_dist', dist)
+
+        //修改標題
+        this.route_dist = dist
+
+        //重新獲取訂閱狀態
+        this.get_sub()
+
       },
 
 
@@ -142,7 +177,7 @@
 
         //登入失敗
         if (response["data"] == "login_fail") {
-          $cookies.remove('user')
+          this.$cookies.remove('user')
           this.login_user = null,
             this.$router.push({
               path: '/account/'
@@ -152,18 +187,36 @@
         //達到上限
         else if (response["data"] == "max") {
 
-          console.log("達到上限值")
+
+          //訂閱
+          this.sub_info = "訂閱已達上限"
+
+          //動畫
+          this.sub_info_ani()
 
         }
         //訂閱成功重新取得狀態
         else {
+
+
           this.get_sub()
+
+          //訂閱
+          this.sub_info = "成功訂閱"
+
+          //動畫
+          this.sub_info_ani()
+
         }
 
 
       },
       //獲取訂閱內容
       get_sub: async function () {
+
+
+
+
 
 
 
@@ -177,17 +230,20 @@
           //   
           this.check_sub_stats = false
           this.check_sub_stats_text = "未訂閱"
-          $cookies.remove('user')
+          this.$cookies.remove('user')
+
         }
 
         //成功
         else {
           this.check_sub_stats = false
           this.check_sub_stats_text = "未訂閱"
+
           response["data"].forEach(e => {
             if (this.route_city + '/' + this.route_dist == e.sub) {
               this.check_sub_stats = true
               this.check_sub_stats_text = "已訂閱"
+
             }
           });
 
@@ -211,13 +267,38 @@
 
         //登入失敗
         if (response["data"] == "login_fail") {
-          $cookies.remove('user')
+          this.$cookies.remove('user')
         }
 
         //取得訂閱狀態
         this.get_sub()
 
+        //訂閱
+        this.sub_info = "取消訂閱"
+
+        //動畫
+        this.sub_info_ani()
+
+
+      },
+
+
+      //提示動畫
+      sub_info_ani: function () {
+
+        this.sub_info_show = true
+
+
+        setTimeout(
+          () => {
+            this.sub_info_show = false
+          },
+          1000
+        )
+
       }
+
+
     },
 
     mounted() {
@@ -234,6 +315,7 @@
       //獲取鄉鎮列表
       for (let i = 0; i < dist_json.length; i++) {
         if (dist_json[i].eng == this.route_city) {
+
           dist_json[i].dist.forEach(e => {
             this.dist_list.push({
               city: this.route_city,
@@ -242,6 +324,8 @@
           });
         }
       }
+
+
 
       //獲取訂閱狀態
       this.get_sub()

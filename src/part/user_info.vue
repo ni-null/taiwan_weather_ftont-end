@@ -1,9 +1,9 @@
 <template>
   <transition name="fade">
-    <div>
+    <div class="user_info_box">
 
       <div class="user_info_nav">
-        <div class="user_info_nav_items" @click="chamge_password_box">
+        <div class="user_info_nav_items" @click="password_box">
           <img :src="require('../img/svg/key.svg')" />
           <p>修改密碼</p>
         </div>
@@ -14,9 +14,12 @@
         </div>
       </div>
 
+      <transition name="fade_switch" mode="out-in">
 
-      <transition name="fade">
-        <div v-show="show=='telegram_box' " class="telegram_box">
+
+
+
+        <div v-if=" show=='telegram_box'" class=" telegram_box" :key="1">
           <h2> Telegram綁定狀態</h2>
 
 
@@ -40,7 +43,10 @@
                   <div class="bind_box">
                     <p> {{bind_code}}</p>
                     <button @click.stop.prevent="copyTestingCode">
+
+
                       <img :src="require('../img/svg/copy.svg')" />
+
                     </button>
 
                   </div>
@@ -75,9 +81,9 @@
 
 
             <div class="telegram_item">
-
-              <img :src="require('../img/qr-code.png')" />
-
+              <a href="https://t.me/Ninull_Weather_bot">
+                <img :src="require('../img/qr-code.png')" />
+              </a>
 
             </div>
 
@@ -85,9 +91,9 @@
 
 
         </div>
-      </transition>
-      <transition name="fade">
-        <div v-show="show=='change_password_box' " class="change_password_box">
+
+
+        <div v-if="show=='change_password_box' " class="change_password_box" :key="2">
           <h2> 修改密碼</h2>
 
           <div class="change_password_box_item_box ">
@@ -211,7 +217,7 @@
         this.show = 'telegram_box'
       },
 
-      chamge_password_box: function () {
+      password_box: function () {
         this.show = 'change_password_box'
       },
 

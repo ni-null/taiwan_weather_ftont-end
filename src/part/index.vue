@@ -15,11 +15,20 @@
                 <span>詳細天氣</span>
               </div>
             </router-link>
-            <div class="title_box_title" @click="switch_list()">
+            <div class="title_box_title">
 
-              <h2>{{ list_now.cityname }} </h2>
+              <div class="city_block" @click="switch_block">
+                <p> {{ city_block_title [city_block ]  }} </p>
+              </div>
 
-              <img id="pin_icon" :src="require('../img/svg/pin.svg')" />
+              <div class="title_city" @click="switch_list()">
+                <p>{{ list_now.cityname }} </p>
+              </div>
+
+              <div class="next_city" @click="next_city">
+                <img :src="require('../img/svg/next.svg')" />
+              </div>
+
             </div>
           </div>
           <!--  標題/縣市列表 -->
@@ -147,9 +156,15 @@
       return {
         //天氣
         taiwan_weather: null,
+
+        //當前顯示
         list_now: {
           WD_code: "14",
         },
+
+        //區域
+
+        citys_in_block: [],
         //選單
         list_full: [],
         citys_list: [],
@@ -162,6 +177,12 @@
         },
         show_list: false,
 
+
+        city_block: 1,
+        city_block_title: ['北', '中', '南', '東', '外'],
+        city_block_list_index: 1,
+        city_block_list: [],
+
         //地圖
         index_map: null,
         //特效
@@ -170,10 +191,55 @@
 
       };
     },
+
+    //api_url = api網址
+    //remove_loading  = vue 首次在入動畫
     inject: ["api_url", "remove_loading"],
-    components: {},
 
     methods: {
+
+
+      /* 區域切換(北中南外) */
+
+      switch_block: function () {
+
+        //切換區域
+        if (this.city_block < 4) this.city_block++
+        else this.city_block = 0
+
+
+        //設置天資料為區域第一個城市
+        const first_city = this.citys_in_block[this.city_block][0]
+
+        this.full_weather(first_city)
+
+        //動畫
+        this.switch_ani()
+
+      },
+
+
+      /* 區域切換(北中南外) - 切換下一個城市 */
+
+      next_city: function () {
+
+
+        //計算長度，切換索引
+        const citys_in_block_length = this.citys_in_block[this.city_block].length
+
+        if (this.city_block_list_index < citys_in_block_length - 1) this.city_block_list_index++
+
+        else this.city_block_list_index = 0
+
+
+        //切換天氣
+        this.full_weather(this.citys_in_block[this.city_block][this.city_block_list_index])
+
+
+        //動畫
+        this.switch_ani()
+
+      },
 
       //選單 -  顯示切換 - 北中南東
       switch_list: function () {
@@ -199,19 +265,19 @@
       },
       //選單 - 切換城市
       switch_now: function (data) {
-        const now_weather = this.taiwan_weather.filter(
-          (x) => x.cityname === data
-        );
 
-        this.block_show = false
-        setTimeout(() => {
-          this.block_show = true
-        }, 100);
 
-        if (parseInt(now_weather[0].WD_code) > 18) now_weather[0].WD_code = "04";
+        const now_weather = this.full_weather(data)
 
+        //當前顯示
         this.list_now = now_weather[0];
-        this.show_list = !this.show_list;
+
+
+        //   this.show_list = !this.show_list;
+
+
+        //動畫
+        this.switch_ani()
       },
 
       /* 設置天氣資料 */
@@ -249,12 +315,41 @@
 
         }
 
+        //天氣代碼處理
         full_weather.forEach(e => {
           if (parseInt(e.WD_code) > 18) e.WD_code = "04";
         });
 
-        //現在天氣
+        //全部天氣
+        this.list_full = full_weather
+
+        //最近的天氣
         this.list_now = full_weather[0]
+
+        //localStorage 
+        localStorage.weather_select = COUNTYNAME
+
+
+        //索引
+
+
+        this.citys_in_block.forEach((e, i) => {
+
+          e.forEach((n, m) => {
+            if (n == COUNTYNAME) {
+
+              this.city_block = i
+              this.city_block_list_index = m
+
+            }
+
+          })
+        })
+
+        //
+
+
+
 
         //添加判斷顯示
         return full_weather;
@@ -268,20 +363,60 @@
         // index_map傳值處理
         this.full_weather(map_click)
 
+
+      },
+
+      /*  動畫切換 */
+      switch_ani: function () {
+
+
+        if (window.innerWidth < 1527) {
+          this.block_show = false
+          setTimeout(() => {
+            this.ani_show = true
+            this.block_show = true
+          }, 100);
+        }
+
+
       }
 
     },
+
     async mounted() {
+
+
+
       //地區列表
       const citys_list = require("../json/citys_list.json");
       this.citys_list = citys_list[0];
       let taiwan_weather;
 
+      //地區縣市 - 中文
+      this.citys_list.forEach(e => {
+        let arr = []
+        e.child.forEach(n => {
+          arr.push(n.che)
+        })
+        this.citys_in_block.push(arr)
+      });
+
+
+
+
+
+
       //獲取資料
       const response = await this.axios.get(this.api_url + "/city/taiwan")
-      taiwan_weather = response["data"];
       this.taiwan_weather = response["data"];
-      this.list_full = this.full_weather("臺北市");
+
+
+
+      if (!localStorage.weather_select)
+        this.list_full = this.full_weather("臺北市");
+      else {
+        this.list_full = this.full_weather(localStorage.weather_select);
+      }
 
     },
     created() {
@@ -291,27 +426,28 @@
       this.remove_loading()
 
 
-      /*  地區切換動畫(mobile) */
+      /*  首次載入動畫 */
+
       setTimeout(() => {
         this.ani_show = true
         this.block_show = true
-      }, 0);
+      }, 100);
 
 
 
 
 
-      /*  動態引入地圖 */
+      /*  動態引入 */
 
-      //首此判定
-      if (window.innerWidth > 1527) {
+      //首次載入窗口檢測
+      if (window.innerWidth > 1530) {
         this.index_map = () => import( /* webpackChunkName: 'index_map' */ './index_map.vue')
       }
 
       //監聽視窗變動
       window.onresize = () => {
 
-        if (window.innerWidth > 1527) {
+        if (window.innerWidth > 1530) {
           this.index_map = () => import( /* webpackChunkName: 'index_map' */ './index_map.vue')
         }
 

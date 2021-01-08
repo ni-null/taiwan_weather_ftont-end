@@ -1,3 +1,5 @@
+@import "./ani";
+
 @mixin mobile {
     @media screen and (max-width: 560px) {
         @content;
@@ -32,7 +34,6 @@
         margin: 0;
         width: auto;
         height: auto;
-
         position: relative;
         height: auto;
     }
@@ -41,7 +42,8 @@
         background-color: #71edff;
         background-image: none;
         padding-bottom: 50px;
-        min-height: 500px;
+        min-height: 1000px;
+        min-height: 1000px;
     }
 }
 

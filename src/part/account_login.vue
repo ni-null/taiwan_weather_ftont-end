@@ -78,7 +78,7 @@
           this.login_check = "登入失敗"
         else {
 
-          //      $cookies.set('user', this.user_name)
+          this.$cookies.set('user', this.user_name, 60 * 60 * 24 * 2) //兩天過期
           bus.$emit('login', true)
           this.$router.push({
             path: '/account/user/'

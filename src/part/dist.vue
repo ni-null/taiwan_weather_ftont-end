@@ -4,7 +4,7 @@
 
     <div class="main_box">
 
-      <dist_list></dist_list>
+      <dist_list @switch_dist="switch_dist"></dist_list>
 
 
 
@@ -22,48 +22,52 @@
       </div>
       <!--  縣市列表 -->
       <transition name="bob_mobile">
-        <div class="city_box" v-show="dist_weathers">
+        <div class="city_box" v-show="dist_weathers" :key="key">
           <div class="other_box city_box_item city_other_box">
 
-            <transition-group class="other_box_title" name="fade">
-              <div v-for="(item, index) in dist_weathers" :key="item.id">
+            <transition name="fade">
 
 
-                <p v-if="item.show_day">
 
-                  <span v-if="item.day_1 != ''"> {{ item.day_1 }}({{ item.day_2 }}) </span>
-                  <span v-else-if="item.day_1 == ''">星期{{ item.day_2 }}</span>
-                  <span> {{ item.time_1 }}</span>
-
-                </p>
+              <div class="other_box_title">
+                <div v-for="(item, index) in dist_weathers" :key="item.id">
 
 
-                <div class="flex_box_2">
+                  <p v-if="item.show_day">
 
-                  <div class="flex_box_2_item_1"> {{ item.time_2 }} </div>
+                    <span v-if="item.day_1 != ''"> {{ item.day_1 }}({{ item.day_2 }}) </span>
+                    <span v-else-if="item.day_1 == ''">星期{{ item.day_2 }}</span>
+                    <span> {{ item.time_1 }}</span>
 
-                  <div class="flex_box_2_item_2">
-                    <img :src="require('../img/svg/temp.svg')" />
-                    <span> {{ item.temp }}</span>
+                  </p>
+
+
+                  <div class="flex_box_2">
+
+                    <div class="flex_box_2_item_1"> {{ item.time_2 }} </div>
+
+                    <div class="flex_box_2_item_2">
+                      <img :src="require('../img/svg/temp.svg')" />
+                      <span> {{ item.temp }}</span>
+                    </div>
+
+                    <div class="flex_box_2_item_3">
+                      <img :src="   require('../img/svg/static_icon/' + item.WD_code + '.svg') " />
+                      <span> {{ item.WD }}</span>
+                    </div>
+
                   </div>
 
-                  <div class="flex_box_2_item_3">
-                    <img :src="   require('../img/svg/static_icon/' + item.WD_code + '.svg') " />
-                    <span> {{ item.WD }}</span>
-                  </div>
 
                 </div>
 
-
               </div>
-
-            </transition-group>
-
+            </transition>
 
           </div>
 
           <div class="city_box_item">
-            <dist_chart :dist_weathers="dist_weathers" v-if="dist_weathers"></dist_chart>
+            <dist_chart :dist_weathers="dist_weathers" v-if="dist_weathers" :key="key"></dist_chart>
           </div>
 
         </div>
@@ -78,10 +82,15 @@
   export default {
     data() {
       return {
-        list_now_title: null,
+        //完整天氣
+        dist_full_weathers: null,
+        //選定的鄉鎮天氣
         dist_weathers: null,
-        child_dist: null,
+        //鄉鎮列表
         city_data: null,
+
+        //key 
+        key: null
 
       };
     },
@@ -93,6 +102,16 @@
     },
     methods: {
 
+      //子組件傳值後切換地區
+
+      switch_dist: function (dist) {
+
+        this.key = dist
+        this.set_weather(dist)
+      },
+
+
+      //顯示日期
       show_day: function () {
         if (this.dist_weathers[1].time_1 == this.dist_weathers[2].time_1) {
 
@@ -121,7 +140,27 @@
             true;
 
         }
+      },
+
+      //天氣
+
+      set_weather: function (dist) {
+        //天氣篩選
+        this.dist_weathers = this.dist_full_weathers.filter(function (item) {
+          return item.cityname == dist;
+        });
+
+        this.dist_weathers.splice(7, 8);
+
+        //key
+
+        this.key = dist
+
+        //添加判斷顯示
+        this.show_day()
       }
+
+
     },
     provide() {
       return {
@@ -134,22 +173,18 @@
 
       const response = await this.axios.get(this.api_url + "/city/" + route_city)
 
+
       //組件傳遞的資料
       this.city_data = response["data"];
 
-      //天氣篩選
-      this.dist_weathers = response["data"].filter(function (item) {
-        return item.cityname == route_dist;
-      });
 
-      this.dist_weathers.splice(7, 8);
+      this.dist_full_weathers = response["data"]
 
-      //添加判斷顯示
-      this.show_day()
+      this.set_weather(route_dist)
+
 
       //移除載入前效果
       document.getElementById("Element_loding").remove();
-
 
 
     },
@@ -160,8 +195,12 @@
 
     },
     created() {
+
       this.remove_loading()
-    }
+    },
+
+
+
 
   };
 </script>

@@ -1,5 +1,6 @@
 //css
 import "./css/all.scss";
+import "./css/ani.scss"
 import "./css/normal.scss";
 import Vue from "vue";
 
@@ -17,8 +18,8 @@ import {
 const cache = setupCache({
 	maxAge: 5 * 60 * 1000
 })
-axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios)
+axios.defaults.withCredentials = true;
 Vue.axios.defaults.adapter = cache.adapter
 //設置axios快取時間
 /* axios */
@@ -102,8 +103,8 @@ const vm = new Vue({
 
 	},
 	provide: {
-		//	api_url: 'https://weather-api.ninull.com',
-		api_url: 'http://127.0.0.1:5000',
+		api_url: 'https://weather-api.ninull.com',
+		//	api_url: 'http://127.0.0.1:5000',
 
 		//刪除動畫
 		remove_loading: function () {

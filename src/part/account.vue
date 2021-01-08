@@ -37,22 +37,26 @@
       //登入驗證
       login_check: async function () {
 
-        const response = await this.axios.get(this.api_url + "/account/login", {
-          cache: false
-        })
+        if (this.$cookies.get('user') != null) {
 
-        //成功
-        if (response["data"]) {
-          this.login_check_result = response["data"]
-          //     this.$cookies.set('user', this.login_check_result) //return this
-          this.$router.push({
-            path: '/account/user'
+          const response = await this.axios.get(this.api_url + "/account/login", {
+            cache: false
           })
+
+          //成功
+          if (response["data"]) {
+            this.login_check_result = response["data"]
+            this.$router.push({
+              path: '/account/user'
+            })
+          }
+          //失敗
+          else {
+            this.$cookies.remove('user')
+          }
         }
-        //失敗
-        else {
-          this.$cookies.remove('user')
-        }
+
+
 
 
       },

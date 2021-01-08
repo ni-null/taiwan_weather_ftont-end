@@ -1,41 +1,41 @@
 <template>
-  <div>
 
+  <div class="main_box main_user">
 
-    <div class="main_box main_user">
+    <transition name="bob">
+      <div class="user_box" v-show="animal_show">
+        <div class="user_nav">
 
-      <transition name="bob">
-        <div class="user_box" v-show="animal_show">
-          <div class="user_nav">
-
-            <div class="user_nav_item item_2" @click="user_sub">
-              <img :src="require('../img/svg/favorite.svg')" />
-              <p>我的訂閱</p>
-            </div>
-            <div class="user_nav_item item_3" @click="user_info">
-              <img :src="require('../img/svg/me.svg')" />
-              <p>我的帳號</p>
-            </div>
+          <div class="user_nav_item item_2" @click="user_sub">
+            <img :src="require('../img/svg/favorite.svg')" />
+            <p>我的訂閱</p>
           </div>
-
-
-
-          <user_sub v-show="show==`user_sub`"></user_sub>
-
-
-
-          <user_info v-show="show==`user_info`"></user_info>
-
-
-
-          <button @click="delete_login" id="login_out"> 登出 </button>
+          <div class="user_nav_item item_3" @click="user_info">
+            <img :src="require('../img/svg/me.svg')" />
+            <p>我的帳號</p>
+          </div>
         </div>
 
-      </transition>
 
-    </div>
+        <transition name="fade_switch" mode="out-in">
+
+
+          <user_sub v-if="show==`user_sub`"></user_sub>
+
+
+
+          <user_info v-if="show==`user_info`"></user_info>
+
+        </transition>
+
+        <button @click="delete_login" id="login_out"> 登出 </button>
+      </div>
+
+    </transition>
 
   </div>
+
+
 </template>
 
 <script>
@@ -61,20 +61,25 @@
       login_check: async function () {
 
 
-        const response = await this.axios.get(this.api_url + "/account/login")
 
-        if (response["data"]) {
+        //本地cookie檢查不為空後進行後端檢查，後端失效則刪除本地
+        if (this.$cookies.get('user') != null) {
+          const response = await this.axios.get(this.api_url + "/account/login")
 
-          this.login_check_result = response["data"].split(":")[1]
-          // this.$cookies.set('user', this.login_check_result) //return this
-
-
+          if (response["data"]) {
+            this.login_check_result = response["data"].split(":")[1]
+          } else {
+            this.$cookies.remove('user')
+            this.$router.push({
+              path: '/account/'
+            })
+          }
 
         } else {
-          this.$cookies.remove('user')
           this.$router.push({
             path: '/account/'
           })
+
         }
 
       },
@@ -87,9 +92,11 @@
         if (response) {
           console.log('登出')
           this.login_check_result = '尚未登入'
-          $cookies.remove('user')
+          this.$cookies.remove('user')
           bus.$emit('login', false)
           //登出後返回
+
+
           this.$router.push({
             path: '/account/'
           })

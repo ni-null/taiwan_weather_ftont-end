@@ -3,8 +3,10 @@
 
     <!-- 訂閱提示 -->
     <transition name="bob_sub">
-      <div v-show="sub_info_show" class="sub_info">
-        <p> {{sub_info}}</p>
+      <div class="sub_info_box">
+        <div v-show="sub_info_show" class="sub_info">
+          <p> {{sub_info}}</p>
+        </div>
       </div>
     </transition>
     <!-- 訂閱提示 -->

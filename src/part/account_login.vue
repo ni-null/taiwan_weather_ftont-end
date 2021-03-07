@@ -17,7 +17,7 @@
       <div class="account_type_box">
         <div> <img :src="require('../img/svg/lock.svg')" />
         </div>
-        <input type="text" v-model="user_passowrd" placeholder="Password">
+        <input type="text" v-model="user_password" placeholder="Password">
       </div>
       <div>
         <input class="account_input_button " type="button" value="登入" @click="send_login">
@@ -55,8 +55,8 @@
       return {
 
         user_name: null,
-        user_passowrd: null,
-        user_passowrd_check: null,
+        user_password: null,
+        user_password_check: null,
         login_check: null
 
       };
@@ -67,11 +67,12 @@
       send_login: async function () {
 
 
-
-        const response = await this.axios.post(this.api_url + "/account/login", {
+        const data = {
           user_name: this.user_name,
-          user_passowrd: md5(this.user_passowrd)
-        })
+          user_password: md5(this.user_password)
+        }
+
+        const response = await this.axios.post(this.api_url + "/account/login", data)
 
 
         if (!response["data"])

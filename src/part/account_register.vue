@@ -19,13 +19,13 @@
       <div class="account_type_box">
         <div> <img :src="require('../img/svg/lock.svg')" />
         </div>
-        <input type="text" v-model="user_passowrd" placeholder="Password">
+        <input type="text" v-model="user_password" placeholder="Password">
       </div>
 
       <div class="account_type_box">
         <div> <img :src="require('../img/svg/lock.svg')" />
         </div>
-        <input type="text" v-model="user_passowrd_check" placeholder="Password_Check">
+        <input type="text" v-model="user_password_check" placeholder="Password_Check">
       </div>
       <div class="account_check">
         {{account_check}}
@@ -46,19 +46,7 @@
 
 
 
-    <!--    
-    帳號
-    <input type="text" v-model="user_name">
 
-    密碼
-    <input type="text" v-model="user_passowrd">
-
-    <input type="button" value="送出" @click="restgist">
-
-    <p>
-
-      {{account_check}}
-    </p> -->
 
   </div>
 </template>
@@ -70,8 +58,8 @@
       return {
 
         user_name: null,
-        user_passowrd: null,
-        user_passowrd_check: null,
+        user_password: null,
+        user_password_check: null,
         account_check: null
 
       };
@@ -82,18 +70,18 @@
 
         const re = /^[\d|a-zA-Z]+$/
 
-        if (this.user_name == null || this.user_passowrd == null) this.account_check = "帳號或密碼為空"
-        else if (!re.test(this.user_name) && !re.test(this.user_passowrd)) this.account_check = "帳號或密碼格式錯誤"
+        if (this.user_name == null || this.user_password == null) this.account_check = "帳號或密碼為空"
+        else if (!re.test(this.user_name) && !re.test(this.user_password)) this.account_check = "帳號或密碼格式錯誤"
         else if (this.user_name.length < 5) this.account_check = "帳號長度太短，需大於五"
-        else if (this.user_passowrd.length < 5) this.account_check = "密碼長度太短，需大於五"
-        else if (this.user_passowrd == this.user_passowrd_check)
+        else if (this.user_password.length < 5) this.account_check = "密碼長度太短，需大於五"
+        else if (this.user_password == this.user_password_check)
 
         {
 
 
           const response = await this.axios.post(this.api_url + "/account/register", {
             user_name: this.user_name,
-            user_passowrd: md5(this.user_passowrd),
+            user_password: md5(this.user_password),
             bind_code: 'TG@' + md5(this.user_name).substr(0, 5)
 
           })
@@ -104,6 +92,9 @@
             this.account_check = "帳號已經存在，請使用其他用戶名"
           } else {
             this.account_check = "註冊成功"
+            this.$router.push({
+              path: '/account/user/'
+            })
           }
 
 

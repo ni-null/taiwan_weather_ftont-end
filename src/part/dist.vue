@@ -30,7 +30,7 @@
 
 
               <div class="other_box_title">
-                <div v-for="(item, index) in dist_weathers" :key="item.id">
+                <div v-for="(item) in dist_weathers" :key="item.id">
 
 
                   <p v-if="item.show_day">

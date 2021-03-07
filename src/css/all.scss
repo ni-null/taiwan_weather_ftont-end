@@ -228,6 +228,33 @@ footer {
 }
 
 /* 訂閱提示 */
+.sub_info_box {
+	display: flex;
+	justify-content: center;
+	.sub_info {
+		position: fixed;
+		top: 0;
+		z-index: 10;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+
+		p {
+			margin-top: 20px;
+			padding: 10px;
+			border-radius: 10px;
+			color: #fff;
+			font-weight: bolder;
+			background: rgba(99, 99, 99, 0.5);
+
+			@include mobile {
+				background: #ff8484;
+			}
+		}
+	}
+}
+
 .sub_info {
 	position: fixed;
 	top: 0;
@@ -603,6 +630,7 @@ footer {
 	display: flex;
 	justify-content: center;
 	text-align: center;
+	max-height: 64px;
 }
 
 .flex_box_2_item_3 {
@@ -673,10 +701,11 @@ footer {
 	border-radius: 15px;
 	text-align: center;
 	margin-top: 10px;
+	background: #ffda6d;
 	background: rgba(26, 25, 25, 0.63);
 
 	@include mobile {
-		background: none;
+		background: #ffda6d;
 	}
 }
 

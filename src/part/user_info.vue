@@ -100,26 +100,26 @@
 
             <div class="password_item">
               <p> 舊密碼 </p>
-              <input type="text" v-model="user_passowrd_old" placeholder="Old Password">
+              <input type="text" v-model="user_password_old" placeholder="Old Password">
             </div>
 
             <div class="password_item">
               <p>新密碼 </p>
-              <input type="text" v-model="user_passowrd_new" placeholder="NEW Password">
+              <input type="text" v-model="user_password_new" placeholder="NEW Password">
             </div>
 
             <div class="password_item">
               <p>確認新密碼</p>
-              <input type="text" v-model="user_passowrd_new_check" placeholder="NEW Password Check">
+              <input type="text" v-model="user_password_new_check" placeholder="NEW Password Check">
             </div>
 
             <button class="change_button" @click="send_change"> 修改密碼 </button>
+            <p class="send_change_result"> {{send_change_result}} </p>
 
           </div>
 
 
 
-          {{send_change_result}}
 
         </div>
       </transition>
@@ -151,9 +151,9 @@
   export default {
     data() {
       return {
-        user_passowrd_old: null,
-        user_passowrd_new: null,
-        user_passowrd_new_check: null,
+        user_password_old: null,
+        user_password_new: null,
+        user_password_new_check: null,
         send_change_result: null,
         show: 'telegram_box',
 
@@ -179,24 +179,24 @@
 
         const re = /^[\d|a-zA-Z]+$/
 
-        if (this.user_passowrd_old == null || this.user_passowrd_new == null || this.user_passowrd_new_check == null)
+        if (this.user_password_old == null || this.user_password_new == null || this.user_password_new_check == null)
           this.send_change_result = "輸入為空"
-        else if (!re.test(this.user_name) && !re.test(this.user_passowrd)) this.send_change_result = "帳號或密碼格式錯誤"
-        else if (this.user_passowrd_new.length < 5) this.send_change_result = "密碼長度太短，需大於五"
-        else if (this.user_passowrd_new != this.user_passowrd_new_check) this.send_change_result = "兩次密碼不一致"
+        else if (!re.test(this.user_name) && !re.test(this.user_password)) this.send_change_result = "帳號或密碼格式錯誤"
+        else if (this.user_password_new.length < 5) this.send_change_result = "密碼長度太短，需大於五"
+        else if (this.user_password_new != this.user_password_new_check) this.send_change_result = "兩次密碼不一致"
 
         else {
 
           const response = await this.axios.post(this.api_url + "/account/change_password", {
-            user_passowrd_old: md5(this.user_passowrd_old),
-            user_passowrd_new: md5(this.user_passowrd_new),
+            user_password_old: md5(this.user_password_old),
+            user_password_new: md5(this.user_password_new),
           })
 
           if (response.data) {
             console.log(response.data)
             if (response.data == 'login_fail') this.delete_login()
             else this.send_change_result = '修改成功'
-          } else this.send_change_result = '修改失敗，請在試一次'
+          } else this.send_change_result = '修改失敗，可能是密碼錯誤，請在試一次'
         }
 
 

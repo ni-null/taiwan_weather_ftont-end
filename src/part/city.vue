@@ -149,6 +149,17 @@
         this.city_weather = this.full_city_weather.filter(
           (x) => x.cityname_eng === city
         );
+
+
+        //svg顯示超過18
+        this.city_weather.forEach(e => {
+
+          let WD_code = parseInt(e.WD_code)
+
+          if (WD_code > 18) e.WD_code = "18"
+
+        });
+
         //添加判斷顯示
         this.show_day()
       },
@@ -175,6 +186,8 @@
       //獲取資料
       const response = await this.axios.get(this.api_url + "/city/taiwan")
       this.full_city_weather = response["data"]
+
+
 
       //設置天氣
 

@@ -152,8 +152,17 @@
 
         this.dist_weathers.splice(7, 8);
 
-        //key
+        //svg顯示超過18
+        this.dist_weathers.forEach(e => {
 
+          let WD_code = parseInt(e.WD_code)
+
+          if (WD_code > 18) e.WD_code = "18"
+
+        });
+
+
+        //key
         this.key = dist
 
         //添加判斷顯示

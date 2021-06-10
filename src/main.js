@@ -69,8 +69,8 @@ const vm = new Vue({
     navbar: () => import(/* webpackChunkName: 'navbar' */ "./part/navbar.vue"),
   },
   provide: {
-    // api_url: "https://weather-api.ninull.com",
-    api_url: "http://127.0.0.1:5000",
+    api_url: "https://weather-api.ninull.com",
+    // api_url: "http://127.0.0.1:5000",
 
     //刪除動畫
     remove_loading: function() {
